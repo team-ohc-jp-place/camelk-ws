@@ -2,7 +2,7 @@ id: "camel-k"
 name: "Camel-K Workshop Guides"
 
 content:
-  url: https://raw.githubusercontent.com/kamorisan/camelk-workshop-v1-guides.git/main
+  url: https://raw.githubusercontent.com/team-ohc-jp-place/camelk-ws.git/main
 
 vars:
   vars:
