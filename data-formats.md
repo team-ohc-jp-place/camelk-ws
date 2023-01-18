@@ -43,7 +43,7 @@ Parameters は、以下を入力してください。
 ファイルの中身は、
 
 <pre>
-  id,name<
+  id,name
   1,apple
   2,orange
   3,lemon
@@ -83,7 +83,6 @@ Unmarshal シンボルの下の＋ボタンをクリックし、`Routing` のタ
 ![karavan]({% image_path 03-dataformat-007.png %}){:width="600px"}
 
 Unmarshalで変換した内容を表示するには、Log プロパティ の `Message` に `${body}` と入力をしてください。
-
 
 それでは、実際に動かしてみます。
 

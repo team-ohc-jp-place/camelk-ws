@@ -10,6 +10,8 @@ vars:
   MASTER_URL:
   CONSOLE_URL:
   CAMEL_VERSION:
+  KAMELETS_VERSION:
+  POSTGRESQL_SERVER:
 
 modules:
   activate:
@@ -21,4 +23,6 @@ modules:
   - split-eip
   - direct-component
   - recipientlist-eip
+  - kafka
+  - postgresql-sink
   
