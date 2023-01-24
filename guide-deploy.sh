@@ -34,7 +34,14 @@ done
 
 oc expose dc/postgresql --type=LoadBalancer --name=postgresql-loadbalancer -n $PRJ_NAME
 
-sleep 10
+ while [ 1 ]; do
+  POSTGRESQL_SERVER=$(oc get svc postgresql-loadbalancer -n $PRJ_NAME --ignore-not-found --output 'jsonpath={.status.loadBalancer.ingress[*].hostname}')
+  if [ "$POSTGRESQL_SERVER" != "" ] ; then
+    break
+  fi
+  echo "..."
+  sleep 5
+done
 
 # get routing suffix
 oc create route edge dummy --service=dummy --port=8080 -n $PRJ_NAME
