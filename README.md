@@ -15,6 +15,10 @@ sh ./guide-deploy.sh <project name>
 
 OpenShift Developer Sandbox では、PostgreSQLに外部アクセスするための Load Balancer が設定できない時があるため、お勧めしません。
 
+![](images/readme-01.png)
+
+![](images/readme-02.png)
+
 ---
 
 ### 更新
