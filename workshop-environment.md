@@ -30,7 +30,18 @@ OpenShift Web Console にログイン後、左のメニュから `Developer` パ
 ![](images/09-devspaces-003.png)
 ![karavan]({% image_path 09-devspaces-003.png %}){:width="800px"}
 
+#### リソースについて
 
+* **guides**: 本ワークショップのガイドドキュメント
+* **devspaces**: OpenShift DevSpaces の インスタンス
+* **kafka-cluster**: Kafka のクラスター
+* **kafdrop**: Kafka 用の Web UI でブローカーやトピックなどの情報やメッセージの表示を行います
+* **emitter**: Kafka トピックにメッセージを発信するPythonアプリ
+* **quarkusapp**: Kafka トピックに送信されたメッセージを受信して表示するWebアプリ
+* **postgresql**: サンプルデータが格納されたPostgreSQL
+
+あらかじめ、KafkaやPostgreSQLといったリソースが用意されています。
+ワークショップの中で、これらのデータソースを用いた連携をCamel Kで作成していきます。
 
 事前準備として、下記をローカル環境にインストールしてください。
 
