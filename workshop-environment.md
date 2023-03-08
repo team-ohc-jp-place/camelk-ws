@@ -111,7 +111,7 @@ RECOMMENDED に Karavan が表示されていますので、選択してイン�
 エクスプローラ上で右クリックをして、`Open in Integrated terminal` を選択してください。
 
 ![](images/09-devspaces-012.png)
-![karavan]({% image_path 09-devspaces-012.png %}){:width="600px"}
+![karavan]({% image_path 09-devspaces-012.png %}){:width="300px"}
 
 ターミナルが表示されますので、`jbang camel@apache/camel run example.camel.yaml` と入力をして実行してみてください。
 ターミナルに以下のようなログが表示されればOKです。
@@ -123,7 +123,7 @@ RECOMMENDED に Karavan が表示されていますので、選択してイン�
 
 #### Camel K CLI (Kamel)　による OpenShift　へのデプロイ
 
-[CAMEL K CLI (Kamel)](https://camel.apache.org/camel-k/{{ CAMEL_VERSION }}/cli/cli.html)は、Kubernetes クラスタ上でインテグレーションを実行するためのエントリポイントです。
+[CAMEL K CLI (Kamel)](https://camel.apache.org/camel-k/{{ CAMELK_VERSION }}/cli/cli.html)は、Kubernetes クラスタ上でインテグレーションを実行するためのエントリポイントです。
 
 先ほどのサンプルを、OpenShiftへデプロイしてみます。
 
