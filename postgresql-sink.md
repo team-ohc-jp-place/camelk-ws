@@ -3,7 +3,7 @@
 
 ### 1. 目的
 
-Kamelet の **PostgreSQL Sink** を使用して、Camel K と Kafka との連携の方法について理解していただきます。
+Kamelet の **PostgreSQL Sink** を使用して、Camel K と PostgreSQL との連携の方法について理解していただきます。
 
 * [PostgreSQL Sink](https://camel.apache.org/camel-kamelets/{{ KAMELETS_VERSION }}/postgresql-sink.html)
 
