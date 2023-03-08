@@ -17,13 +17,19 @@
 
 ワークショップを開始する前の事前準備として、OpenShift DevSpaces のワークスペースを作成しておきます。
 こちらのリンクから、[OpenShift Web Console]({{ CONSOLE_URL }}) にアクセスをしてください。
+OpenShift Web Console にアクセスするための情報は以下の通りです。
 
-* 認証情報
-  * Username: {{ OPENSHIFT_USER }}
-  * Password: {{ OPENSHIFT_PASSWORD }}
+* **Username**: {{ OPENSHIFT_USER }}
+* **Password**: {{ OPENSHIFT_PASSWORD }}
 
 ![](images/09-devspaces-002.png)
 ![karavan]({% image_path 09-devspaces-002.png %}){:width="600px"}
+
+OpenShift Web Console にログイン後、左のメニュから `Developer` パースペクティブを選択し、その下のメニューから `Topology` ビューを開きます。Project名は `{{ OPENSHIFT_USER }}_dev` を選択してください。
+
+![](images/09-devspaces-003.png)
+![karavan]({% image_path 09-devspaces-003.png %}){:width="800px"}
+
 
 
 事前準備として、下記をローカル環境にインストールしてください。
