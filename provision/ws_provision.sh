@@ -9,12 +9,6 @@ oc apply -f ./openshift/01_operator/03_subs_devspaces.yaml
 ## Error: integrations.camel.apache.org "test" is forbidden: User "user1" cannot get resource "integrations" in API group "camel.apache.org" in the namespace "default"
 
 # Waiting for getting operator subscription
-export amqsteams_csv=$(oc -n openshift-operators get subscription amq-streams -o=jsonpath='{.status.currentCSV}')
-export camelk_csv=$(oc -n openshift-operators get subscription camel-k -o=jsonpath='{.status.currentCSV}')
-export devspaces_csv=$(oc -n openshift-operators get subscription devspaces -o=jsonpath='{.status.currentCSV}')
-
-$(oc -n openshift-operators get ClusterServiceVersion $amqsteams_csv -o=jsonpath='{.status.phase}')
-
 echo "Waiting for getting operator subscription"
 while [ true ] ; do
   if [ "$(oc -n openshift-operators get subscription amq-streams -o=jsonpath='{.status.installPlanRef.name}')" ] ; then
@@ -38,7 +32,17 @@ sleep 10
 
 # Kafka (各user)
 ## kafka-cluster
-oc apply -f ./openshift/03_amqstreams/01_kafka_cluster.yaml -n $PRJ_NAME
+echo "Waiting for preparing amq-streams"
+ while [ 1 ]; do
+  CSV=$(oc -n openshift-operators get subscription amq-streams -o=jsonpath='{.status.currentCSV}')
+  STAT=$(oc -n openshift-operators get ClusterServiceVersion $CSV -o=jsonpath='{.status.phase}')
+  if [ "$STAT" = "Succeeded" ] ; then
+    oc apply -f ./openshift/03_amqstreams/01_kafka_cluster.yaml -n $PRJ_NAME
+    break
+  fi
+  echo waiting...
+  sleep 5
+done
 
 # Waiting for deploying kafka-cluster
 echo "Waiting for deploying kafka-cluster"
@@ -55,7 +59,16 @@ oc process -n $PRJ_NAME -f ./openshift/03_amqstreams/02_kafdrop.yaml --param=PJ_
 oc set env dc/kafdrop KAFKA_BROKERCONNECT=kafka-cluster-kafka-bootstrap.$PRJ_NAME.svc:9092 -n $PRJ_NAME
 
 # Devspaces Create Workspaces
-oc apply -f ./openshift/02_devspaces/01_che_cluster.yaml -n $PRJ_NAME
+while [ 1 ]; do
+  CSV=$(oc -n openshift-operators get subscription devspaces -o=jsonpath='{.status.currentCSV}')
+  STAT=$(oc -n openshift-operators get ClusterServiceVersion $CSV -o=jsonpath='{.status.phase}')
+  if [ "$STAT" = "Succeeded" ] ; then
+    oc apply -f ./openshift/02_devspaces/01_che_cluster.yaml -n $PRJ_NAME
+    break
+  fi
+  echo waiting...
+  sleep 5
+done
 
 # PostgreSQL (各user)
 ## PostgreSQL deploy

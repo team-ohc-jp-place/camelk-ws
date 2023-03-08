@@ -13,10 +13,10 @@
   * Visual Studio Code 拡張機能と互換性があり、VSCodeユーザーでも利用しやすいです。
 
 ![](images/09-devspaces-001.png)
-![karavan]({% image_path 09-devspaces-001.png %})
+![karavan]({% image_path 09-devspaces-001.png %}){:width="800px"}
 
 ワークショップを開始する前の事前準備として、OpenShift DevSpaces のワークスペースを作成しておきます。
-以下のリンクから、OpenShift Web Console にアクセスをしてください。
+こちらのリンクから、[OpenShift Web Console]({{ CONSOLE_URL }}) にアクセスをしてください。
 
 ![](images/09-devspaces-002.png)
 ![karavan]({% image_path 09-devspaces-002.png %}){:width="600px"}
