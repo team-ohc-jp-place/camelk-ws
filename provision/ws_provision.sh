@@ -74,6 +74,24 @@ while [ 1 ]; do
   sleep 5
 done
 
+# Camel K (各user)
+oc apply -f ./openshift/06_camelk/01_role.yaml -n $PRJ_NAME
+sleep 5
+oc policy add-role-to-user workshop-user $OPENSHIFT_USER --role-namespace=$PRJ_NAME -n $PRJ_NAME
+
+## examle
+echo "Waiting for preparing camel-k"
+ while [ 1 ]; do
+  CSV=$(oc -n openshift-operators get subscription camel-k -o=jsonpath='{.status.currentCSV}')
+  STAT=$(oc -n openshift-operators get ClusterServiceVersion $CSV -o=jsonpath='{.status.phase}')
+  if [ "$STAT" = "Succeeded" ] ; then
+    oc apply -f ./openshift/06_camelk/02_example.yaml -n $PRJ_NAME
+    break
+  fi
+  echo waiting...
+  sleep 5
+done
+
 # PostgreSQL (各user)
 ## PostgreSQL deploy
 oc process -f ./openshift/04_postgresql/01_postgresql.yaml -l app=postgresql \
@@ -133,6 +151,7 @@ oc apply -f ./openshift/05_quarkusapp/02_route_quarkusapp.yaml -n $PRJ_NAME
 # get routing suffix
 oc create route edge dummy --service=dummy --port=8080 -n $PRJ_NAME
 ROUTE=$(oc get route dummy -o=go-template --template='{{ .spec.host }}' -n $PRJ_NAME)
+DEVSPACES_URL=$(oc get route devspaces -o=go-template --template='{{ .spec.host }}' -n $PRJ_NAME)
 HOSTNAME_SUFFIX=$(echo $ROUTE | sed 's/^dummy-'$PRJ_NAME'\.//g')
 MASTER_URL=$(oc whoami --show-server)
 CONSOLE_URL=$(oc whoami --show-console)
@@ -143,6 +162,8 @@ oc -n $PRJ_NAME new-app quay.io/osevg/workshopper --name=guides \
     -e POSTGRESQL_SERVER=$POSTGRESQL_SERVER \
     -e MASTER_URL=$MASTER_URL \
     -e CONSOLE_URL=$CONSOLE_URL \
+    -e DEVSPACES_URL=$DEVSPACES_URL \
+    -e DEVSPACES_REPO="https://github.com/team-ohc-jp-place/camelk-ws-devspaces.git"
     -e ROUTE_SUBDOMAIN=$HOSTNAME_SUFFIX \
     -e CAMEL_VERSION="3.18.x" \
     -e KAMELETS_VERSION="0.9.x" \
@@ -162,6 +183,8 @@ oc label deployment/emitter app.openshift.io/runtime=python --overwrite -n $PRJ_
 oc label dc/quarkusapp app.openshift.io/runtime=quarkus --overwrite -n $PRJ_NAME
 oc label dc/postgresql app.openshift.io/runtime=postgresql --overwrite -n $PRJ_NAME
 oc label dc/kafdrop app.openshift.io/runtime=amq --overwrite -n $PRJ_NAME
+
+oc delete Integration example -n $PRJ_NAME
 
 ##
 # PostgreSQLへの接続がOpenShift上でうまくできない
