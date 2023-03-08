@@ -19,7 +19,7 @@
 こちらのリンクから、[OpenShift Web Console]({{ CONSOLE_URL }}) にアクセスをしてください。
 
 * 認証情報
-  * Username: {{ OPENSHIFT_UESR }}
+  * Username: {{ OPENSHIFT_USER }}
   * Password: {{ OPENSHIFT_PASSWORD }}
 
 ![](images/09-devspaces-002.png)
