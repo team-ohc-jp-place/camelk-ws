@@ -18,6 +18,10 @@
 ワークショップを開始する前の事前準備として、OpenShift DevSpaces のワークスペースを作成しておきます。
 こちらのリンクから、[OpenShift Web Console]({{ CONSOLE_URL }}) にアクセスをしてください。
 
+* 認証情報
+  * Username: {{OPENSHIFT_UESR}}
+  * Password: {{OPENSHIFT_PASSWORD}}
+
 ![](images/09-devspaces-002.png)
 ![karavan]({% image_path 09-devspaces-002.png %}){:width="600px"}
 

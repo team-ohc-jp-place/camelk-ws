@@ -24,11 +24,15 @@ done
 
 # Project Name
 export PRJ_NAME=user1-dev
+export OPENSHIFT_USER=user1
+export OPENSHIFT_PASSWORD=openshift
 
 # Create Project (各user)
 oc new-project $PRJ_NAME
 
 sleep 10
+
+oc adm policy add-role-to-user view $OPENSHIFT_USER -n $PRJ_NAME
 
 # Kafka (各user)
 ## kafka-cluster
@@ -142,6 +146,8 @@ oc -n $PRJ_NAME new-app quay.io/osevg/workshopper --name=guides \
     -e ROUTE_SUBDOMAIN=$HOSTNAME_SUFFIX \
     -e CAMEL_VERSION="3.18.x" \
     -e KAMELETS_VERSION="0.9.x" \
+    -e OPENSHIFT_USER=$OPENSHIFT_USER \
+    -e OPENSHIFT_PASSWORD=$OPENSHIFT_PASSWORD \
     -e CONTENT_URL_PREFIX="https://raw.githubusercontent.com/team-ohc-jp-place/camelk-ws/devspaces_v1" \
     -e WORKSHOPS_URLS="https://raw.githubusercontent.com/team-ohc-jp-place/camelk-ws/devspaces_v1/_camelk-workshop-guides.yml" \
     -e LOG_TO_STDOUT=true
