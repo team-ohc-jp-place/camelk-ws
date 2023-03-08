@@ -1,9 +1,26 @@
 ## 利用環境 について
 ---
 
-### 事前準備
+このワークショップでは、簡単な Camel K インテグレーションを作成し、動作を確認すると共に、Karavan Designer を使用した 実装のイメージを把握していただきます。
 
-このワークショップでは、ローカル環境で 簡単な Camel K インテグレーションを作成し、動作を確認すると共に、Karavan Designer を使用した 実装のイメージを把握していただきます。
+### OpenShift DevSpacesの準備
+
+本ワークショップの開発環境は、オープンソースの[Eclipse Che](https://www.eclipse.org/che/)プロジェクトに基づいた、OpenShift Container Platform で動作するWebベースの統合開発環境(IDE)である、[Red Hat OpenShift DevSpaces](https://developers.redhat.com/products/openshift-dev-spaces/overview) を使用します。
+
+* OpenShift DevSpaces の特徴
+  * あらかじめ定義された設定でワークスペースを作成するため、オンボーディングを高速にできるとともに、個々の開発者の開発環境を統一できます。
+  * Gitからクローンされるソースコードは、ブラウザからアクセスするワークスペース上で管理されるため、ローカル環境への複製が不要です。
+  * Visual Studio Code 拡張機能と互換性があり、VSCodeユーザーでも利用しやすいです。
+
+![](images/09-devspaces-001.png)
+![karavan]({% image_path 09-devspaces-001.png %})
+
+ワークショップを開始する前の事前準備として、OpenShift DevSpaces のワークスペースを作成しておきます。
+以下のリンクから、OpenShift Web Console にアクセスをしてください。
+
+![](images/09-devspaces-002.png)
+![karavan]({% image_path 09-devspaces-002.png %}){:width="600px"}
+
 
 事前準備として、下記をローカル環境にインストールしてください。
 

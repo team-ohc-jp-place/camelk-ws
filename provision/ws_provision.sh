@@ -9,7 +9,13 @@ oc apply -f ./openshift/01_operator/03_subs_devspaces.yaml
 ## Error: integrations.camel.apache.org "test" is forbidden: User "user1" cannot get resource "integrations" in API group "camel.apache.org" in the namespace "default"
 
 # Waiting for getting operator subscription
-echo "Waiting for getting amq-streams operator subscription"
+export amqsteams_csv=$(oc -n openshift-operators get subscription amq-streams -o=jsonpath='{.status.currentCSV}')
+export camelk_csv=$(oc -n openshift-operators get subscription camel-k -o=jsonpath='{.status.currentCSV}')
+export devspaces_csv=$(oc -n openshift-operators get subscription devspaces -o=jsonpath='{.status.currentCSV}')
+
+$(oc -n openshift-operators get ClusterServiceVersion $amqsteams_csv -o=jsonpath='{.status.phase}')
+
+echo "Waiting for getting operator subscription"
 while [ true ] ; do
   if [ "$(oc -n openshift-operators get subscription amq-streams -o=jsonpath='{.status.installPlanRef.name}')" ] ; then
     if [ "$(oc -n openshift-operators get subscription camel-k -o=jsonpath='{.status.installPlanRef.name}')" ] ; then
@@ -18,10 +24,11 @@ while [ true ] ; do
       fi
     fi
   fi
-  echo -n .
+  echo waiting...
   sleep 10
 done
 
+# Project Name
 export PRJ_NAME=user1-dev
 
 # Create Project (各user)
@@ -39,7 +46,7 @@ while [ true ] ; do
   if [ "$(oc -n $PRJ_NAME get kafka kafka-cluster -o=jsonpath='{@.status.clusterId}')" ] ; then
     break
   fi
-  echo -n .
+  echo waiting...
   sleep 10
 done
 
@@ -106,6 +113,30 @@ oc apply -f ./openshift/05_quarkusapp/01_service_quarkusapp.yaml -n $PRJ_NAME
 oc apply -f ./openshift/05_quarkusapp/02_route_quarkusapp.yaml -n $PRJ_NAME
 
 # Guides
+# get routing suffix
+oc create route edge dummy --service=dummy --port=8080 -n $PRJ_NAME
+ROUTE=$(oc get route dummy -o=go-template --template='{{ .spec.host }}' -n $PRJ_NAME)
+HOSTNAME_SUFFIX=$(echo $ROUTE | sed 's/^dummy-'$PRJ_NAME'\.//g')
+MASTER_URL=$(oc whoami --show-server)
+CONSOLE_URL=$(oc whoami --show-console)
+oc delete route dummy
+
+# Guide Provision
+oc -n $PRJ_NAME new-app quay.io/osevg/workshopper --name=guides \
+    -e POSTGRESQL_SERVER=$POSTGRESQL_SERVER \
+    -e MASTER_URL=$MASTER_URL \
+    -e CONSOLE_URL=$CONSOLE_URL \
+    -e ROUTE_SUBDOMAIN=$HOSTNAME_SUFFIX \
+    -e CAMEL_VERSION="3.18.x" \
+    -e KAMELETS_VERSION="0.9.x" \
+    -e CONTENT_URL_PREFIX="https://raw.githubusercontent.com/team-ohc-jp-place/camelk-ws/devspaces_v1" \
+    -e WORKSHOPS_URLS="https://raw.githubusercontent.com/team-ohc-jp-place/camelk-ws/devspaces_v1/_camelk-workshop-guides.yml" \
+    -e LOG_TO_STDOUT=true
+
+oc -n $PRJ_NAME expose svc/guides
+
+echo "Completed... \n"
+echo "http://guides-$PRJ_NAME.$HOSTNAME_SUFFIX/workshop/camel-k" 
 
 # Label
 oc label deployment/emitter app.openshift.io/runtime=python --overwrite -n $PRJ_NAME
