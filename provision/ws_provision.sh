@@ -33,6 +33,9 @@ oc new-project $PRJ_NAME
 sleep 10
 
 oc adm policy add-role-to-user view $OPENSHIFT_USER -n $PRJ_NAME
+oc create sa camelk-user -n $PRJ_NAME
+oc adm policy add-scc-to-user anyuid -z camelk-user
+oc adm policy add-scc-to-user anyuid -z camelk-user -n $PRJ_NAME
 
 # Kafka (各user)
 ## kafka-cluster
