@@ -3,7 +3,7 @@
 
 このワークショップでは、簡単な Camel K インテグレーションを作成し、動作を確認すると共に、Karavan Designer を使用した 実装のイメージを把握していただきます。
 
-本ワークショップの開発環境は、オープンソースの [Eclipse Che](https://www.eclipse.org/che/){:target="_blank"} プロジェクトに基づいた、OpenShift Container Platform で動作するWebベースの統合開発環境(IDE)である、[Red Hat OpenShift DevSpaces](https://developers.redhat.com/products/openshift-dev-spaces/overview) を使用します。
+本ワークショップの開発環境は、オープンソースの [Eclipse Che](https://www.eclipse.org/che/){:target="_blank"} プロジェクトに基づいた、OpenShift Container Platform で動作するWebベースの統合開発環境(IDE)である、[Red Hat OpenShift DevSpaces](https://developers.redhat.com/products/openshift-dev-spaces/overview){:target="_blank"} を使用します。
 
 * OpenShift DevSpaces の特徴
   * あらかじめ定義された設定でワークスペースを作成するため、オンボーディングを高速にできるとともに、個々の開発者の開発環境を統一できます。
@@ -83,7 +83,7 @@ OpenShift DevSpaces の Dashboard が表示されます。
 
 ### Karavan Designer のインストール
 
-[Karavan](https://github.com/apache/camel-karavan) は、Apache Camel 用の開発ツールキットです。ランタイムおよびパッケージとの統合や、イメージのビルド、kubernetesへのデプロイが可能な他、Camel K の Yaml DSL をグラフィカルに作成することができます。
+[Karavan](https://github.com/apache/camel-karavan){:target="_blank"} は、Apache Camel 用の開発ツールキットです。ランタイムおよびパッケージとの統合や、イメージのビルド、kubernetesへのデプロイが可能な他、Camel K の Yaml DSL をグラフィカルに作成することができます。
 
 ![](images/we-karavan-vscode.png)
 ![karavan]({% image_path we-karavan-vscode.png %}){:width="800px"}
@@ -102,7 +102,7 @@ RECOMMENDED に Karavan が表示されていますので、選択してイン�
 
 ### JBang によるインテグレーション実施のテスト
 
-[JBang](https://www.jbang.dev/) は、Javaをスクリプトのように実行できるツールです。日本での知名度はまだまだ低いですが、Quarkusのエンジニアが開発していることもあり。モダンなJava開発環境との連携が充実しています。
+[JBang](https://www.jbang.dev/){:target="_blank"} は、Javaをスクリプトのように実行できるツールです。日本での知名度はまだまだ低いですが、Quarkusのエンジニアが開発していることもあり。モダンなJava開発環境との連携が充実しています。
 
 今回のワークショップでは、karavan Designer で作成した Camel K インテグレーションを、JBang を通して実行し、動作を確認していきます。
 
@@ -123,7 +123,7 @@ RECOMMENDED に Karavan が表示されていますので、選択してイン�
 
 #### Camel K CLI (Kamel)　による OpenShift　へのデプロイ
 
-[CAMEL K CLI (Kamel)](https://camel.apache.org/camel-k/{{ CAMELK_VERSION }}/cli/cli.html)は、Kubernetes クラスタ上でインテグレーションを実行するためのエントリポイントです。
+[CAMEL K CLI (Kamel)](https://camel.apache.org/camel-k/{{ CAMELK_VERSION }}/cli/cli.html){:target="_blank"} は、Kubernetes クラスタ上でインテグレーションを実行するためのエントリポイントです。
 
 先ほどのサンプルを、OpenShiftへデプロイしてみます。
 
@@ -134,7 +134,7 @@ RECOMMENDED に Karavan が表示されていますので、選択してイン�
 ![](images/09-devspaces-014.png)
 ![karavan]({% image_path 09-devspaces-014.png %}){:width="600px"}
 
-OpenShift Web Console の [Topology view]({{ CONSOLE_URL }}/topology/ns/{{ OPENSHIFT_USER }}-dev) にアクセスして確認します。
+OpenShift Web Console の [Topology view]({{ CONSOLE_URL }}/topology/ns/{{ OPENSHIFT_USER }}-dev){:target="_blank"} にアクセスして確認します。
 新しく、`example` の Pod が起動していますので、 `view logs` をクリックします。
 
 ![](images/09-devspaces-015.png)
