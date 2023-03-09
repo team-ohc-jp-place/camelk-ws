@@ -43,7 +43,7 @@ OpenShift Web Console にログイン後、左のメニュから `Developer` パ
 
 ### OpenShift DevSpacesの準備
 
-こちらのリンクから、[OpenShift DevSpaces Dashboard]({{ DEVSPACES_URL }}) にログインします。
+こちらのリンクから、[OpenShift DevSpaces Dashboard](https://{{ DEVSPACES_URL }}) にログインします。
 `Topology` ビューの OpenShift DevSpaces インスタンスの Route からもアクセスすることができます。
 
 ![](images/09-devspaces-004.png)
@@ -100,9 +100,9 @@ RECOMMENDED に Karavan が表示されていますので、選択してイン�
 ![](images/09-devspaces-011.png)
 ![karavan]({% image_path 09-devspaces-011.png %}){:width="600px"}
 
-### JBang　によるインテグレーション実施のテスト
+### JBang によるインテグレーション実施のテスト
 
-[JBang](https://www.jbang.dev/)は、Javaをスクリプトのように実行できるツールです。日本での知名度はまだまだ低いですが、Quarkusのエンジニアが開発していることもあり。モダンなJava開発環境との連携が充実しています。
+[JBang](https://www.jbang.dev/) は、Javaをスクリプトのように実行できるツールです。日本での知名度はまだまだ低いですが、Quarkusのエンジニアが開発していることもあり。モダンなJava開発環境との連携が充実しています。
 
 今回のワークショップでは、karavan Designer で作成した Camel K インテグレーションを、JBang を通して実行し、動作を確認していきます。
 
