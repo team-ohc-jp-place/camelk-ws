@@ -10,14 +10,14 @@
 まず、OpenShift DevSpaces 左のエクスプローラー上で、右クリックをして、メニューから `Karavan: Create Integration` を選択してください。
 
 ![](images/01-timer-001.png)
-![karavan]({% image_path 01-timer-001.png %}){:width="600px"}
+![karavan]({% image_path 01-timer-001.png %}){:width="300px"}
 
 次に、中央上部にファイル名を入力するポップアップが表示されますので、`timer` と入力して `Enter` を押してください。
 
 ![](images/01-timer-002.png)
-![karavan]({% image_path 01-timer-002.png %}){:width="600px"}
+![karavan]({% image_path 01-timer-002.png %}){:width="400px"}
 
-`timer.camel.yaml` という名前のファイル作成されて、Karavan Designer のGUIが開きます。
+`timer.camel.yaml` という名前のファイルが作成されて、Karavan Designer のGUIが開きます。
 
 上部の `Create route` をクリックして、Route を作成しましょう。
 
@@ -34,7 +34,7 @@ Route の source として、Timer コンポーネントが配置されます。
 Route の Timer シンボルをクリックすると、右側にプロパティが表示されますので、確認してください。
 
 ![](images/01-timer-005.png)
-![karavan]({% image_path 01-timer-005.png %}){:width="600px"}
+![karavan]({% image_path 01-timer-005.png %}){:width="800px"}
 
  <span style="color: red">赤い * (アスタリスク)</span>　が付いている項目は、入力が必須です。
 
@@ -56,7 +56,7 @@ Timer に続く Step を定義することができます。
 `Routing` のタブから `Log` を探してクリックをしてください。
 
 ![](images/01-timer-007.png)
-![karavan]({% image_path 01-timer-007.png %}){:width="800px"}
+![karavan]({% image_path 01-timer-007.png %}){:width="600px"}
 
 `Log` のシンボルが Timer に続いて配置されます。
 
@@ -83,6 +83,16 @@ Hello World の文字列が、約1秒間隔に5回表示されることを確認
 確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
 また、作成した `timer.camel.yaml` を `temp` フォルダに移動をしておいてください。 
 
+#### OpenShift へのデプロイ
+
+ターミナルを開き、`kamel run timer.camel.yaml -n {{OPENSHIFT_USER}}_dev` と入力をしてください。
+
+![](images/01-timer-010.png)
+![karavan]({% image_path 01-timer-009.png %}){:width="600px"}
+
+![](images/01-timer-011.png)
+![karavan]({% image_path 01-timer-009.png %}){:width="800px"}
+
 ---
 
 #### Window 環境で実行の場合
@@ -97,7 +107,7 @@ Hello World の文字列が、約1秒間隔に5回表示されることを確認
 その場合は、ターミナルから、以下のコマンドを実行してみてください。
 
 ><pre>
-> > jbang "-Dcamel.jbang.version=3.18.3" camel@apache/camel run timer.yaml
+> > jbang "-Dcamel.jbang.version=3.18.3" camel@apache/camel run timer.camel.yaml
 ></pre>
 
 *`"-Dcamel.jbang.version=3.18.3"`* のように、ダブルクォーテーションを使う必要があります。
