@@ -43,7 +43,7 @@ OpenShift Web Console にログイン後、左のメニュから `Developer` パ
 
 ### OpenShift DevSpacesの準備
 
-こちらのリンクから、[OpenShift DevSpaces]({{ DEVSPACES_URL }}) のDashboard にログインします。
+こちらのリンクから、[OpenShift DevSpaces Dashboard]({{ DEVSPACES_URL }}) にログインします。
 `Topology` ビューの OpenShift DevSpaces インスタンスの Route からもアクセスすることができます。
 
 ![](images/09-devspaces-004.png)
