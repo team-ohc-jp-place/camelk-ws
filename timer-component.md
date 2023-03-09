@@ -65,10 +65,10 @@ Timer に続く Step を定義することができます。
 Log プロパティ の `Message` に 
 
 ```
-Hello World! It's ${date:now:HH:mm:ss} now.
+Hello World! It's ${date-with-timezone:now:JST:HH:mm:ss} now.
 ```
 
-と入力をしてください。`${date:now:HH:mm:ss}` は、現在の時刻を HH:mm:ss の形式で表示します。
+と入力をしてください。`${date-with-timezone:now:JST:HH:mm:ss}` は、JSTで現在の時刻を HH:mm:ss の形式で表示します。
 
 それでは、実際に動かしてみます。
 右上の ロケットのアイコン のボタンを押してください。

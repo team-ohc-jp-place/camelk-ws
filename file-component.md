@@ -117,7 +117,7 @@ Parameters 項目に、以下の内容を設定してください。
  * **Expression**:
 
 `${body}`<br>
-`It's ${date:now:HH:mm:ss} now.`
+`It's ${date-with-timezone:now:JST:HH:mm:ss} now.`
 
 ![](images/02-file-012.png)
 ![karavan]({% image_path 02-file-012.png %}){:width="800px"}
