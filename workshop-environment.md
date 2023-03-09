@@ -3,7 +3,7 @@
 
 このワークショップでは、簡単な Camel K インテグレーションを作成し、動作を確認すると共に、Karavan Designer を使用した 実装のイメージを把握していただきます。
 
-本ワークショップの開発環境は、オープンソースの[Eclipse Che](https://www.eclipse.org/che/)プロジェクトに基づいた、OpenShift Container Platform で動作するWebベースの統合開発環境(IDE)である、[Red Hat OpenShift DevSpaces](https://developers.redhat.com/products/openshift-dev-spaces/overview) を使用します。
+本ワークショップの開発環境は、オープンソースの [Eclipse Che](https://www.eclipse.org/che/){:target="_blank"} プロジェクトに基づいた、OpenShift Container Platform で動作するWebベースの統合開発環境(IDE)である、[Red Hat OpenShift DevSpaces](https://developers.redhat.com/products/openshift-dev-spaces/overview) を使用します。
 
 * OpenShift DevSpaces の特徴
   * あらかじめ定義された設定でワークスペースを作成するため、オンボーディングを高速にできるとともに、個々の開発者の開発環境を統一できます。
@@ -43,7 +43,7 @@ OpenShift Web Console にログイン後、左のメニュから `Developer` パ
 
 ### OpenShift DevSpacesの準備
 
-こちらのリンクから、[OpenShift DevSpaces Dashboard](https://{{ DEVSPACES_URL }}) にログインします。
+こちらのリンクから、[OpenShift DevSpaces Dashboard](https://{{ DEVSPACES_URL }}){:target="_blank"} にログインします。
 `Topology` ビューの OpenShift DevSpaces インスタンスの Route からもアクセスすることができます。
 
 ![](images/09-devspaces-004.png)
