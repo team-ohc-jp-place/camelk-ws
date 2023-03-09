@@ -3,29 +3,26 @@
 
 ### 1. 目的
 
-[Timer](https://camel.apache.org/components/{{ CAMEL_VERSION }}/timer-component.html) コンポーネントの内容を理解するとともに、Karavan Designer を使用した Camel K インテグレーション実装のイメージを把握することを目的とします。
+[Timer](https://camel.apache.org/components/{{ CAMEL_VERSION }}/timer-component.html){:target="_blank"} コンポーネントの内容を理解するとともに、Karavan Designer を使用した Camel K インテグレーション実装のイメージを把握することを目的とします。
 
 ### 2. Hello World の作成
 
-まず、任意のフォルダに VSCODE のワークスペースを作成します。
-
-左のエクスプローラー上で、右クリックをして、メニューから `Karavan: Create Integration` を選択してください。
+まず、OpenShift DevSpaces 左のエクスプローラー上で、右クリックをして、メニューから `Karavan: Create Integration` を選択してください。
 
 ![](images/01-timer-001.png)
 ![karavan]({% image_path 01-timer-001.png %}){:width="600px"}
 
-次に、中央上部にファイル名を入力するポップアップが表示されますので、適当に入力して `Enter` を押してください。
-（ここでは、timer というファイル名にしておきます。）
+次に、中央上部にファイル名を入力するポップアップが表示されますので、`timer` と入力して `Enter` を押してください。
 
 ![](images/01-timer-002.png)
 ![karavan]({% image_path 01-timer-002.png %}){:width="600px"}
 
-`timer.yaml` が作成されて、Karavan Designer のGUIが開きます。
+`timer.camel.yaml` という名前のファイル作成されて、Karavan Designer のGUIが開きます。
 
-上部の `Create new route` をクリックして、Route を作成しましょう。
+上部の `Create route` をクリックして、Route を作成しましょう。
 
 ![](images/01-timer-003.png)
-![karavan]({% image_path 01-timer-003.png %}){:width="800px"}
+![karavan]({% image_path 01-timer-003.png %}){:width="600px"}
 
 `source` を選択する画面が開きますので、その中の `components` タブから `Timer` を探して選択をしてください。
 右上のテキストボックスに `Timer` と入力をすると、絞り込みができます。
@@ -72,8 +69,7 @@ Hello World! It's ${date:now:HH:mm:ss} now.
 と入力をしてください。`${date:now:HH:mm:ss}` は、現在の時刻を HH:mm:ss の形式で表示します。
 
 それでは、実際に動かしてみます。
-右上の **▷** の実行ボタンを押してください。
-（もしくは、左のエクスプローラでファイル名を右クリックして、`Karavan: Run File` を選択してください）
+右上の ロケットのアイコン のボタンを押してください。
 
 ![](images/01-timer-008.png)
 ![karavan]({% image_path 01-timer-008.png %}){:width="800px"}
@@ -85,6 +81,7 @@ Hello World の文字列が、約1秒間隔に5回表示されることを確認
 ![karavan]({% image_path 01-timer-009.png %}){:width="800px"}
 
 確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
+また、作成した `timer.camel.yaml` を `temp` フォルダに移動をしておいてください。 
 
 ---
 
@@ -109,4 +106,4 @@ Hello World の文字列が、約1秒間隔に5回表示されることを確認
 
 ###　参考リンク
 
-* [Red Hat Integration - Kamelets リファレンス](https://access.redhat.com/documentation/ja-jp/red_hat_integration/2022.q4/html/kamelets_reference/postgres-sql-sink)
+* [Red Hat Integration - Kamelets リファレンス](https://access.redhat.com/documentation/ja-jp/red_hat_integration/2022.q4/html/kamelets_reference/postgres-sql-sink){:target="_blank"}
