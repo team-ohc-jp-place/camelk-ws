@@ -5,6 +5,8 @@
 
 [Timer](https://camel.apache.org/components/{{ CAMEL_VERSION }}/timer-component.html){:target="_blank"} コンポーネントの内容を理解するとともに、Karavan Designer を使用した Camel K インテグレーション実装のイメージを把握することを目的とします。
 
+---
+
 ### 2. Hello World の作成
 
 まず、OpenShift DevSpaces 左のエクスプローラー上で、右クリックをして、メニューから `Karavan: Create Integration` を選択してください。
@@ -83,21 +85,23 @@ Hello World の文字列が、約1秒間隔に5回表示されることを確認
 確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
 また、作成した `timer.camel.yaml` を `temp` フォルダに移動をしておいてください。 
 
-#### OpenShift へのデプロイ
+---
+
+### 3. OpenShift へのデプロイ
 
 ターミナルを開き、`kamel run timer.camel.yaml -n {{OPENSHIFT_USER}}_dev` と入力をしてください。
 
 ![](images/01-timer-010.png)
-![karavan]({% image_path 01-timer-009.png %}){:width="600px"}
+![karavan]({% image_path 01-timer-010.png %}){:width="600px"}
 
 ![](images/01-timer-011.png)
-![karavan]({% image_path 01-timer-009.png %}){:width="800px"}
+![karavan]({% image_path 01-timer-011.png %}){:width="800px"}
 
 ---
 
 #### Window 環境で実行の場合
 
-以下のようなエラーが出ることがあります。
+JBang で実行時に以下のようなエラーが出ることがあります。
 
 ><pre>
 > [jbang][ERROR] Script or alias could not be found or read: '.jbang.version=3.18.3'
@@ -114,6 +118,6 @@ Hello World の文字列が、約1秒間隔に5回表示されることを確認
 
 ---
 
-###　参考リンク
+###　4. 参考リンク
 
 * [Red Hat Integration - Kamelets リファレンス](https://access.redhat.com/documentation/ja-jp/red_hat_integration/2022.q4/html/kamelets_reference/postgres-sql-sink){:target="_blank"}
