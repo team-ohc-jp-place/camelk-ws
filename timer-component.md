@@ -12,12 +12,12 @@
 まず、OpenShift DevSpaces 左のエクスプローラー上で、右クリックをして、メニューから `Karavan: Create Integration` を選択してください。
 
 ![](images/01-timer-001.png)
-![karavan]({% image_path 01-timer-001.png %}){:width="300px"}
+![karavan]({% image_path 01-timer-001.png %}){:width="400px"}
 
 次に、中央上部にファイル名を入力するポップアップが表示されますので、`timer` と入力して `Enter` を押してください。
 
 ![](images/01-timer-002.png)
-![karavan]({% image_path 01-timer-002.png %}){:width="400px"}
+![karavan]({% image_path 01-timer-002.png %}){:width="600px"}
 
 `timer.camel.yaml` という名前のファイルが作成されて、Karavan Designer のGUIが開きます。
 
@@ -30,13 +30,13 @@
 右上のテキストボックスに `Timer` と入力をすると、絞り込みができます。
 
 ![](images/01-timer-004.png)
-![karavan]({% image_path 01-timer-004.png %}){:width="600px"}
+![karavan]({% image_path 01-timer-004.png %}){:width="800px"}
 
 Route の source として、Timer コンポーネントが配置されます。
 Route の Timer シンボルをクリックすると、右側にプロパティが表示されますので、確認してください。
 
 ![](images/01-timer-005.png)
-![karavan]({% image_path 01-timer-005.png %}){:width="800px"}
+![karavan]({% image_path 01-timer-005.png %}){:width="1200px"}
 
  <span style="color: red">赤い * (アスタリスク)</span>　が付いている項目は、入力が必須です。
 
@@ -50,7 +50,7 @@ Parameters 項目に、以下の内容を設定してください。
 次に、Route にマウスカーソルを持っていくと、Timer シンボルの下に小さな＋ボタンが現れますので、それをクリックしてください。
 
 ![](images/01-timer-006.png)
-![karavan]({% image_path 01-timer-006.png %}){:width="800px"}
+![karavan]({% image_path 01-timer-006.png %}){:width="1200px"}
 
 Timer に続く Step を定義することができます。
 ここでは、コンソールに `Hello World` の Log を表示させてみます。
@@ -58,7 +58,7 @@ Timer に続く Step を定義することができます。
 `Routing` のタブから `Log` を探してクリックをしてください。
 
 ![](images/01-timer-007.png)
-![karavan]({% image_path 01-timer-007.png %}){:width="600px"}
+![karavan]({% image_path 01-timer-007.png %}){:width="800px"}
 
 `Log` のシンボルが Timer に続いて配置されます。
 
@@ -74,13 +74,13 @@ Hello World! It's ${date-with-timezone:now:JST:HH:mm:ss} now.
 右上の ロケットのアイコン のボタンを押してください。
 
 ![](images/01-timer-008.png)
-![karavan]({% image_path 01-timer-008.png %}){:width="800px"}
+![karavan]({% image_path 01-timer-008.png %}){:width="1200px"}
 
 ターミナルが開き、作成したインテグレーションが JBang を通して実行されます。
 Hello World の文字列が、約1秒間隔に5回表示されることを確認してください。
 
 ![](images/01-timer-009.png)
-![karavan]({% image_path 01-timer-009.png %}){:width="800px"}
+![karavan]({% image_path 01-timer-009.png %}){:width="1200px"}
 
 確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
 また、作成した `timer.camel.yaml` を `temp` フォルダに移動をしておいてください。 
@@ -95,7 +95,7 @@ Hello World の文字列が、約1秒間隔に5回表示されることを確認
 ![karavan]({% image_path 01-timer-010.png %}){:width="600px"}
 
 ![](images/01-timer-011.png)
-![karavan]({% image_path 01-timer-011.png %}){:width="800px"}
+![karavan]({% image_path 01-timer-011.png %}){:width="1200px"}
 
 ---
 
