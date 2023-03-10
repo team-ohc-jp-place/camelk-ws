@@ -11,7 +11,7 @@
   * Visual Studio Code 拡張機能と互換性があり、VSCodeユーザーでも利用しやすいです。
 
 ![](images/09-devspaces-001.png)
-![karavan]({% image_path 09-devspaces-001.png %}){:width="800px"}
+![karavan]({% image_path 09-devspaces-001.png %}){:width="1200px"}
 
 ワークショップを開始する前の事前準備として、OpenShift DevSpaces のワークスペースを作成しておきます。
 こちらのリンクから、[OpenShift Web Console]({{ CONSOLE_URL }}) にアクセスをしてください。
@@ -117,7 +117,7 @@ RECOMMENDED に Karavan が表示されていますので、選択してイン�
 ターミナルに以下のようなログが表示されればOKです。
 
 ![](images/09-devspaces-013.png)
-![karavan]({% image_path 09-devspaces-013.png %}){:width="800px"}
+![karavan]({% image_path 09-devspaces-013.png %}){:width="1200px"}
 
 ログを確認したら、`Ctrl+C` などで実行を終了してください。
 
@@ -142,5 +142,5 @@ OpenShift Web Console の [Topology view]({{ CONSOLE_URL }}/topology/ns/{{ OPENS
 
 先ほどと同じように、１秒間に１回、**hello** の文字列が出力されているのを確認してください。
 
-![](images/09-devspaces-015.png)
-![karavan]({% image_path 09-devspaces-015.png %}){:width="800px"}
+![](images/09-devspaces-016.png)
+![karavan]({% image_path 09-devspaces-016.png %}){:width="1200px"}
