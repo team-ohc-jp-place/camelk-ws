@@ -8,7 +8,9 @@
 ![](images/Sequencer.gif)
 ![karavan]({% image_path Sequencer.gif %})
 
-### 1. Message の分割
+---
+
+### 2. Message の分割
 
 前章の [DataFormatsパターン]({{ HOSTNAME_SUFFIX }}/workshop/camel-k/lab/data-formats){:target="_blank"} で 作成したインテグレーションを使用します。
 まだ前章を実施していない場合は、先にそちらを実施して下さい。
@@ -66,6 +68,8 @@ JSON形式のデータが分割されて、分割された処理毎に Log が�
 
 Log の確認ができたら、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
 
+---
+
 ### 3. Parallel Processing
 
 次に、処理を停止した後、`Split` シンボルをクリックし、右側のプロパティから `Parallel Processing` を探してスイッチをオンにします。
@@ -86,4 +90,5 @@ Log の確認ができたら、`Ctrl+C` もしくは、ターミナル右上の�
 ![](images/04-split-008.png)
 ![karavan]({% image_path 04-split-008.png %}){:width="1200px"}
 
-Log の確認ができたら、処理を停止してください。
+Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
+また、作成した `split.camel.yaml` を `temp` フォルダに移動をしておいてください。 
