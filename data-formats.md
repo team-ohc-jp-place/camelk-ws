@@ -146,4 +146,5 @@ JSON Data Format で Marshal したデータは、JSON形式のテキストに�
 ![](images/03-dataformat-013.png)
 ![karavan]({% image_path 03-dataformat-013.png %}){:width="1200px"}
 
-Log の確認ができたら、処理を停止してください。
+Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
+また、作成した `dataformats.camel.yaml` を `temp` フォルダに移動をしておいてください。 
