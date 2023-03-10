@@ -3,12 +3,14 @@
 
 ### 1. 目的
 
-[Marshal](https://camel.apache.org/components/{{ CAMEL_VERSION }}/eips/marshal-eip.html) と [Unmarshal](https://camel.apache.org/components/{{ CAMEL_VERSION }}/eips/unmarshal-eip.html#) を使用して、Camel K のデータ変換機能の使用方法を理解する事を目的とします。
+[Marshal](https://camel.apache.org/components/{{ CAMEL_VERSION }}/eips/marshal-eip.html){:target="_blank"} と [Unmarshal](https://camel.apache.org/components/{{ CAMEL_VERSION }}/eips/unmarshal-eip.html#){:target="_blank"} を使用して、Camel K のデータ変換機能の使用方法を理解する事を目的とします。
 
 * **Marshal** - Message の Body の Javaオブジェクトをバイナリやテキスト形式に変換します。
 * **Unmarshal** - Message の Body の バイナリやテキスト形式のデータをJavaオブジェクトに変換します。
 
-Apache Camel が提供する Data Format については[こちら](https://camel.apache.org/components/{{ CAMEL_VERSION }}/dataformats/index.html)を参照してください。
+Apache Camel が提供する Data Format については[こちら](https://camel.apache.org/components/{{ CAMEL_VERSION }}/dataformats/index.html){:target="_blank"}を参照してください。
+
+---
 
 ### 2. CSVファイルを Unmarshal でJavaオブジェクトに変換する
 
@@ -32,7 +34,7 @@ Parameters は、以下を入力してください。
 
 * **Directory Name**: data/input
 
-> 前章の [Fileコンポーネント]({{ HOSTNAME_SUFFIX }}/workshop/camel-k/lab/file-component) で `data/input` フォルダを作成していない場合は、ワークスペースのルートフォルダ直下に、`data` フォルダを作成し、さらにdata フォルダの配下に、`input` フォルダを作成してください。
+> 前章の [Fileコンポーネント]({{ HOSTNAME_SUFFIX }}/workshop/camel-k/lab/file-component){:target="_blank"} で `data/input` フォルダを作成していない場合は、ワークスペースのルートフォルダ直下に、`data` フォルダを作成し、さらにdata フォルダの配下に、`input` フォルダを作成してください。
 
 ![](images/03-dataformat-002.png)
 ![karavan]({% image_path 03-dataformat-002.png %}){:width="800px"}
@@ -104,6 +106,8 @@ CSV Data Format で Unmarshal したデータは、JavaのList型になります
 ![karavan]({% image_path 03-dataformat-009.png %}){:width="800px"}
 
 Log の確認ができたら、処理を停止してください。
+
+---
 
 ### 3. Marshal でJSON形式のテキストに変換する
 
