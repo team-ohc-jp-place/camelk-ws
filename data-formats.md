@@ -8,6 +8,9 @@
 * **Marshal** - Message の Body の Javaオブジェクトをバイナリやテキスト形式に変換します。
 * **Unmarshal** - Message の Body の バイナリやテキスト形式のデータをJavaオブジェクトに変換します。
 
+![](images/MessageTranslator.gif)
+![karavan]({% image_path MessageTranslator.gif %})
+
 Apache Camel が提供する Data Format については[こちら](https://camel.apache.org/components/{{ CAMEL_VERSION }}/dataformats/index.html){:target="_blank"}を参照してください。
 
 ---
