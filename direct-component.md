@@ -5,6 +5,9 @@
 
 [Direct](https://camel.apache.org/components/{{ CAMEL_VERSION }}/direct-component.html){:target="_blank"} を使用して、Camel K で Route を分岐する方法を理解することを目的とします。
 
+![](images/direct.jpg)
+![karavan]({% image_path direct.jpg %})
+
 ---
 
 ### 2. Direct を使用して Route を分岐する
@@ -73,3 +76,14 @@ Log の Messege は、`scoundRoute invoked` と入力をしておきます。
 
 Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
 また、作成した `direct.camel.yaml` を `temp` フォルダに移動をしておいてください。 
+
+---
+
+### 3. 参考
+
+[Direct](https://camel.apache.org/components/{{ CAMEL_VERSION }}/direct-component.html){:target="_blank"} は、プロデューサーがメッセージ交換を送信するときに、任意のコンシューマーの同期的な呼び出しを提供します。
+
+非同期な呼び出しを実施する場合は、[SEDA](https://camel.apache.org/components/{{ CAMEL_VERSION }}/seda-component.html){:target="_blank"} コンポーネントを使用することができます。
+
+![](images/seda.jpg)
+![karavan]({% image_path seda.jpg %})
