@@ -21,12 +21,12 @@ OpenShift Web Console にアクセスするための情報は以下の通りで�
 * **Password**: {{ OPENSHIFT_PASSWORD }}
 
 ![](images/09-devspaces-002.png)
-![karavan]({% image_path 09-devspaces-002.png %}){:width="600px"}
+![karavan]({% image_path 09-devspaces-002.png %}){:width="800px"}
 
 OpenShift Web Console にログイン後、左のメニュから `Developer` パースペクティブを選択し、その下のメニューから `Topology` ビューを開きます。Project名は `{{ OPENSHIFT_USER }}_dev` を選択してください。
 
 ![](images/09-devspaces-003.png)
-![karavan]({% image_path 09-devspaces-003.png %}){:width="800px"}
+![karavan]({% image_path 09-devspaces-003.png %}){:width="1200px"}
 
 ### リソースについて
 
@@ -47,7 +47,7 @@ OpenShift Web Console にログイン後、左のメニュから `Developer` パ
 `Topology` ビューの OpenShift DevSpaces インスタンスの Route からもアクセスすることができます。
 
 ![](images/09-devspaces-004.png)
-![karavan]({% image_path 09-devspaces-004.png %}){:width="800px"}
+![karavan]({% image_path 09-devspaces-004.png %}){:width="1200px"}
 
 初回にアクセスすると、以下のような画面が表示されますので、`Log In with OpenShift` をクリックします。
 
@@ -66,12 +66,12 @@ OpenShift DevSpaces の Dashboard が表示されます。
 `Import from Git` のテキスト欄に、`{{ DEVSPACES_REPO }}` と入力して、`Create & Open` をクリックします。
 
 ![](images/09-devspaces-007.png)
-![karavan]({% image_path 09-devspaces-007.png %}){:width="600px"}
+![karavan]({% image_path 09-devspaces-007.png %}){:width="800px"}
 
 ワークスペースの作成が始まりますので、完了までしばらく待ちます。
 
 ![](images/09-devspaces-008.png)
-![karavan]({% image_path 09-devspaces-008.png %}){:width="600px"}
+![karavan]({% image_path 09-devspaces-008.png %}){:width="800px"}
 
 ワークスペースの作成が完了すると、自動で以下のような画面にジャンプします。
 `Trust the authors of all files in the parent folder 'projects'` にチェックを入れて、
@@ -79,26 +79,26 @@ OpenShift DevSpaces の Dashboard が表示されます。
 （エディタの外観を変えたい方は、設定を変更してみてください）
 
 ![](images/09-devspaces-009.png)
-![karavan]({% image_path 09-devspaces-009.png %}){:width="600px"}
+![karavan]({% image_path 09-devspaces-009.png %}){:width="1200px"}
 
 ### Karavan Designer のインストール
 
 [Karavan](https://github.com/apache/camel-karavan){:target="_blank"} は、Apache Camel 用の開発ツールキットです。ランタイムおよびパッケージとの統合や、イメージのビルド、kubernetesへのデプロイが可能な他、Camel K の Yaml DSL をグラフィカルに作成することができます。
 
 ![](images/we-karavan-vscode.png)
-![karavan]({% image_path we-karavan-vscode.png %}){:width="800px"}
+![karavan]({% image_path we-karavan-vscode.png %}){:width="1200px"}
 
 OpenShift DevSpaces の左端のVSCODE拡張機能のメニューを選択します。
 RECOMMENDED に Karavan が表示されていますので、選択してインストールを実施してください。
 
 ![](images/09-devspaces-010.png)
-![karavan]({% image_path 09-devspaces-010.png %}){:width="600px"}
+![karavan]({% image_path 09-devspaces-010.png %}){:width="1200px"}
 
 インストールが完了すると、左端のメニューにCamelのアイコンが表示されます。
 エクスプローラ上で右クリックをして、karavan のメニューが表示される様になればOKです。
 
 ![](images/09-devspaces-011.png)
-![karavan]({% image_path 09-devspaces-011.png %}){:width="600px"}
+![karavan]({% image_path 09-devspaces-011.png %}){:width="1200px"}
 
 ### JBang によるインテグレーション実施のテスト
 
@@ -138,7 +138,7 @@ OpenShift Web Console の [Topology view]({{ CONSOLE_URL }}/topology/ns/{{ OPENS
 新しく、`example` の Pod が起動していますので、 `view logs` をクリックします。
 
 ![](images/09-devspaces-015.png)
-![karavan]({% image_path 09-devspaces-015.png %}){:width="800px"}
+![karavan]({% image_path 09-devspaces-015.png %}){:width="1200px"}
 
 先ほどと同じように、１秒間に１回、**hello** の文字列が出力されているのを確認してください。
 
