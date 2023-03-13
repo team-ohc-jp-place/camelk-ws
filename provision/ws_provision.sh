@@ -24,10 +24,12 @@ done
 
 # Project Name
 export PRJ_NAME=user1-dev
+export DEVSPACES_NAME=user1-devspaces
 export OPENSHIFT_USER=user1
 export OPENSHIFT_PASSWORD=openshift
 
 # Create Project (各user)
+oc new-project $DEVSPACES_NAME
 oc new-project $PRJ_NAME
 
 sleep 10
@@ -189,6 +191,8 @@ oc label dc/postgresql app.openshift.io/runtime=postgresql --overwrite -n $PRJ_N
 oc label dc/kafdrop app.openshift.io/runtime=amq --overwrite -n $PRJ_NAME
 
 oc delete Integration example -n $PRJ_NAME
+oc delete LimitRanges $PRJ_NAME-core-resource-limits -n $PRJ_NAME
+oc delete LimitRanges $DEVSPACES_NAME-core-resource-limits -n $DEVSPACES_NAME
 
 ##
 # PostgreSQLへの接続がOpenShift上でうまくできない

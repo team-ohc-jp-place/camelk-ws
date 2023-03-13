@@ -79,7 +79,7 @@ Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱の�
 
 ---
 
-### 3. 参考
+### 3. 参考（SEDA）
 
 [Direct](https://camel.apache.org/components/{{ CAMEL_VERSION }}/direct-component.html){:target="_blank"} は、プロデューサーがメッセージ交換を送信するときに、任意のコンシューマーの同期的な呼び出しを提供します。
 
