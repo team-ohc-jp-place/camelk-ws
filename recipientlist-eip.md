@@ -104,7 +104,7 @@ direct:a;direct:b
 
 ターミナルが開き、作成したインテグレーションが JBang を通して実行されます。
 特にエラーなく実行されたら、先ほど作成した `recipient.txt` を `data/input` フォルダに移動して格納をしてください。
-ファイルが取得され、Route が実行されますので、ターミナルの Log を確認してください。
+ファイルが取得され、Message の内容に応じた Route が実行されますので、ターミナルの Log を確認してください。
 `direct:a invoked`、`direct:b invoked`、 の文字列が表示されていれば、OKです。 
 
 ![](images/06-recipientlist-009.png)
@@ -116,7 +116,7 @@ direct:a;direct:b
 direct:b;direct:c
 ```
 
-に変更て保存し、再び `data/input` フォルダに移動して格納をしてください。
+に変更して保存し、再び `data/input` フォルダに移動して格納をしてください。
 ターミナルの Log を確認すると、今後は `direct:b invoked`、`direct:c invoked`、 の文字列が表示されているはずです。 
 
 ![](images/06-recipientlist-010.png)

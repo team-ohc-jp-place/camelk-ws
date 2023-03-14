@@ -138,7 +138,7 @@ done
 oc new-app centos/python-36-centos7~https://github.com/kamorisan/event-emmiter \
   --name=emitter \
   -e KAFKA_BROKERS=kafka-cluster-kafka-bootstrap.$PRJ_NAME.svc:9092 \
-  -e KAFKA_TOPIC=my-topic \
+  -e KAFKA_TOPIC=incoming-topic \
   -e RATE=10 \
   -n $PRJ_NAME
 
@@ -146,7 +146,7 @@ oc new-app centos/python-36-centos7~https://github.com/kamorisan/event-emmiter \
 oc new-app --as-deployment-config --name quarkusapp \
     --docker-image="kamorisan/quarkusapp:v2" \
     -e KAFKA_BROKERS=kafka-cluster-kafka-bootstrap.$PRJ_NAME.svc:9092 \
-    -e KAFKA_TOPIC=my-topic \
+    -e KAFKA_TOPIC=outcoming-topic \
     -n $PRJ_NAME
 
 oc apply -f ./openshift/05_quarkusapp/01_service_quarkusapp.yaml -n $PRJ_NAME
