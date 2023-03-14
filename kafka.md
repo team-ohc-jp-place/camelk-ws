@@ -21,9 +21,9 @@ Kafka に対してランダムなメッセージを発信するアプリと、Ka
 こちらのリンクから、OpenShift Web Console の [Topology]({{ CONSOLE_URL }}/topology/ns/{{ OPENSHIFT_USER }}-dev?view=graph) ビュー にアクセスをしてください。
 
 ![](images/07-kafka-002.png)
-![karavan]({% image_path 07-kafka-002.png %}){:width="400px"}
+![karavan]({% image_path 07-kafka-002.png %}){:width="200px"}
 
-`Emitter` というアプリが、Kafka の incoming-topic というトピックに対して、10秒間毎に以下のような情報を持ったメッセージをランダムに発信をしています。
+`Emitter` というアプリが、Kafka の `incoming-topic` というトピックに対して、10秒間毎に以下のような情報を持ったメッセージをランダムに発信をしています。
 
 ```
 {
@@ -37,16 +37,16 @@ Kafka に対してランダムなメッセージを発信するアプリと、Ka
 ```
 
 ![](images/07-kafka-003.png)
-![karavan]({% image_path 07-kafka-003.png %}){:width="400px"}
+![karavan]({% image_path 07-kafka-003.png %}){:width="200px"}
 
-[Kafdrop]{{ KAFDROP_URL }} というツールで、Kafka トピックに送信されたメッセージの内容を確認することができます。
+[Kafdrop]({{ KAFDROP_URL }}) というツールで、Kafka トピックに送信されたメッセージの内容を確認することができます。
 
-incoming-topic の内容を確認するには、こちらの[リンク]({{ KAFDROP_URL }}/topic/incoming-topic/messages?partition=0&offset=0&count=100&keyFormatDEFAULT=&format=DEFAULT) からアクセスしてみてください。
+ こちらのリンクから、[`incoming-topic`]({{ KAFDROP_URL }}/topic/incoming-topic/messages?partition=0&offset=0&count=100&keyFormatDEFAULT=&format=DEFAULT) の内容を確認できます。アクセスして確認してみてください。
 
 ![](images/07-kafka-004.png)
 ![karavan]({% image_path 07-kafka-004.png %}){:width="1200px"}
 
-まずは Kafka からメッセージを受信する処理を作成していきます。 
+それでは、Kafka からメッセージを受信する処理を作成していきます。 
 
 OpenShift DevSpaces 左のエクスプローラー上で、右クリックをして、メニューから `Karavan: Create Integration` を選択し、`kafka` と入力して Enter を押してください。`kafka.camel.yaml` という名前のファイルが作成されて、Karavan Designer のGUIが開きます。
 
