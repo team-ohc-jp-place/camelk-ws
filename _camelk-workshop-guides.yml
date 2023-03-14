@@ -17,6 +17,7 @@ vars:
   DEVSPACES_REPO:
   OPENSHIFT_USER:
   OPENSHIFT_PASSWORD:
+  KAFDROP_URL:
 
 modules:
   activate:

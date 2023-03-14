@@ -8,10 +8,22 @@ Kamelet の **Kafka Source**, **Kafka Sink** を使用して、Camel K と Kafka
 * [Kafka Source](https://camel.apache.org/camel-kamelets/{{ KAMELETS_VERSION }}/kafka-source.html){:target="_blank"}
 * [Kafka Sink](https://camel.apache.org/camel-kamelets/{{ KAMELETS_VERSION }}/kafka-sink.html){:target="_blank"}
 
+Kafka に対してランダムなメッセージを発信するアプリと、Kafkaからメッセージを受信して表示する WebUI が、OpenShift上にあらかじめデプロイされています。
+ここでは Camel を使用して、アプリから発信されるメッセージを、WebUIに連携していきます。
+
+![](images/07-kafka-001.png)
+![karavan]({% image_path 07-kafka-001.png %}){:width="800px"}
+
 ---
 
 ### 2. Kafka Source を使用して、Kafka トピックからメッセージを受信する
 
+こちらのリンクから、OpenShift Web Console の [Topology]({{ CONSOLE_URL }}/topology/ns/{{ OPENSHIFT_USER }}-dev?view=graph) ビュー にアクセスをしてください。
+
+![](images/07-kafka-002.png)
+![karavan]({% image_path 07-kafka-002.png %}){:width="400px"}
+
+`Emitter` というアプリが、Kafka の incoming-topic というトピックに対して、10秒間毎に以下のような情報を持ったメッセージをランダムに発信をしています。
 
 ```
 {
@@ -23,6 +35,16 @@ Kamelet の **Kafka Source**, **Kafka Sink** を使用して、Camel K と Kafka
   "zipCode": "25113"
 }
 ```
+
+![](images/07-kafka-003.png)
+![karavan]({% image_path 07-kafka-003.png %}){:width="400px"}
+
+[Kafdrop]{{ KAFDROP_URL }} というツールで、Kafka トピックに送信されたメッセージの内容を確認することができます。
+
+incoming-topic の内容を確認するには、こちらの[リンク]({{ KAFDROP_URL }}/topic/incoming-topic/messages?partition=0&offset=0&count=100&keyFormatDEFAULT=&format=DEFAULT) からアクセスしてみてください。
+
+![](images/07-kafka-004.png)
+![karavan]({% image_path 07-kafka-004.png %}){:width="1200px"}
 
 まずは Kafka からメッセージを受信する処理を作成していきます。 
 
