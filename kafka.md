@@ -39,7 +39,7 @@ Kafka に対してランダムなメッセージを発信するアプリと、Ka
 ![](images/07-kafka-003.png)
 ![karavan]({% image_path 07-kafka-003.png %}){:width="200px"}
 
-`Kafdrop` というツールで、Kafka トピックに送信されたメッセージの内容を確認することができます。
+[`Kafdrop`](http://{{ KAFDROP_URL }}) というツールで、Kafka トピックに送信されたメッセージの内容を確認することができます。
 
  こちらのリンクから、[incoming-topic](http://{{ KAFDROP_URL }}/topic/incoming-topic/messages?partition=0&offset=0&count=100&keyFormatDEFAULT=&format=DEFAULT){:target="_blank"} の内容を確認できます。アクセスして確認してみてください。
 
@@ -98,6 +98,10 @@ Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱の�
 ---
 
 ### 3. Kafka Sink を使用して、Kafka トピックにメッセージを送信する
+
+続いて、受信したメッセージを表示する、WebUI へと連携していきます。
+WebUI は、`outcoming-topic` という Kafka トピック に送信されたメッセージを受信して、表示をします。
+こちらのリンクから、[WebUI]() にアクセスすることができます。
 
 ここでは、[Split パターン]({{ HOSTNAME_SUFFIX }}/workshop/camel-k/lab/split-eip)で作成したインテグレーションに、Kafkaトピックへのメッセージの送信処理を追加していきます。
 まだ [Split パターン]({{ HOSTNAME_SUFFIX }}/workshop/camel-k/lab/split-eip) を実施していない場合は、そちらを先に実施してください。

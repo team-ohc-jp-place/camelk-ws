@@ -157,6 +157,7 @@ oc apply -f ./openshift/05_quarkusapp/02_route_quarkusapp.yaml -n $PRJ_NAME
 oc create route edge dummy --service=dummy --port=8080 -n $PRJ_NAME
 ROUTE=$(oc get route dummy -o=go-template --template='{{ .spec.host }}' -n $PRJ_NAME)
 KAFDROP_URL=$(oc get route kafdrop -o=go-template --template='{{ .spec.host }}' -n $PRJ_NAME)
+WEBUI_URL=$(oc get route quarkusapp -o=go-template --template='{{ .spec.host }}' -n $PRJ_NAME)
 DEVSPACES_URL=$(oc get route devspaces -o=go-template --template='{{ .spec.host }}' -n $PRJ_NAME)
 HOSTNAME_SUFFIX=$(echo $ROUTE | sed 's/^dummy-'$PRJ_NAME'\.//g')
 MASTER_URL=$(oc whoami --show-server)
@@ -169,6 +170,7 @@ oc -n $PRJ_NAME new-app quay.io/osevg/workshopper --name=guides \
     -e MASTER_URL=$MASTER_URL \
     -e CONSOLE_URL=$CONSOLE_URL \
     -e KAFDROP_URL=$KAFDROP_URL \
+    -e WEBUI_URL=$WEBUI_URL \
     -e DEVSPACES_URL=$DEVSPACES_URL \
     -e DEVSPACES_REPO="https://github.com/team-ohc-jp-place/camelk-ws-devspaces.git" \
     -e ROUTE_SUBDOMAIN=$HOSTNAME_SUFFIX \
