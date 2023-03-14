@@ -23,7 +23,7 @@ Kafka に対してランダムなメッセージを発信するアプリと、Ka
 ![](images/07-kafka-002.png)
 ![karavan]({% image_path 07-kafka-002.png %}){:width="200px"}
 
-`Emitter` というアプリが、Kafka の `incoming-topic` というトピックに対して、10秒間毎に以下のような情報を持ったメッセージをランダムに発信をしています。
+`emitter` というアプリが、Kafka の `incoming-topic` というトピックに対して、10秒間毎に以下のような情報を持ったメッセージをランダムに発信をしています。
 
 ```
 {
@@ -69,7 +69,7 @@ Parameters は、以下を入力してください。
   * `latest`: 新しいメッセージから受信 （未指定の場合 latest になります）
   * `earliest`: 最初のメッセージに遡って受信
 
-今回は、最初からの全てのメッセージを受信するため、`Auto Offset Reset` には `latest` を指定してください。
+今回は、新しいメッセージから受信するようにするため、`Auto Offset Reset` には `latest` を指定してください。
 
 続いて、受信した Kafka メッセージを確認するための Log を出力しておきます。
 
@@ -100,8 +100,10 @@ Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱の�
 ### 3. Kafka Sink を使用して、Kafka トピックにメッセージを送信する
 
 続いて、受信したメッセージを表示する、WebUI へと連携していきます。
+
 WebUI は、`outcoming-topic` という Kafka トピック に送信されたメッセージを受信して、表示をします。
-こちらのリンクから、[WebUI]({{ WEBUI_URL }}){:target="_blank"} にアクセスすることができます。
+
+こちらのリンクから、[WebUI](http://{{ WEBUI_URL }}){:target="_blank"} にアクセスすることができます。
 もしくは、OpenShift Web Console の [Topology view]({{ CONSOLE_URL }}/topology/ns/{{ OPENSHIFT_USER }}-dev?view=graph){:target="_blank"} にアクセスし、`quarkusapp` の Route URL よりアクセスしてください。
 
 ![](images/07-kafka-009.png)
@@ -135,7 +137,7 @@ Parameters は、以下を入力してください。
 右上の ロケットのアイコン のボタンを押してください。
 
 ターミナルが開き、作成したインテグレーションが JBang を通して実行されます。
-特にエラーなく実行されたら、ターミナルの Log を確認して、Kafka の incoming-topic からのメッセージを受信できていることと、WebUI に送信したメッセージが表示されていることを確認してください。
+特にエラーなく実行されたら、ターミナルの Log を確認して、Kafka の `incoming-topic` からのメッセージを受信できていることと、WebUI に送信したメッセージが表示されていることを確認してください。
 
 ![](images/07-kafka-013.png)
 ![karavan]({% image_path 07-kafka-013.png %}){:width="1200px"}
