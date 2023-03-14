@@ -39,9 +39,9 @@ Kafka に対してランダムなメッセージを発信するアプリと、Ka
 ![](images/07-kafka-003.png)
 ![karavan]({% image_path 07-kafka-003.png %}){:width="200px"}
 
-[Kafdrop](https://{{ KAFDROP_URL }}) というツールで、Kafka トピックに送信されたメッセージの内容を確認することができます。
+`Kafdrop` というツールで、Kafka トピックに送信されたメッセージの内容を確認することができます。
 
- こちらのリンクから、[`incoming-topic`](https://{{ KAFDROP_URL }}/topic/incoming-topic/messages?partition=0&offset=0&count=100&keyFormatDEFAULT=&format=DEFAULT) の内容を確認できます。アクセスして確認してみてください。
+ こちらのリンクから、[incoming-topic](http://{{ KAFDROP_URL }}/topic/incoming-topic/messages?partition=0&offset=0&count=100&keyFormatDEFAULT=&format=DEFAULT) の内容を確認できます。アクセスして確認してみてください。
 
 ![](images/07-kafka-004.png)
 ![karavan]({% image_path 07-kafka-004.png %}){:width="1200px"}
@@ -55,8 +55,8 @@ OpenShift DevSpaces 左のエクスプローラー上で、右クリックをし
 `Kamelets` タブから `Kafka Not Secured Source` を探して選択をしてください。
 右上のテキストボックスに `Kafka Not Secured Source` と入力をすると、絞り込みができます。
 
-![](images/07-kafka-001.png)
-![karavan]({% image_path 07-kafka-001.png %}){:width="800px"}
+![](images/07-kafka-005.png)
+![karavan]({% image_path 07-kafka-005.png %}){:width="800px"}
 
 Route の source として、Kafka Not Secured Source コンポーネントが配置されます。
 Kafka Not Secured Source シンボルをクリックすると、右側にプロパティが表示されますので、確認してください。
@@ -77,8 +77,8 @@ Parameters は、以下を入力してください。
 
 Log の Messege は、`${body}` と入力をしておきます。
 
-![](images/07-kafka-002.png)
-![karavan]({% image_path 07-kafka-002.png %}){:width="1200px"}
+![](images/07-kafka-006.png)
+![karavan]({% image_path 07-kafka-006.png %}){:width="1200px"}
 
 それでは、実際に動かしてみます。
 右上の ロケットのアイコン のボタンを押してください。
@@ -87,16 +87,17 @@ Log の Messege は、`${body}` と入力をしておきます。
 特にエラーなく実行されたら、ターミナルにKafkaへの接続情報が表示されます。
 その後10秒ごとに Emitter からメッセージが発信されると、そのメッセージを受信して内容を Log として表示します。
 
-![](2023-03-14-14-16-18.png)
+![](images/07-kafka-007.png)
+![karavan]({% image_path 07-kafka-007.png %}){:width="1200px"}
 〜中略〜
-![](2023-03-14-14-15-32.png)
+![](images/07-kafka-008.png)
+![karavan]({% image_path 07-kafka-008.png %}){:width="1200px"}
 
 Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
 
-### 2. Kafka Sink を使用して、Kafka トピックにメッセージを送信する
+---
 
-
-
+### 3. Kafka Sink を使用して、Kafka トピックにメッセージを送信する
 
 ここでは、[Split パターン]({{ HOSTNAME_SUFFIX }}/workshop/camel-k/lab/split-eip)で作成したインテグレーションに、Kafkaトピックへのメッセージの送信処理を追加していきます。
 まだ [Split パターン]({{ HOSTNAME_SUFFIX }}/workshop/camel-k/lab/split-eip) を実施していない場合は、そちらを先に実施してください。
