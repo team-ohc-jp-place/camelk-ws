@@ -18,7 +18,7 @@ Kafka に対してランダムなメッセージを発信するアプリと、Ka
 
 ### 2. Kafka Source を使用して、Kafka トピックからメッセージを受信する
 
-こちらのリンクから、OpenShift Web Console の [Topology]({{ CONSOLE_URL }}/topology/ns/{{ OPENSHIFT_USER }}-dev?view=graph) ビュー にアクセスをしてください。
+こちらのリンクから、OpenShift Web Console の [Topology view]({{ CONSOLE_URL }}/topology/ns/{{ OPENSHIFT_USER }}-dev?view=graph){:target="_blank"} にアクセスをしてください。
 
 ![](images/07-kafka-002.png)
 ![karavan]({% image_path 07-kafka-002.png %}){:width="200px"}
@@ -41,7 +41,7 @@ Kafka に対してランダムなメッセージを発信するアプリと、Ka
 
 `Kafdrop` というツールで、Kafka トピックに送信されたメッセージの内容を確認することができます。
 
- こちらのリンクから、[incoming-topic](http://{{ KAFDROP_URL }}/topic/incoming-topic/messages?partition=0&offset=0&count=100&keyFormatDEFAULT=&format=DEFAULT) の内容を確認できます。アクセスして確認してみてください。
+ こちらのリンクから、[incoming-topic](http://{{ KAFDROP_URL }}/topic/incoming-topic/messages?partition=0&offset=0&count=100&keyFormatDEFAULT=&format=DEFAULT){:target="_blank"} の内容を確認できます。アクセスして確認してみてください。
 
 ![](images/07-kafka-004.png)
 ![karavan]({% image_path 07-kafka-004.png %}){:width="1200px"}
