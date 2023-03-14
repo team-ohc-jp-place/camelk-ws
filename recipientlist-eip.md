@@ -10,7 +10,7 @@
 
 ---
 
-### 2. Recipient　List を使用して Route を動的に指定する
+### 2. Recipient List を使用して Route を動的に指定する
 
 OpenShift DevSpaces 左のエクスプローラー上で、右クリックをして、メニューから `Karavan: Create Integration` を選択し、`recipientlist` と入力して Enter を押してください。`recipientlist.camel.yaml` という名前のファイルが作成されて、Karavan Designer のGUIが開きます。
 
@@ -64,12 +64,9 @@ source は、`components` タブから `Direct` を探して選択をしてく�
 Parameters は、以下のように設定をします。
 他の項目は、デフォルトのままで構いません。
 
-* **Name**: a
-
-![](images/06-recipientlist-005.png)
-![karavan]({% image_path 06-recipientlist-005.png %}){:width="1200px"}
-
-また作成した Route の上部の Route名をクリックして、右側の Description に `direct:a` と入力してください。
+* **Description**: direct:a
+* **Parameters**:
+  * **Name**: a
 
 ![](images/06-recipientlist-006.png)
 ![karavan]({% image_path 06-recipientlist-006.png %}){:width="1200px"}
