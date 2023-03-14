@@ -39,9 +39,9 @@ Kafka に対してランダムなメッセージを発信するアプリと、Ka
 ![](images/07-kafka-003.png)
 ![karavan]({% image_path 07-kafka-003.png %}){:width="200px"}
 
-[Kafdrop]({{ KAFDROP_URL }}) というツールで、Kafka トピックに送信されたメッセージの内容を確認することができます。
+[Kafdrop](https://{{ KAFDROP_URL }}) というツールで、Kafka トピックに送信されたメッセージの内容を確認することができます。
 
- こちらのリンクから、[`incoming-topic`]({{ KAFDROP_URL }}/topic/incoming-topic/messages?partition=0&offset=0&count=100&keyFormatDEFAULT=&format=DEFAULT) の内容を確認できます。アクセスして確認してみてください。
+ こちらのリンクから、[`incoming-topic`](https://{{ KAFDROP_URL }}/topic/incoming-topic/messages?partition=0&offset=0&count=100&keyFormatDEFAULT=&format=DEFAULT) の内容を確認できます。アクセスして確認してみてください。
 
 ![](images/07-kafka-004.png)
 ![karavan]({% image_path 07-kafka-004.png %}){:width="1200px"}
