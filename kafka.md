@@ -39,7 +39,7 @@ Kafka に対してランダムなメッセージを発信するアプリと、Ka
 ![](images/07-kafka-003.png)
 ![karavan]({% image_path 07-kafka-003.png %}){:width="200px"}
 
-[`Kafdrop`](http://{{ KAFDROP_URL }}) というツールで、Kafka トピックに送信されたメッセージの内容を確認することができます。
+[`Kafdrop`](http://{{ KAFDROP_URL }}){:target="_blank"} というツールで、Kafka トピックに送信されたメッセージの内容を確認することができます。
 
  こちらのリンクから、[incoming-topic](http://{{ KAFDROP_URL }}/topic/incoming-topic/messages?partition=0&offset=0&count=100&keyFormatDEFAULT=&format=DEFAULT){:target="_blank"} の内容を確認できます。アクセスして確認してみてください。
 
@@ -101,143 +101,53 @@ Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱の�
 
 続いて、受信したメッセージを表示する、WebUI へと連携していきます。
 WebUI は、`outcoming-topic` という Kafka トピック に送信されたメッセージを受信して、表示をします。
-こちらのリンクから、[WebUI]() にアクセスすることができます。
+こちらのリンクから、[WebUI]({{ WEBUI_URL }}){:target="_blank"} にアクセスすることができます。
+もしくは、OpenShift Web Console の [Topology view]({{ CONSOLE_URL }}/topology/ns/{{ OPENSHIFT_USER }}-dev?view=graph){:target="_blank"} にアクセスし、`quarkusapp` の Route URL よりアクセスしてください。
 
-ここでは、[Split パターン]({{ HOSTNAME_SUFFIX }}/workshop/camel-k/lab/split-eip)で作成したインテグレーションに、Kafkaトピックへのメッセージの送信処理を追加していきます。
-まだ [Split パターン]({{ HOSTNAME_SUFFIX }}/workshop/camel-k/lab/split-eip) を実施していない場合は、そちらを先に実施してください。
+![](images/07-kafka-009.png)
+![karavan]({% image_path 07-kafka-009.png %}){:width="200px"}
 
-VSCODE に戻り、左のエクスプローラー上で、`split.yam` を複製し、任意のファイル名に変更してください。（ここでは、kafka-sink.yaml としておきます）
+現時点では、`outcoming-topic` にメッセージは発信されていないので、WebUIに表示はされません。
 
-![](images/07-kafka-020.png)
-![karavan]({% image_path 07-kafka-020.png %}){:width="800px"}
+![](images/07-kafka-010.png)
+![karavan]({% image_path 07-kafka-010.png %}){:width="1200px"}
 
-それでは、Kafka トピックにメッセージを送信する処理を追加していきます。
-Log シンボルにマウスカーソルを持っていくと、左上に小さく `→` ボタンが表示されますので、クリックします。
+それでは、先ほど作成した `kafka.camel.yaml` に、`outcoming-topic` へメッセージを発信する処理を追加していきます。
 
-続いて、`Kamelets` タブから `Kafka Sink` を探して選択をしてください。
-右上のテキストボックスに `Kafka Sink` と入力をすると、絞り込みができます。
+Route にマウスカーソルを持っていくと、Log シンボルの下に小さな＋ボタンが現れますので、それをクリックし、`Kamelets` タブから `Kafka Not Secures Sink` を探して選択をしてください。
+右上のテキストボックスに `Kafka Not Secures Sink` と入力をすると、絞り込みができます。
 
-![](images/07-kafka-021.png)
-![karavan]({% image_path 07-kafka-021.png %}){:width="600px"}
+![](images/07-kafka-011.png)
+![karavan]({% image_path 07-kafka-011.png %}){:width="800px"}
 
-これで、`Split` と `Log` の間に、`Kafka Sink` が追加されました。
-
-`Kafka Sink` のシンボルをクリックすると、右側にプロパティが表示されますので、
-Parameters 項目に、以下の内容を設定してください。
-他の項目は、デフォルトのままで構いません。
-
-* **Topic Names**: RHOSAK で作成した Kafka トピック名
-* **Bootstrap Servers**: RHOSAK で作成した Kafka インスタンスの Bootstrap Servers
-* **Username**: Service Account の ID
-* **Password**: Service Account の Secret
-
-![](images/07-kafka-022.png)
-![karavan]({% image_path 07-kafka-022.png %}){:width="800px"}
-
-最後に、テスト用のCSVファイルを用意します。
-[DataFormatsパターン]({{ HOSTNAME_SUFFIX }}/workshop/camel-k/lab/data-formats) の章で作成した `test.csv` を使用します。
-ファイルが無い場合は、左のエクスプローラー上で、右クリックをして、メニューから `新しいファイル` を選択し、`test.csv` を作成します。
-
-ファイルの中身は、
-
-<pre>
-  id,name
-  1,apple
-  2,orange
-  3,lemon
-</pre>
-
-としてください。
-
-それでは、実際に動かしてみます。
-
-右上の **▷** の実行ボタンを押してください。
-（もしくは、左のエクスプローラでファイル名を右クリックして、`Karavan: Run File` を選択してください）
-
-ターミナルが開き、作成したインテグレーションが JBang を通して実行されます。
-Kafka に接続ができていれば、ターミナルに以下の様に表示されているはずです。
-
-![](images/07-kafka-023.png)
-![karavan]({% image_path 07-kafka-023.png %}){:width="800px"}
-
-特にエラーなく実行されたら、`test.csv` を `data/input` フォルダに移動して格納をしてください。
-ファイル格納後、以下の様な Log が表示されていればOKです。
-
-![](images/07-kafka-024.png)
-![karavan]({% image_path 07-kafka-024.png %}){:width="800px"}
-
-では、実際に送信されているかどうかを確認してみましょう。
-[RHOSAK](https://console.redhat.com/application-services/streams/kafkas) に戻り、作成した Kafka インスタンスのページを開きます。
-
-`Topics` のタブを選択し、作成したトピック名をクリックしてください。
-
-![](images/07-kafka-025.png)
-![karavan]({% image_path 07-kafka-025.png %}){:width="800px"}
-
-次に、トピックの詳細ページで `Messages` のタブを選択すると、送信したメッセージが確認できます。
-
-![](images/07-kafka-026.png)
-![karavan]({% image_path 07-kafka-026.png %}){:width="800px"}
-
-メッセージの確認ができたら、処理を停止してください。
-
-### 4. Kafka Source を使用して、Kafka トピックからメッセージを受信する
-
-今度は、まずは Kafka からメッセージを受信する処理を作成していきます。 
-
-VSCODE 左のエクスプローラー上で、右クリックをして、メニューから `Karavan: Create Integration` を選択し、任意のファイル名で空のインテグレーションを作成をしてください。
-（ここでは、kafka-source というファイル名にしておきます。）
-
-Karavan Designer のGUIをが開いたら、上部の `Create new route` をクリックして、Route を作成しましょう。
-
-`Kamelets` タブから `Kafka Source` を探して選択をしてください。
-右上のテキストボックスに `Kafka Source` と入力をすると、絞り込みができます。
-
-![](images/07-kafka-027.png)
-![karavan]({% image_path 07-kafka-027.png %}){:width="600px"}
-
-Route の source として、Kafka Source コンポーネントが配置されます。
-Kafka Source シンボルをクリックすると、右側にプロパティが表示されますので、確認してください。
+Log の下に、Kafka Not Secured Sink コンポーネントが配置されます。
+Kafka Not Secured Sink シンボルをクリックすると、右側にプロパティが表示されますので、確認してください。
 
 Parameters は、以下を入力してください。
 
-* **Topic Names**: RHOSAK で作成した Kafka トピック名
-* **Bootstrap Servers**: RHOSAK で作成した Kafka インスタンスの Bootstrap Servers
-* **Username**: Service Account の ID
-* **Password**: Service Account の Secret
-* **Auto Offset Reset**: earliest
-  * `earliest`: 最初のoffsetに自動リセット
-  * `latest`: 最新のoffsetに自動リセット （未指定の場合 latest になります）
+* **Topic Names**: outcoming-topic
+* **Bootstrap Servers**: kafka-cluster-kafka-bootstrap.{{ OPENSHIFT_USER }}-dev.svc:9092
 
-今回は、先ほど送信した メッセージを受信するため、`Auto Offset Reset` には `earliest` を指定してください。
-
-![](images/07-kafka-028.png)
-![karavan]({% image_path 07-kafka-028.png %}){:width="800px"}
-
-次に、メッセージが受信できたことを確認するための `Log` を追加します。
-Kafka Source シンボルの下の＋ボタンをクリックし、`Routing` のタブから `Log` を探して選択をしてください。
-
-Log プロパティ の `Message` に `Recieved Message:${body}` と入力をしてください。
-
-![](images/07-kafka-029.png)
-![karavan]({% image_path 07-kafka-029.png %}){:width="800px"}
+![](images/07-kafka-012.png)
+![karavan]({% image_path 07-kafka-012.png %}){:width="1200px"}
 
 それでは、実際に動かしてみます。
-
-右上の **▷** の実行ボタンを押してください。
-（もしくは、左のエクスプローラでファイル名を右クリックして、`Karavan: Run File` を選択してください）
+右上の ロケットのアイコン のボタンを押してください。
 
 ターミナルが開き、作成したインテグレーションが JBang を通して実行されます。
+特にエラーなく実行されたら、ターミナルの Log を確認して、Kafka の incoming-topic からのメッセージを受信できていることと、WebUI に送信したメッセージが表示されていることを確認してください。
 
-Kafka トピックにアクセスできていれば、メッセージを受信して、ターミナルに以下の Log が表示されているはずです。
+![](images/07-kafka-013.png)
+![karavan]({% image_path 07-kafka-013.png %}){:width="1200px"}
 
-![](images/07-kafka-030.png)
-![karavan]({% image_path 07-kafka-030.png %}){:width="800px"}
+![](images/07-kafka-014.png)
+![karavan]({% image_path 07-kafka-014.png %}){:width="1200px"}
 
-メッセージの確認ができたら、処理を停止してください。
+確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
+また、作成した `kafka.camel.yaml` を `temp` フォルダに移動をしておいてください。 
 
 ---
 
-### 参考リンク
+### 4. 参考リンク
 
 * [Red Hat Integration - Kamelets リファレンス](https://access.redhat.com/documentation/ja-jp/red_hat_integration/2022.q4/html/kamelets_reference/kafka-sink)
