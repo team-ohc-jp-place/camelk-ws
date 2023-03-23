@@ -31,7 +31,7 @@ PostgreSQL にアクセスするための情報は以下の通りです。
 
 ```
 postgresql_pods=$(oc get pods -n {{ OPENSHIFT_USER }}-dev --field-selector status.phase=Running --no-headers -o=custom-columns=NAME:.metadata.name | grep postgresql) 
-oc exec -it $postgresql_pods -- /bin/bash
+oc exec -it $postgresql_pods -n {{ OPENSHIFT_USER }}-dev -- /bin/bash
 ```
 
 Pod内に入ったら、以下のコマンドでPosgreSQL を実行してください。
@@ -45,21 +45,20 @@ psql sampledb
 `\d` と入力すると、テーブルの一覧が表示されます。
 
 ![](images/08-postgresql-001.png)
-![karavan]({% image_path 08-postgresql-001.png %}){:width="600px"}
+![karavan]({% image_path 08-postgresql-001.png %}){:width="400px"}
 
 products テーブル の 中身を確認してみましょう。`select * from products;` と入力してください。
 
 ![](images/08-postgresql-002.png)
-![karavan]({% image_path 08-postgresql-002.png %}){:width="600px"}
+![karavan]({% image_path 08-postgresql-002.png %}){:width="400px"}
 
 確認ができたら、`exit` を入力して PostgreSQL を終了します。
 
 ---
 
-それでは、左のエクスプローラー上で、右クリックをして、メニューから `Karavan: Create Integration` を選択し、任意のファイル名で空のインテグレーションを作成をしてください。
-（ここでは、postgresql-sink というファイル名にしておきます。）
+それでは、OpenShift DevSpaces 左のエクスプローラー上で、右クリックをして、メニューから `Karavan: Create Integration` を選択し、`postgresql` と入力して Enter を押してください。`postgresql.camel.yaml` という名前のファイルが作成されて、Karavan Designer のGUIが開きます。
 
-続いて、Karavan Designer のGUIが開いたら、上部の `Create new route` をクリックして、Route を作成しましょう。
+続いて、Karavan Designer のGUIが開いたら、上部の `Create route` をクリックして、Route を作成しましょう。
 
 `components` タブから `Timer` を探して選択をしてください。
 右上のテキストボックスに `Timer` と入力をすると、絞り込みができます。
@@ -73,14 +72,14 @@ Parameters は、以下のように設定をします。
 * **Repeat Count**: 1
 
 ![](images/08-postgresql-003.png)
-![karavan]({% image_path 08-postgresql-003.png %}){:width="800px"}
+![karavan]({% image_path 08-postgresql-003.png %}){:width="1200px"}
 
 次に、PosgreSQL にアクセスするための Sink を追加します。
 Route にマウスカーソルを持っていくと、Timer シンボルの下に小さな＋ボタンが現れますので、それをクリックし、`Kamelets` のタブから `PostgreSQL Sink` を探して選択をしてください。
 右上のテキストボックスに `PostgreSQL Sink` と入力をすると、絞り込みができます。
 
 ![](images/08-postgresql-004.png)
-![karavan]({% image_path 08-postgresql-004.png %}){:width="600px"}
+![karavan]({% image_path 08-postgresql-004.png %}){:width="800px"}
 
 `PostgreSQL` のシンボルが Timer に続いて配置されます。
 
@@ -88,7 +87,7 @@ PostgreSQL のシンボルをクリックすると、右側にプロパティが
 先ほどの PostgreSQL の情報を設定していきます。
 Parameters 項目に、以下の内容を設定してください。
 
-* **Server Name**: {{ POSTGRESQL_SERVER }}
+* **Server Name**: postgresql.{{ OPENSHIFT_USER }}-dev.svc.cluster.local
 * **Server Port**: 5432
 * **Username**: demo
 * **Password**: demo
@@ -96,7 +95,7 @@ Parameters 項目に、以下の内容を設定してください。
 * **Database Name**: sampledb
 
 ![](images/08-postgresql-005.png)
-![karavan]({% image_path 08-postgresql-005.png %}){:width="800px"}
+![karavan]({% image_path 08-postgresql-005.png %}){:width="1200px"}
 
 PostgreSQL Sink は、JSON形式のデータを Body として想定をしているため、JSON形式に変換するための Marshal が必要になります。
 PostgreSQL Sink シンボルにマウスカーソルを持っていくと、左上に小さく `→` ボタンが表示されますので、クリックして、`Transformation` タブから `Marshal` を探して選択をしてください。
@@ -112,7 +111,7 @@ Parameters 項目に、以下の内容を設定してください。
 * **Library**: jackson
 
 ![](images/08-postgresql-006.png)
-![karavan]({% image_path 08-postgresql-006.png %}){:width="800px"}
+![karavan]({% image_path 08-postgresql-006.png %}){:width="1200px"}
 
 続いて、PostgreSQL から取得したデータを確認するための Log を追加します。
 PostgreSQL Sink シンボルの下の＋ボタンをクリックし、`Routing` のタブから `Log` を探して選択をしてください。
@@ -120,25 +119,23 @@ PostgreSQL Sink シンボルの下の＋ボタンをクリックし、`Routing` 
 取得した内容を表示するには、Log プロパティ の `Message` に `${body}` と入力をしてください。
 
 ![](images/08-postgresql-007.png)
-![karavan]({% image_path 08-postgresql-007.png %}){:width="800px"}
+![karavan]({% image_path 08-postgresql-007.png %}){:width="1200px"}
 
 それでは、実際に動かしてみます。
-
-右上の **▷** の実行ボタンを押してください。
-（もしくは、左のエクスプローラでファイル名を右クリックして、`Karavan: Run File` を選択してください）
+右上の ロケットのアイコン のボタンを押してください。
 
 ターミナルが開き、作成したインテグレーションが JBang を通して実行されます。
 特にエラーなく実行されたら、ターミナルに以下の Log が表示されているはずです。
 
 ![](images/08-postgresql-008.png)
-![karavan]({% image_path 08-postgresql-008.png %}){:width="800px"}
+![karavan]({% image_path 08-postgresql-008.png %}){:width="1200px"}
 
-Log の確認ができたら、処理を停止してください。
+Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
 
 ### 3. PostgreSQL Sink を使用してテーブルにデータを追加する
 
 先ほどは PosgreSQL Sink でデータを取得しましたが、今度はテーブルにレコードの追加を行う処理を作っていきます。
-Karavan Designer で先ほどのインテグイレーションを開いてください。
+Karavan Designer で、先ほど作成をした `postgresql.camel.yaml` を開いてください。
 
 まず、Set Body でテーブルに追加する内容を設定します。
 
@@ -146,7 +143,7 @@ Marshal シンボルにマウスカーソルを持っていくと、左上に小
 右上のテキストボックスに `Set Body` と入力をすると、絞り込みができます。
 
 ![](images/08-postgresql-009.png)
-![karavan]({% image_path 08-postgresql-009.png %}){:width="600px"}
+![karavan]({% image_path 08-postgresql-009.png %}){:width="800px"}
 
 これで、`Timer` と `Marshal` の間に、`Set Body` が追加されます。
 
@@ -169,7 +166,7 @@ Marshal シンボルにマウスカーソルを持っていくと、左上に小
 PostgreSQL のシンボルをクリックすると、右側にプロパティが表示されますので、
 Parameters 項目に、以下の内容を設定してください。
 
-* **Server Name**: {{ POSTGRESQL_SERVER }}
+* **Server Name**: postgresql.{{ OPENSHIFT_USER }}-dev.svc.cluster.local
 * **Server Port**: 5432
 * **Username**: demo
 * **Password**: demo
@@ -177,35 +174,41 @@ Parameters 項目に、以下の内容を設定してください。
 * **Database Name**: sampledb
 
 ![](images/08-postgresql-011.png)
-![karavan]({% image_path 08-postgresql-011.png %}){:width="800px"}
+![karavan]({% image_path 08-postgresql-011.png %}){:width="1200px"}
 
 それでは、実際に動かしてみます。
-
-右上の **▷** の実行ボタンを押してください。
-（もしくは、左のエクスプローラでファイル名を右クリックして、`Karavan: Run File` を選択してください）
+右上の ロケットのアイコン のボタンを押してください。
 
 ターミナルが開き、作成したインテグレーションが JBang を通して実行されます。
 特にエラーなく実行されたら、ターミナルに以下の Log が表示されているはずです。
 
 ![](images/08-postgresql-012.png)
-![karavan]({% image_path 08-postgresql-012.png %}){:width="800px"}
+![karavan]({% image_path 08-postgresql-012.png %}){:width="1200px"}
 
 Set Body で設定した情報が追加されて、取得してきたデータにも反映されています。
-Log の確認ができたら、処理を停止してください。
+Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
 
 実際に、PostgreSQL にアクセスして確認をしてみましょう。
 ターミナルから以下のコマンドを実行して、PostgreSQL にログインをしてみてください。
 
 ```
-PGPASSWORD=demo psql -h {{ POSTGRESQL_SERVER }} -d sampledb -U demo 
+postgresql_pods=$(oc get pods -n {{ OPENSHIFT_USER }}-dev --field-selector status.phase=Running --no-headers -o=custom-columns=NAME:.metadata.name | grep postgresql) 
+oc exec -it $postgresql_pods -n {{ OPENSHIFT_USER }}-dev -- /bin/bash
+```
+
+Pod内に入ったら、以下のコマンドでPosgreSQL を実行してください。
+
+```
+psql sampledb
 ```
 
 products テーブル の 中身を確認してみましょう。`select * from products;` と入力してください。
 
 ![](images/08-postgresql-013.png)
-![karavan]({% image_path 08-postgresql-013.png %}){:width="300px"}
+![karavan]({% image_path 08-postgresql-013.png %}){:width="400px"}
 
-確認ができたら、`exit` を入力して PostgreSQL を終了します。
+確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
+また、作成した `postgresql.camel.yaml` を `temp` フォルダに移動をしておいてください。 
 
 ---
 ### 参考リンク
