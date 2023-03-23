@@ -30,7 +30,7 @@ PostgreSQL にアクセスするための情報は以下の通りです。
 ターミナルから、下記のコマンドを実行すると、PostgreSQL の Pod からコマンドを実行することができます。
 
 ```
-postgre_pods=$(oc get pods -n {{ OPENSHIFT_USER }}-dev --field-selector status.phase=Running --no-headers -o=custom-columns=NAME:.metadata.name | grep postgresql)
+postgre_pods=$(oc get pods -n {{ OPENSHIFT_USER }}-dev --field-selector status.phase=Running --no-headers -o=custom-columns=NAME:.metadata.name | grep postgresql) <br>
 oc exec -it $postgre_pods -- /bin/bash
 ```
 
@@ -40,17 +40,18 @@ Pod内に入ったら、以下のコマンドでPosgreSQL を実行してくだ�
 psql sampledb
 ```
 
-## スクショ
+![](images/08-postgresql-000.png)
+![karavan]({% image_path 08-postgresql-000.png %}){:width="1200px"}
 
 `\d` と入力すると、テーブルの一覧が表示されます。
 
 ![](images/08-postgresql-001.png)
-![karavan]({% image_path 08-postgresql-001.png %}){:width="300px"}
+![karavan]({% image_path 08-postgresql-001.png %}){:width="600px"}
 
 products テーブル の 中身を確認してみましょう。`select * from products;` と入力してください。
 
 ![](images/08-postgresql-002.png)
-![karavan]({% image_path 08-postgresql-002.png %}){:width="300px"}
+![karavan]({% image_path 08-postgresql-002.png %}){:width="600px"}
 
 確認ができたら、`exit` を入力して PostgreSQL を終了します。
 
