@@ -30,8 +30,8 @@ PostgreSQL にアクセスするための情報は以下の通りです。
 ターミナルから、下記のコマンドを実行すると、PostgreSQL の Pod からコマンドを実行することができます。
 
 ```
-postgre_pods=$(oc get pods -n {{ OPENSHIFT_USER }}-dev --field-selector status.phase=Running --no-headers -o=custom-columns=NAME:.metadata.name | grep postgresql) 
-oc exec -it $postgre_pods -- /bin/bash
+postgresql_pods=$(oc get pods -n {{ OPENSHIFT_USER }}-dev --field-selector status.phase=Running --no-headers -o=custom-columns=NAME:.metadata.name | grep postgresql) 
+oc exec -it $postgresql_pods -- /bin/bash
 ```
 
 Pod内に入ったら、以下のコマンドでPosgreSQL を実行してください。
@@ -39,7 +39,6 @@ Pod内に入ったら、以下のコマンドでPosgreSQL を実行してくだ�
 ```
 psql sampledb
 ```
-
 ![](images/08-postgresql-000.png)
 ![karavan]({% image_path 08-postgresql-000.png %}){:width="1200px"}
 
