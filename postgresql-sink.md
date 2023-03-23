@@ -30,7 +30,7 @@ PostgreSQL にアクセスするための情報は以下の通りです。
 ターミナルから、下記のコマンドを実行すると、PostgreSQL の Pod からコマンドを実行することができます。
 
 ```
-postgre_pods=$(oc get pods -n {{ OPENSHIFT_USER }}-dev --field-selector status.phase=Running --no-headers -o=custom-columns=NAME:.metadata.name | grep postgresql) <br>
+postgre_pods=$(oc get pods -n {{ OPENSHIFT_USER }}-dev --field-selector status.phase=Running --no-headers -o=custom-columns=NAME:.metadata.name | grep postgresql) 
 oc exec -it $postgre_pods -- /bin/bash
 ```
 
