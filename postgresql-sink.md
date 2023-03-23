@@ -5,21 +5,21 @@
 
 Kamelet の **PostgreSQL Sink** を使用して、Camel K と Kafka との連携の方法について理解していただきます。
 
-* [PostgreSQL Sink](https://camel.apache.org/camel-kamelets/{{ KAMELETS_VERSION }}/postgresql-sink.html)
+* [PostgreSQL Sink](https://camel.apache.org/camel-kamelets/{{ KAMELETS_VERSION }}/postgresql-sink.html){:target="_blank"}
 
 ### 2. PostgreSQL Sink を使用してテーブルからデータを取得する
 
-PostgreSQL は既に準備されているものを使うことができます。
+PostgreSQL は、OpenShift上に用意されているものを使うことができます。
 
 PostgreSQL にアクセスするための情報は以下の通りです。
 
-* **Server Name**: {{ POSTGRESQL_SERVER }}
+* **Server Name**: postgresql.{{ OPENSHIFT_USER }}-dev.svc.cluster.local （cluster内からのみアクセス可能）
 * **Server Port**: 5432
 * **User Name**: demo
 * **Password**: demo
 * **Database Name**: sampledb
 
-また、データベースには products というテーブルが用意されており、以下のデータが格納されています。
+また、データベースには `products` というテーブルが用意されており、以下のデータが格納されています。
 
 |  id (integer) |  name (varchar) |
 | :---: | :---: |
@@ -27,11 +27,20 @@ PostgreSQL にアクセスするための情報は以下の通りです。
 |  2  |  orange  |
 |  3  |  lemon  |
 
-ターミナルから、下記のコマンドを実行すると、PostgreSQLにログインすることができます。
+ターミナルから、下記のコマンドを実行すると、PostgreSQL の Pod からコマンドを実行することができます。
 
 ```
-PGPASSWORD=demo psql -h {{ POSTGRESQL_SERVER }} -d sampledb -U demo 
+postgre_pods=$(oc get pods -n {{ OPENSHIFT_USER }}-dev --field-selector status.phase=Running --no-headers -o=custom-columns=NAME:.metadata.name | grep postgresql)
+oc exec -it $postgre_pods -- /bin/bash
 ```
+
+Pod内に入ったら、以下のコマンドでPosgreSQL を実行してください。
+
+```
+psql sampledb
+```
+
+## スクショ
 
 `\d` と入力すると、テーブルの一覧が表示されます。
 
