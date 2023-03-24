@@ -1,9 +1,6 @@
 ## 利用環境 について
 ---
 
-USER-ID : {{ USER_ID }}
-
----
 このワークショップでは、簡単な Camel K インテグレーションを作成し、動作を確認すると共に、Karavan Designer を使用した 実装のイメージを把握していただきます。
 
 本ワークショップの開発環境は、オープンソースの [Eclipse Che](https://www.eclipse.org/che/){:target="_blank"} プロジェクトに基づいた、OpenShift Container Platform で動作するWebベースの統合開発環境(IDE)である、[Red Hat OpenShift DevSpaces](https://developers.redhat.com/products/openshift-dev-spaces/overview){:target="_blank"} を使用します。

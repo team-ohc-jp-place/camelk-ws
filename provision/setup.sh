@@ -175,7 +175,7 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
   ROUTE=$(oc get route dummy -o=go-template --template='{{ .spec.host }}' -n $PRJ_NAME)
   KAFDROP_URL=$(oc get route kafdrop -o=go-template --template='{{ .spec.host }}' -n $PRJ_NAME)
   WEBUI_URL=$(oc get route quarkusapp -o=go-template --template='{{ .spec.host }}' -n $PRJ_NAME)
-  DEVSPACES_URL=$(oc get route devspaces -o=go-template --template='{{ .spec.host }}' -n $PRJ_NAME)
+  DEVSPACES_URL=$(oc get route devspaces -o=go-template --template='{{ .spec.host }}' -n devspaces)
   HOSTNAME_SUFFIX=$(echo $ROUTE | sed 's/^dummy-'$PRJ_NAME'\.//g')
   MASTER_URL=$(oc whoami --show-server)
   CONSOLE_URL=$(oc whoami --show-console)
