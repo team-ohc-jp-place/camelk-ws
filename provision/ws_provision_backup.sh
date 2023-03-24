@@ -197,8 +197,3 @@ oc label dc/kafdrop app.openshift.io/runtime=amq --overwrite -n $PRJ_NAME
 oc delete Integration example -n $PRJ_NAME
 oc delete LimitRanges $PRJ_NAME-core-resource-limits -n $PRJ_NAME
 oc delete LimitRanges $DEVSPACES_NAME-core-resource-limits -n $DEVSPACES_NAME
-
-##
-# PostgreSQLへの接続がOpenShift上でうまくできない
-# postgresql.$PRJ_NAME.svc.cluster.local　これでOK
-# oc exec -it $(oc get pods --field-selector status.phase=Running --no-headers -o=custom-columns=NAME:.metadata.name | grep postgresql) -- /bin/bash
