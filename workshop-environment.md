@@ -25,13 +25,13 @@ OpenShift Web Console にアクセスするための情報は以下の通りで�
 
 OpenShift Web Console にログイン後、左のメニュから `Developer` パースペクティブを選択し、その下のメニューから `Topology` ビューを開きます。Project名は `{{ OPENSHIFT_USER }}_dev` を選択してください。
 
+![](2023-03-24-19-39-59.png)
 ![](images/09-devspaces-003.png)
 ![karavan]({% image_path 09-devspaces-003.png %}){:width="1200px"}
 
 ### リソースについて
 
 * **guides**: 本ワークショップのガイドドキュメント
-* **devspaces**: OpenShift DevSpaces の インスタンス
 * **kafka-cluster**: Kafka のクラスター
 * **kafdrop**: Kafka 用の Web UI でブローカーやトピックなどの情報やメッセージの表示を行います
 * **emitter**: Kafka トピックにメッセージを発信するPythonアプリ
@@ -44,7 +44,7 @@ OpenShift Web Console にログイン後、左のメニュから `Developer` パ
 ### OpenShift DevSpacesの準備
 
 こちらのリンクから、[OpenShift DevSpaces Dashboard](https://{{ DEVSPACES_URL }}){:target="_blank"} にログインします。
-`Topology` ビューの OpenShift DevSpaces インスタンスの Route からもアクセスすることができます。
+`Topology` ビューの OpenShift DevSpaces インスタンスの Route からもアクセスすることができます。Project名は `devspaces` を選択してください。
 
 ![](images/09-devspaces-004.png)
 ![karavan]({% image_path 09-devspaces-004.png %}){:width="1200px"}
