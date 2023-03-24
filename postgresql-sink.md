@@ -8,7 +8,7 @@ Kamelet の **PostgreSQL Sink** を使用して、Camel K と Kafka との連携
 * [PostgreSQL Sink](https://camel.apache.org/camel-kamelets/{{ KAMELETS_VERSION }}/postgresql-sink.html){:target="_blank"}
 
 ![](images/08-postgresql-014.png)
-![karavan]({% image_path 08-postgresql-000.png %}){:width="800px"}
+![karavan]({% image_path 08-postgresql-014.png %}){:width="800px"}
 
 ---
 

@@ -216,3 +216,13 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
   oc delete LimitRanges $DEVSPACES_NAME-core-resource-limits -n $DEVSPACES_NAME
 
 done
+
+# Etherpad
+oc new-project gpte-etherpad --display-name "OpenTLC Shared Etherpad"
+oc new-app --template=postgresql-persistent \
+  --param POSTGRESQL_USER=ether \
+  --param POSTGRESQL_PASSWORD=ether \
+  --param POSTGRESQL_DATABASE=etherpad \
+  --param POSTGRESQL_VERSION=10 \
+  --param VOLUME_CAPACITY=10Gi \
+  --labels=app=etherpad_db
