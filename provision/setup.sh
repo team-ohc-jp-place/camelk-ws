@@ -225,9 +225,6 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
 
   oc -n $PRJ_NAME expose svc/guides
 
-  echo "Completed... \n"
-  echo "http://guides-$PRJ_NAME.$HOSTNAME_SUFFIX/workshop/camel-k" 
-
   # Label
   oc label deployment/emitter app.openshift.io/runtime=python --overwrite -n $PRJ_NAME
   oc label dc/quarkusapp app.openshift.io/runtime=quarkus --overwrite -n $PRJ_NAME
@@ -238,5 +235,7 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
   oc delete LimitRanges $PRJ_NAME-core-resource-limits -n $PRJ_NAME
   oc delete LimitRanges $DEVSPACES_NAME-core-resource-limits -n $DEVSPACES_NAME
 
+  echo "Completed... \n"
+  echo "http://guides-$PRJ_NAME.$HOSTNAME_SUFFIX/workshop/camel-k" 
 done
 
