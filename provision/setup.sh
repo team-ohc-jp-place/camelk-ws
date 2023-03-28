@@ -109,6 +109,7 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
   echo "Waiting for deploying kafka-cluster"
   while [ true ] ; do
     if [ "$(oc -n $PRJ_NAME get kafka kafka-cluster -o=jsonpath='{@.status.clusterId}')" ] ; then
+      sleep 10
       break
     fi
     echo waiting...
@@ -236,6 +237,6 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
   oc delete LimitRanges $DEVSPACES_NAME-core-resource-limits -n $DEVSPACES_NAME
 
   echo "Completed... \n"
-  echo "http://guides-$PRJ_NAME.$HOSTNAME_SUFFIX/workshop/camel-k" 
-done
+  echo "http://guides-$PRJ_NAME.$HOSTNAME_SUFFIX/workshop/camel-k"
 
+done
