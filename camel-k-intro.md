@@ -3,7 +3,7 @@
 
 ### Camel K 概要
 
-Red Hat Integration - Camel K は、OpenShift のクラウドでネイティブで実行される Apache Camel K からビルドされる軽量のインテグレーションフレームワークです。Camel K は、サーバーレスおよびマイクロサービスアーキテクチャー向けに特別に設計されています。Camel K を使用すると、Camel Domain Specific Language (DSL) で書かれたインテグレーションコードを直接 OpenShift で即座に実行することができます。[Camel K](https://github.com/apache/camel-k) は Apache Camel オープンソースコミュニティーのサブプロジェクトです。
+Red Hat Integration - Camel K は、OpenShift のクラウドでネイティブで実行される Apache Camel K からビルドされる軽量のインテグレーションフレームワークです。Camel K は、サーバーレスおよびマイクロサービスアーキテクチャー向けに特別に設計されています。Camel K を使用すると、Camel Domain Specific Language (DSL) で書かれたインテグレーションコードを直接 OpenShift で即座に実行することができます。[Camel K](https://github.com/apache/camel-k){:target="_blank"} は Apache Camel オープンソースコミュニティーのサブプロジェクトです。
 
 * OpenShiftとKubernetes上でインテグレーションをサーバーレスで動作させることが可能なプラットフォーム
 * KubernetesのCRDとオペレータの仕組みをベース
@@ -32,5 +32,5 @@ Red Hat Integration - Camel K は、OpenShift のクラウドでネイティブ�
 
 #### 参考リンク
 
-* [Camel K のスタートガイド](https://access.redhat.com/documentation/ja-jp/red_hat_integration/2022.q4/html/getting_started_with_camel_k/introduction-to-camel-k) ※RED HAT INTEGRATION 2022.Q4 の製品ドキュメント
-* [Apache Camel K](https://camel.apache.org/camel-k/) ※コミュニティのページ
+* [Camel K のスタートガイド](https://access.redhat.com/documentation/ja-jp/red_hat_integration/2022.q4/html/getting_started_with_camel_k/introduction-to-camel-k){:target="_blank"} ※RED HAT INTEGRATION 2022.Q4 の製品ドキュメント
+* [Apache Camel K](https://camel.apache.org/camel-k/){:target="_blank"} ※コミュニティのページ
