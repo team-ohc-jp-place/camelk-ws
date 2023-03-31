@@ -22,3 +22,5 @@ modules:
     name: Kafka との連携
   postgresql-sink:
     name: PostgreSQL との連携
+  rest-api-service:
+    name: REST API サービスの実装

@@ -32,4 +32,5 @@ modules:
   - recipientlist-eip
   - kafka
   - postgresql-sink
+  - rest-api-service
   

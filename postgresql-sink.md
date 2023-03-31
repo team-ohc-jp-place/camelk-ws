@@ -32,18 +32,18 @@ PostgreSQL にアクセスするための情報は以下の通りです。
 |  2  |  orange  |
 |  3  |  lemon  |
 
-ターミナルから、下記のコマンドを実行すると、PostgreSQL の Pod からコマンドを実行することができます。
+実際に確認をしてみましょう。
+OpenShift Web Console の [Topology view]({{ CONSOLE_URL }}/topology/ns/{{ OPENSHIFT_USER }}-dev){:target="_blank"} にアクセスして、起動中の PostgreSQL の Pod にアクセスをします。
 
-```
-postgresql_pods=$(oc get pods -n {{ OPENSHIFT_USER }}-dev --field-selector status.phase=Running --no-headers -o=custom-columns=NAME:.metadata.name | grep postgresql) 
-oc exec -it $postgresql_pods -n {{ OPENSHIFT_USER }}-dev -- /bin/bash
-```
+![](images/08-postgresql-015.png)
+![karavan]({% image_path 08-postgresql-015.png %}){:width="800px"}
 
-Pod内に入ったら、以下のコマンドでPosgreSQL を実行してください。
+Terminal をタブを選択し、以下のコマンドでPosgreSQL を実行してください。
 
 ```
 psql sampledb
 ```
+
 ![](images/08-postgresql-000.png)
 ![karavan]({% image_path 08-postgresql-000.png %}){:width="1200px"}
 
@@ -157,7 +157,7 @@ Parameters 項目に、以下の内容を設定してください。
 他の項目は、デフォルトのままで構いません。
 
 * **Language**: simple
-* **Expression**: {"id":4, "name": "melon"}
+* **Expression**: {"id":4, "name":"melon"}
 
 ![](images/08-postgresql-010.png)
 ![karavan]({% image_path 08-postgresql-010.png %}){:width="800px"}
@@ -194,14 +194,9 @@ Set Body で設定した情報が追加されて、取得してきたデータ�
 Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
 
 実際に、PostgreSQL にアクセスして確認をしてみましょう。
-ターミナルから以下のコマンドを実行して、PostgreSQL にログインをしてみてください。
+OpenShift Web Console の [Topology view]({{ CONSOLE_URL }}/topology/ns/{{ OPENSHIFT_USER }}-dev){:target="_blank"} にアクセスして、起動中の PostgreSQL の Pod にアクセスをします。
 
-```
-postgresql_pods=$(oc get pods -n {{ OPENSHIFT_USER }}-dev --field-selector status.phase=Running --no-headers -o=custom-columns=NAME:.metadata.name | grep postgresql) 
-oc exec -it $postgresql_pods -n {{ OPENSHIFT_USER }}-dev -- /bin/bash
-```
-
-Pod内に入ったら、以下のコマンドでPosgreSQL を実行してください。
+Pod内に入ったら、Terminal をタブを選択し、以下のコマンドでPosgreSQL を実行してください。
 
 ```
 psql sampledb

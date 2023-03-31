@@ -52,19 +52,22 @@ OpenShift DevSpaces 左のエクスプローラー上で、右クリックをし
 
 続いて、Karavan Designer のGUIが開いたら、上部の `Create route` をクリックして、Route を作成しましょう。
 
-`Kamelets` タブから `Kafka Not Secured Source` を探して選択をしてください。
-右上のテキストボックスに `Kafka Not Secured Source` と入力をすると、絞り込みができます。
+`Kamelets` タブから `Kafka Source` を探して選択をしてください。
+右上のテキストボックスに `Kafka Source` と入力をすると、絞り込みができます。
 
 ![](images/07-kafka-005.png)
 ![karavan]({% image_path 07-kafka-005.png %}){:width="800px"}
 
-Route の source として、Kafka Not Secured Source コンポーネントが配置されます。
-Kafka Not Secured Source シンボルをクリックすると、右側にプロパティが表示されますので、確認してください。
+Route の source として、Kafka Source コンポーネントが配置されます。
+Kafka Source シンボルをクリックすると、右側にプロパティが表示されますので、確認してください。
 
 Parameters は、以下を入力してください。
 
 * **Topic Names**: incoming-topic
 * **Bootstrap Servers**: kafka-cluster-kafka-bootstrap.{{ OPENSHIFT_USER }}-dev.svc:9092
+* **Security Protocol**: PLAINTEXT
+* **Username**: demo
+* **Password**: demo
 * **Auto Offset Reset**: latest
   * `latest`: 新しいメッセージから受信 （未指定の場合 latest になります）
   * `earliest`: 最初のメッセージに遡って受信
@@ -73,7 +76,7 @@ Parameters は、以下を入力してください。
 
 続いて、受信した Kafka メッセージを確認するための Log を出力しておきます。
 
-`Kafka Not Secured Source` シンボルの下に小さな＋ボタンが現れますので、それをクリックし、`Routing` のタブから `Log` を探して選択をしてください。
+`Kafka Source` シンボルの下に小さな＋ボタンが現れますので、それをクリックし、`Routing` のタブから `Log` を探して選択をしてください。
 
 Log の Messege は、`${body}` と入力をしておきます。
 
@@ -122,13 +125,16 @@ Route にマウスカーソルを持っていくと、Log シンボルの下に�
 ![](images/07-kafka-011.png)
 ![karavan]({% image_path 07-kafka-011.png %}){:width="800px"}
 
-Log の下に、Kafka Not Secured Sink コンポーネントが配置されます。
-Kafka Not Secured Sink シンボルをクリックすると、右側にプロパティが表示されますので、確認してください。
+Log の下に、Kafka Sink コンポーネントが配置されます。
+Kafka Sink シンボルをクリックすると、右側にプロパティが表示されますので、確認してください。
 
 Parameters は、以下を入力してください。
 
 * **Topic Names**: outcoming-topic
 * **Bootstrap Servers**: kafka-cluster-kafka-bootstrap.{{ OPENSHIFT_USER }}-dev.svc:9092
+* **Security Protocol**: PLAINTEXT
+* **Username**: demo
+* **Password**: demo
 
 ![](images/07-kafka-012.png)
 ![karavan]({% image_path 07-kafka-012.png %}){:width="1200px"}

@@ -17,22 +17,29 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
   oc new-project user${m}-devspaces
 done
 oc new-project devspaces
+oc new-project knative-serving
+oc new-project knative-eventing
 
 # Operator Install
 oc apply -f ./openshift/01_operator/01_subs_camelk.yaml
 oc apply -f ./openshift/01_operator/02_subs_amqstreams.yaml
 oc apply -f ./openshift/01_operator/03_subs_devspaces.yaml
+oc apply -f ./openshift/01_operator/04_subs_serverless.yaml
 
 # Waiting for getting operator subscription
 echo "Waiting for getting operator subscription"
 while [ true ] ; do
   if [ "$(oc -n openshift-operators get subscription amq-streams -o=jsonpath='{.status.installPlanRef.name}')" ] ; then
-    if [ "$(oc -n openshift-operators get subscription camel-k -o=jsonpath='{.status.installPlanRef.name}')" ] ; then
+    if [ "$(oc -n openshift-operators get subscription red-hat-camel-k -o=jsonpath='{.status.installPlanRef.name}')" ] ; then
       if [ "$(oc -n openshift-operators get subscription devspaces -o=jsonpath='{.status.installPlanRef.name}')" ] ; then
-        break
+        if [ "$(oc -n openshift-serverless get subscription serverless-operator -o=jsonpath='{.status.installPlanRef.name}')" ] ; then
+          sleep 10
+          break
+        fi
       fi
     fi
   fi
+
   echo waiting...
   sleep 10
 done
@@ -72,6 +79,10 @@ while [ 1 ]; do
   echo waiting...
   sleep 5
 done
+
+# OpenShift Serverless
+oc apply -f ./openshift/07_serverless/01_knative_serving.yaml
+oc apply -f ./openshift/07_serverless/02_knative_eventing.yaml
 
 for m in $(eval echo "{1..$USER_COUNT}"); do
 
@@ -128,7 +139,7 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
   ## examle
   echo "Waiting for preparing camel-k"
   while [ 1 ]; do
-    CSV=$(oc -n openshift-operators get subscription camel-k -o=jsonpath='{.status.currentCSV}')
+    CSV=$(oc -n openshift-operators get subscription red-hat-camel-k -o=jsonpath='{.status.currentCSV}')
     STAT=$(oc -n openshift-operators get ClusterServiceVersion $CSV -o=jsonpath='{.status.phase}')
     if [ "$STAT" = "Succeeded" ] ; then
       oc apply -f ./openshift/06_camelk/02_example.yaml -n $PRJ_NAME
@@ -192,6 +203,9 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
 
   oc apply -f ./openshift/05_quarkusapp/01_service_quarkusapp.yaml -n $PRJ_NAME
   oc apply -f ./openshift/05_quarkusapp/02_route_quarkusapp.yaml -n $PRJ_NAME
+
+  # MinIo
+  oc apply -f ./openshift/08_minio/01_minio.yaml -n $PRJ_NAME
 
   # Guides
   # get routing suffix

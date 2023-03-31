@@ -100,6 +100,18 @@ RECOMMENDED に Karavan が表示されていますので、選択してイン�
 ![](images/09-devspaces-011.png)
 ![karavan]({% image_path 09-devspaces-011.png %}){:width="1200px"}
 
+続いて、Karavan の設定を確認します。
+拡張機能の Karavan の歯車のアイコンをクリックし、 Extention Settings を選択してください。
+
+![](images/09-devspaces-017.png)
+![karavan]({% image_path 09-devspaces-017.png %}){:width="800px"}
+
+Remote のタブを選択し、`Camel: Version` を確認します。
+Version は `3.20.3` を選択しておいてください。
+
+![](images/09-devspaces-018.png)
+![karavan]({% image_path 09-devspaces-018.png %}){:width="800px"}
+
 ### JBang によるインテグレーション実施のテスト
 
 [JBang](https://www.jbang.dev/){:target="_blank"} は、Javaをスクリプトのように実行できるツールです。日本での知名度はまだまだ低いですが、Quarkusのエンジニアが開発していることもあり。モダンなJava開発環境との連携が充実しています。
