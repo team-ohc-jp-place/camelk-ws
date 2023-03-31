@@ -119,8 +119,8 @@ WebUI は、`outcoming-topic` という Kafka トピック に送信されたメ
 
 それでは、先ほど作成した `kafka.camel.yaml` に、`outcoming-topic` へメッセージを発信する処理を追加していきます。
 
-Route にマウスカーソルを持っていくと、Log シンボルの下に小さな＋ボタンが現れますので、それをクリックし、`Kamelets` タブから `Kafka Not Secures Sink` を探して選択をしてください。
-右上のテキストボックスに `Kafka Not Secures Sink` と入力をすると、絞り込みができます。
+Route にマウスカーソルを持っていくと、Log シンボルの下に小さな＋ボタンが現れますので、それをクリックし、`Kamelets` タブから `Kafka Secures Sink` を探して選択をしてください。
+右上のテキストボックスに `Kafka Secures Sink` と入力をすると、絞り込みができます。
 
 ![](images/07-kafka-011.png)
 ![karavan]({% image_path 07-kafka-011.png %}){:width="800px"}
