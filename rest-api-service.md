@@ -431,4 +431,4 @@ curl -i $URL/
 
 ### 5. 参考リンク
 
-* **製品ドキュメント AWS S3 Storage Service**: https://access.redhat.com/documentation/it-it/red_hat_build_of_apache_camel_for_spring_boot/3.14/html/camel_spring_boot_reference/csb-camel-aws2-s3-component-starter
+* **製品ドキュメント AWS S3 Storage Service**: [https://access.redhat.com/documentation/it-it/red_hat_build_of_apache_camel_for_spring_boot/3.14/html/camel_spring_boot_reference/csb-camel-aws2-s3-component-starter](https://access.redhat.com/documentation/it-it/red_hat_build_of_apache_camel_for_spring_boot/3.14/html/camel_spring_boot_reference/csb-camel-aws2-s3-component-starter){:target="_blank"}
