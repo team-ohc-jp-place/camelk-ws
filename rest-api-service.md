@@ -348,7 +348,9 @@ OpenShift Web Console の [Topology view]({{ CONSOLE_URL }}/topology/ns/{{ OPENS
 
 ```
 URL=$(oc get routes.serving.knative.dev api -o jsonpath='{.status.url}')/v1
+```
 
+```
 echo $URL
 ```
 
