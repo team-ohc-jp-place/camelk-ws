@@ -25,7 +25,6 @@ OpenShift Web Console にアクセスするための情報は以下の通りで�
 
 OpenShift Web Console にログイン後、左のメニュから `Developer` パースペクティブを選択し、その下のメニューから `Topology` ビューを開きます。Project名は `{{ OPENSHIFT_USER }}_dev` を選択してください。
 
-![](2023-03-24-19-39-59.png)
 ![](images/09-devspaces-003.png)
 ![karavan]({% image_path 09-devspaces-003.png %}){:width="1200px"}
 
@@ -37,6 +36,7 @@ OpenShift Web Console にログイン後、左のメニュから `Developer` パ
 * **emitter**: Kafka トピックにメッセージを発信するPythonアプリ
 * **quarkusapp**: Kafka トピックに送信されたメッセージを受信して表示するWebアプリ
 * **postgresql**: サンプルデータが格納されたPostgreSQL
+* **minio**: Amazon S3と互換性のあるオブジェクト・ストレージ・サーバー
 
 あらかじめ、KafkaやPostgreSQLといったリソースが用意されています。
 ワークショップの中で、これらのデータソースを用いた連携をCamel Kで作成していきます。
