@@ -12,8 +12,8 @@
 
 バックエンドは、オープンソースソフトウェアで Amazon S3 互換のオブジェクトストレージである、MinIO を使用していきます。
 
-* **OpenAPI**: https://www.openapis.org/
-* **MinIO**: https://min.io/
+* **OpenAPI**: [https://www.openapis.org/](https://www.openapis.org/){:target="_blank"}
+* **MinIO**: [https://min.io/](https://min.io/){:target="_blank"}
 
 ---
 
@@ -102,7 +102,7 @@ Camel の [AWS S3 Storage Service](https://camel.apache.org/components/{{ CAMEL_
 Parameters 項目に、以下の内容を設定してください。
 他の項目は、デフォルトのままで構いません。
 
-* **Bucket　Name　Or　Arn**: {{api.bucket}}
+* **Bucket Name Or Arn**: {{API_BACKET}}
 * **Oparation**: listObjects
 
 MinIOへの接続の認証情報など、その他の必要な Parameters については、他の Route の処理でも共通で使用するため、`minio` フォルダの `minio.properties` ファイルに記述しています。
@@ -125,7 +125,7 @@ Parameters 項目に、以下の内容を設定してください。
 * **Streaming**: true
 * **Aggregation Strategy Method Allow Null**: true
 
-AggregationStrategyは、分割した各メッセージを集約時にどのように1つにマージするかを指定します。
+`AggregationStrategy`は、分割した各メッセージを集約時にどのように1つにマージするかを指定します。
 `GroupedBodyAggregationStrategy` は、入力された メッセージの Body を、単一のメッセージの Body としてList型のオブジェクトに集約します。
 
 ![](images/10-restapi-012.png)
@@ -199,7 +199,7 @@ Parameters 項目に、以下の内容を設定してください。
 Parameters 項目に、以下の内容を設定してください。
 他の項目は、デフォルトのままで構いません。
 
-* **Bucket　Name　Or　Arn**: {{api.bucket}}
+* **Bucket　Name　Or　Arn**: {{API_BACKET}}
 * **Oparation**: getObjects
 
 ![](images/10-restapi-018.png)
@@ -237,7 +237,7 @@ Parameters 項目に、以下の内容を設定してください。
 Parameters 項目に、以下の内容を設定してください。
 他の項目は、デフォルトのままで構いません。
 
-* **Bucket　Name　Or　Arn**: {{api.bucket}}
+* **Bucket　Name　Or　Arn**: {{API_BACKET}}
 
 ![](images/10-restapi-020.png)
 ![karavan]({% image_path 10-restapi-020.png %}){:width="1200px"}
@@ -289,7 +289,7 @@ Parameters 項目に、以下の内容を設定してください。
 Parameters 項目に、以下の内容を設定してください。
 他の項目は、デフォルトのままで構いません。
 
-* **Bucket　Name　Or　Arn**: {{api.bucket}}
+* **Bucket　Name　Or　Arn**: {{API_BACKET}}
 * **Oparation**: deleteObjects
 
 ![](images/10-restapi-023.png)

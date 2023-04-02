@@ -19,6 +19,7 @@ vars:
   OPENSHIFT_PASSWORD:
   KAFDROP_URL:
   WEBUI_URL:
+  API_BACKET:
 
 modules:
   activate:

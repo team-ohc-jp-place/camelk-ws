@@ -14,7 +14,7 @@
 ![karavan]({% image_path 09-devspaces-001.png %}){:width="1200px"}
 
 ワークショップを開始する前の事前準備として、OpenShift DevSpaces のワークスペースを作成しておきます。
-こちらのリンクから、[OpenShift Web Console]({{ CONSOLE_URL }}) にアクセスをしてください。
+こちらのリンクから、[OpenShift Web Console]({{ CONSOLE_URL }}){:target="_blank"} にアクセスをしてください。
 OpenShift Web Console にアクセスするための情報は以下の通りです。
 
 * **Username**: {{ OPENSHIFT_USER }}
