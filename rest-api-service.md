@@ -199,7 +199,7 @@ Parameters 項目に、以下の内容を設定してください。
 Parameters 項目に、以下の内容を設定してください。
 他の項目は、デフォルトのままで構いません。
 
-* **Bucket　Name　Or　Arn**: {{ API-BUCKET }}
+* **Bucket Name Or Arn**: {{ API-BUCKET }}
 * **Oparation**: getObjects
 
 ![](images/10-restapi-018.png)
@@ -237,7 +237,7 @@ Parameters 項目に、以下の内容を設定してください。
 Parameters 項目に、以下の内容を設定してください。
 他の項目は、デフォルトのままで構いません。
 
-* **Bucket　Name　Or　Arn**: {{ API-BUCKET }}
+* **Bucket Name Or Arn**: {{ API-BUCKET }}
 
 ![](images/10-restapi-020.png)
 ![karavan]({% image_path 10-restapi-020.png %}){:width="1200px"}
@@ -289,7 +289,7 @@ Parameters 項目に、以下の内容を設定してください。
 Parameters 項目に、以下の内容を設定してください。
 他の項目は、デフォルトのままで構いません。
 
-* **Bucket　Name　Or　Arn**: {{ API-BUCKET }}
+* **Bucket Name Or Arn**: {{ API-BUCKET }}
 * **Oparation**: deleteObjects
 
 ![](images/10-restapi-023.png)
