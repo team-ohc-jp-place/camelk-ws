@@ -232,7 +232,6 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
       -e CAMEL_VERSION="3.20.x" \
       -e CAMELK_VERSION="1.11.x" \
       -e KAMELETS_VERSION="0.9.x" \
-      -e API_BACKET="{{api.bucket}}"
       -e OPENSHIFT_USER=$OPENSHIFT_USER \
       -e OPENSHIFT_PASSWORD=$OPENSHIFT_PASSWORD \
       -e CONTENT_URL_PREFIX="https://raw.githubusercontent.com/team-ohc-jp-place/camelk-ws/devspaces_v1" \
