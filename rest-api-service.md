@@ -425,7 +425,7 @@ curl -i $URL/
 リクエストが来るとPodが起動して処理を行います。一定時間リクエストが無い場合は、Pod数 がゼロにスケールダウンします。
 
 ![](images/10-restapi-034.gif)
-![karavan]({% image_path 10-restapi-034.gif %}){:width="400px"}
+![karavan]({% image_path 10-restapi-034.gif %})
 
 ---
 
