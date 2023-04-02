@@ -102,7 +102,7 @@ Camel の [AWS S3 Storage Service](https://camel.apache.org/components/{{ CAMEL_
 Parameters 項目に、以下の内容を設定してください。
 他の項目は、デフォルトのままで構いません。
 
-* **Bucket Name Or Arn**: '{{api.bucket}}'
+* **Bucket Name Or Arn**: \{{api.bucket}}
 * **Oparation**: listObjects
 
 MinIOへの接続の認証情報など、その他の必要な Parameters については、他の Route の処理でも共通で使用するため、`minio` フォルダの `minio.properties` ファイルに記述しています。
@@ -237,7 +237,7 @@ Parameters 項目に、以下の内容を設定してください。
 Parameters 項目に、以下の内容を設定してください。
 他の項目は、デフォルトのままで構いません。
 
-* **Bucket　Name　Or　Arn**: pass:[{{api.bucket}}]
+* **Bucket　Name　Or　Arn**: {{api.bucket}}
 
 ![](images/10-restapi-020.png)
 ![karavan]({% image_path 10-restapi-020.png %}){:width="1200px"}
