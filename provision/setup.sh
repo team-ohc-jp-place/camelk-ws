@@ -16,6 +16,7 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
   oc new-project user${m}-dev
   oc new-project user${m}-devspaces
 done
+oc new-project atlasmap
 oc new-project devspaces
 oc new-project knative-serving
 oc new-project knative-eventing
@@ -43,6 +44,12 @@ while [ true ] ; do
   echo waiting...
   sleep 10
 done
+
+# AtlasMap
+oc new-app --name=atlasmap java:8 --binary=true -n atlasmap
+oc start-build atlasmap --from-file=./openshift/10_atlasmap/atlasmap-standalone-2.5.2.jar -n atlasmap
+oc patch svc atlasmap -n atlasmap --type=json -p '[{"op": "replace", "path": "/spec/ports/0/port", "value":8585},{"op": "replace", "path": "/spec/ports/0/targetPort", "value":8585}]'
+oc expose svc/atlasmap -n atlasmap
 
 # Etherpad
 oc new-project gpte-etherpad --display-name "OpenTLC Shared Etherpad"
@@ -96,7 +103,9 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
 
   sleep 10
 
+  #oc apply -n $PRJ_NAME -f ./openshift/04_postgresql/scc-anyuid.yaml
   oc adm policy add-role-to-user view $OPENSHIFT_USER -n $PRJ_NAME
+  oc adm policy add-role-to-user edit $OPENSHIFT_USER -n $PRJ_NAME
   oc adm policy add-role-to-user view $OPENSHIFT_USER -n devspaces
   oc create sa camelk-user -n $PRJ_NAME
   oc adm policy add-scc-to-user anyuid -z camelk-user
@@ -151,40 +160,32 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
 
   # PostgreSQL (各user)
   ## PostgreSQL deploy
-  oc process -f ./openshift/04_postgresql/01_postgresql.yaml -l app=postgresql \
+  oc process -n $PRJ_NAME -f ./openshift/04_postgresql/01_postgresql.yaml -l app=postgresql \
       -p DATABASE_SERVICE_NAME=postgresql \
       -p POSTGRESQL_USER=demo \
       -p POSTGRESQL_PASSWORD=demo \
       -p POSTGRESQL_DATABASE=sampledb \
-      | oc create -f -
+       | oc create -f -
+
+  oc rollout status -w dc/postgresql -n $PRJ_NAME
 
   sleep 10
 
-  ## PostgreSQL DataInput
-  oc create configmap postgresql-config-map --from-file=./openshift/04_postgresql/02_provision_data.sh -n $PRJ_NAME
-  oc set volume dc/postgresql --name=postgresql-config-volume --add -m /tmp/config-files -t configmap --configmap-name=postgresql-config-map -n $PRJ_NAME
-  oc set env --from=configmap/postgresql-config-map dc/postgresql -n $PRJ_NAME
-  oc set deployment-hook dc/postgresql --post -c postgresql \
-    -e POSTGRESQL_HOSTNAME=postgresql.$PRJ_NAME.svc.cluster.local \
-    -e POSTGRESQL_USER=demo \
-    -e POSTGRESQL_PASSWORD=demo \
-    --volumes=postgresql-config-volume \
-    --failure-policy=abort -- /bin/bash /tmp/config-files/02_provision_data.sh -n $PRJ_NAME
+  ## Config for Debezium
+  oc rsh -n $PRJ_NAME dc/postgresql psql -U demo -d sampledb -c "CREATE TABLE products (id SERIAL PRIMARY KEY, name varchar);"
+  oc rsh -n $PRJ_NAME dc/postgresql psql -U demo -d sampledb -c "INSERT INTO products (name) VALUES ('apple'), ('orange'), ('lemon');"
+  oc rsh -n $PRJ_NAME dc/postgresql psql -c "ALTER ROLE demo LOGIN REPLICATION;"
+  oc rsh -n $PRJ_NAME dc/postgresql psql -c "ALTER ROLE demo WITH SUPERUSER;"
+  oc rsh -n $PRJ_NAME dc/postgresql psql -c "CREATE PUBLICATION debezium FOR ALL TABLES;"
+  POSTGRESQL_POD=$(oc get pods --field-selector=status.phase=Running -o custom-columns="NAME:{.metadata.name}" | grep postgresql)
+  oc cp ./openshift/09_debezium/config/postgresql.conf $POSTGRESQL_POD:/var/lib/pgsql/data/userdata/postgresql.conf -n $PRJ_NAME
+  
+  # oc exec -it dc/postgresql -- /bin/bash
+  # vi /var/lib/pgsql/data/userdata/postgresql.conf
+  
+  sleep 10
 
-  echo "Waiting for PostgreSQL to be running..."
-  while [ 1 ]; do
-    STAT=$(oc get pod postgresql-2-deploy --ignore-not-found --no-headers -o=custom-columns=STATUS:.status.phase)
-    if [ "$STAT" = "Succeeded" ] ; then
-      oc rollout latest dc/postgresql -n $PRJ_NAME
-      break
-    fi
-    STAT=$(oc get pod postgresql-3-deploy --ignore-not-found --no-headers -o=custom-columns=STATUS:.status.phase)
-    if [ "$STAT" = "Succeeded" ] ; then
-      break
-    fi
-    echo "..."
-    sleep 5
-  done
+  oc rollout latest dc/postgresql -n $PRJ_NAME
 
   # Emmiter (各user)
   oc new-app centos/python-36-centos7~https://github.com/kamorisan/event-emmiter \
@@ -206,6 +207,22 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
 
   # MinIo
   oc apply -f ./openshift/08_minio/01_minio.yaml -n $PRJ_NAME
+
+  # Debezium
+  oc process -n $PRJ_NAME -f ./openshift/04_postgresql/01_postgresql.yaml -l app=postgresql-replica \
+      -p DATABASE_SERVICE_NAME=postgresql-replica \
+      -p POSTGRESQL_USER=demo \
+      -p POSTGRESQL_PASSWORD=demo \
+      -p POSTGRESQL_DATABASE=sampledb \
+       | oc create -f -
+
+  oc rollout status -w dc/postgresql-replica -n $PRJ_NAME
+  
+  sleep 10
+  oc rsh -n $PRJ_NAME dc/postgresql-replica psql -U demo -d sampledb -c "CREATE TABLE products (id SERIAL PRIMARY KEY, name varchar);"
+
+  oc process -n $PRJ_NAME -f ./openshift/09_debezium/01_dbz-connect.yaml | oc apply -f -
+  oc create -n $PRJ_NAME -f ./openshift/09_debezium/02_postgresql-connector.yaml
 
   # Guides
   # get routing suffix
@@ -245,6 +262,7 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
   oc label deployment/emitter app.openshift.io/runtime=python --overwrite -n $PRJ_NAME
   oc label dc/quarkusapp app.openshift.io/runtime=quarkus --overwrite -n $PRJ_NAME
   oc label dc/postgresql app.openshift.io/runtime=postgresql --overwrite -n $PRJ_NAME
+  oc label dc/postgresql-replica app.openshift.io/runtime=postgresql --overwrite -n $PRJ_NAME
   oc label dc/kafdrop app.openshift.io/runtime=amq --overwrite -n $PRJ_NAME
 
   oc delete Integration example -n $PRJ_NAME
