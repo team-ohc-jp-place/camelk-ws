@@ -159,3 +159,4 @@ Parameters は、以下を入力してください。
 ### 4. 参考リンク
 
 * [Red Hat Integration - Kamelets リファレンス](https://access.redhat.com/documentation/ja-jp/red_hat_integration/2022.q4/html/kamelets_reference/kafka-sink){:target="_blank"}
+* [Red Hat AMQ Streams](https://access.redhat.com/documentation/en-us/red_hat_amq_streams){:target="_blank"}
