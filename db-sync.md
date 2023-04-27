@@ -31,12 +31,30 @@ AtlasMap Data Mapper UI キャンバスを使用してデータマッピング�
 
 #### このセクションで作成する内容
 
+* 以下のコンポーネントは既に用意されています
+  * 同期元、同期先のPostgreSQL
+    * postgresql
+    * postgresql-replica
+  * 同期元のPostgreSQLの変更ログをキャプチャするDebezium
+* 実装する Camelルート
+  * DBイベントを受信する Kafka Source
+  * データマッピングで必要な項目を抽出
+  * CREATE/DELETE/UPDATE で処理を分岐して、同期先の PostgreSQL を操作
+
+
 ![](images/11-dbsync-004.png)
 ![karavan]({% image_path 11-dbsync-004.png %}){:width="1200px"}
 
 ---
 
-### 2. Placeholder
+### 2. Debeziumからのログを受信する
+
+[Kafdrop](http://{{ KAFDROP_URL }}){:target="_blank"} というツールで、Kafka トピックに送信されたメッセージの内容を確認することができます。
+
+こちらのリンクから、[incoming-topic](http://{{ KAFDROP_URL }}/topic/incoming-topic/messages?partition=0&offset=0&count=100&keyFormatDEFAULT=&format=DEFAULT){:target="_blank"} の内容を確認できます。アクセスして確認してみてください。
+
+Debezium からのDB変更ログは、`debezium.<table名>` というトピックに格納されています。
+`debezium.public.`
 
 ---
 

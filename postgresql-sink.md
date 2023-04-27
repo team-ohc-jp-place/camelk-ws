@@ -10,11 +10,25 @@ Kamelet の **PostgreSQL Sink** を使用して、Camel K と Kafka との連携
 ![](images/08-postgresql-014.png)
 ![karavan]({% image_path 08-postgresql-014.png %}){:width="800px"}
 
+#### このセクションで作成する内容
+
+* 以下のコンポーネントは既に用意されています
+  * PostgreSQL
+* 実装する Camelルート
+  * PostgreSQL のテーブルへデータを追加
+  * PostgreSQL のテーブルからデータを取得
+
+![](images/08-postgresql-016.png)
+![karavan]({% image_path 08-postgresql-016.png %}){:width="1200px"}
+
 ---
 
 ### 2. PostgreSQL Sink を使用してテーブルからデータを取得する
 
 PostgreSQL は、OpenShift上に用意されているものを使うことができます。
+
+![](images/08-postgresql-015.png)
+![karavan]({% image_path 08-postgresql-015.png %}){:width="800px"}
 
 PostgreSQL にアクセスするための情報は以下の通りです。
 
@@ -33,31 +47,27 @@ PostgreSQL にアクセスするための情報は以下の通りです。
 |  3  |  lemon  |
 
 実際に確認をしてみましょう。
-OpenShift Web Console の [Topology view]({{ CONSOLE_URL }}/topology/ns/{{ OPENSHIFT_USER }}-dev){:target="_blank"} にアクセスして、起動中の PostgreSQL の Pod にアクセスをします。
-
-![](images/08-postgresql-015.png)
-![karavan]({% image_path 08-postgresql-015.png %}){:width="800px"}
-
-Terminal をタブを選択し、以下のコマンドでPosgreSQL を実行してください。
+OpenShift DevSpaces の Terminal を開き、postgresql の pod にログインし、postgreSQLのコマンドを実行してみてください。
 
 ```
+oc exec -it -n {{ OPENSHIFT_USER }}-dev -- /bin/bash
 psql sampledb
 ```
 
 ![](images/08-postgresql-000.png)
-![karavan]({% image_path 08-postgresql-000.png %}){:width="1200px"}
+![karavan]({% image_path 08-postgresql-000.png %}){:width="600px"}
 
-`\d` と入力すると、テーブルの一覧が表示されます。
+postgreSQL にログインしたら、`\d` と入力すると、テーブルの一覧が表示されます。
 
 ![](images/08-postgresql-001.png)
 ![karavan]({% image_path 08-postgresql-001.png %}){:width="400px"}
 
-products テーブル の 中身を確認してみましょう。`select * from products;` と入力してください。
+`products` テーブル の 中身を確認してみましょう。`select * from products;` と入力してください。
 
 ![](images/08-postgresql-002.png)
 ![karavan]({% image_path 08-postgresql-002.png %}){:width="400px"}
 
-確認ができたら、`exit` を入力して PostgreSQL を終了します。
+確認ができたら、`\q` で PostgreSQL を終了し、`exit` を入力して Pod へのアクセスを終了します。
 
 ---
 
@@ -194,11 +204,10 @@ Set Body で設定した情報が追加されて、取得してきたデータ�
 Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
 
 実際に、PostgreSQL にアクセスして確認をしてみましょう。
-OpenShift Web Console の [Topology view]({{ CONSOLE_URL }}/topology/ns/{{ OPENSHIFT_USER }}-dev){:target="_blank"} にアクセスして、起動中の PostgreSQL の Pod にアクセスをします。
-
-Pod内に入ったら、Terminal をタブを選択し、以下のコマンドでPosgreSQL を実行してください。
+OpenShift DevSpaces の Terminal を開き、postgresql の pod にログインし、postgreSQLのコマンドを実行してみてください。
 
 ```
+oc exec -it -n {{ OPENSHIFT_USER }}-dev -- /bin/bash
 psql sampledb
 ```
 
