@@ -49,10 +49,10 @@ PostgreSQL にアクセスするための情報は以下の通りです。
 実際に確認をしてみましょう。
 OpenShift DevSpaces の Terminal を開き、postgresql の pod にログインし、postgreSQLのコマンドを実行してみてください。
 
-```
+~~~
 oc exec -it -n {{ OPENSHIFT_USER }}-dev -- /bin/bash
 psql sampledb
-```
+~~~
 
 ![](images/08-postgresql-000.png)
 ![karavan]({% image_path 08-postgresql-000.png %}){:width="600px"}

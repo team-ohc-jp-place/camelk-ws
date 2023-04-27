@@ -25,7 +25,7 @@ Kafka に対してランダムなメッセージを発信するアプリと、Ka
 
 `emitter` というアプリが、Kafka の `incoming-topic` というトピックに対して、10秒間毎に以下のような情報を持ったメッセージをランダムに発信をしています。
 
-```
+~~~
 {
   "orderType": "E", 
   "orderItemName": "Tart Lemon", 
@@ -34,7 +34,7 @@ Kafka に対してランダムなメッセージを発信するアプリと、Ka
   "shipmentAddress": "329-2476 Ut Ave", 
   "zipCode": "25113"
 }
-```
+~~~
 
 ![](images/07-kafka-003.png)
 ![karavan]({% image_path 07-kafka-003.png %}){:width="200px"}
