@@ -15,13 +15,13 @@
 その変更内容を **Kafka** に接続している他のシステムに、ニアリアルタイムに連携させることができるようになります。
 
 ![](images/11-dbsync-002.png)
-![karavan]({% image_path 11-dbsync-002.png %}){:width="1200px"}
+![karavan]({% image_path 11-dbsync-002.png %}){:width="800px"}
 
 #### AtlasMap について
 
-[AtlasMap](https://debezium.io/){:target="_blank"} データマッピングソリューションです。
+[AtlasMap](https://debezium.io/){:target="_blank"} はデータマッピングソリューションです。
 データマッピングというのは、あるサービスと別のサービス（またはデータベースなど）を接続するときに、どの項目をどの項目に移送するのか、または編集を施すのか、といった作業のことです。
-AtlasMap Data Mapper UI キャンバスを使用してデータ マッピングを設計し、ランタイム エンジンを介してそのデータ マッピングを実行することができます。
+AtlasMap Data Mapper UI キャンバスを使用してデータマッピングを設計し、ランタイム エンジンを介してそのデータマッピングを実行することができます。
 [camel-atlasmap](https://camel.apache.org/components/{{ CAMEL_VERSION }}/atlasmap-component.html){:target="_blank"} コンポーネントを使用して、Apache Camel ルートの一部としてデータ マッピングを実行することもできます。
 
 ![](images/11-dbsync-003.png)
@@ -31,7 +31,8 @@ AtlasMap Data Mapper UI キャンバスを使用してデータ マッピング�
 
 #### このセクションで作成する内容
 
-
+![](images/11-dbsync-004.png)
+![karavan]({% image_path 11-dbsync-004.png %}){:width="1200px"}
 
 ---
 
