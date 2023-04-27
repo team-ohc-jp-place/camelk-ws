@@ -49,12 +49,88 @@ AtlasMap Data Mapper UI キャンバスを使用してデータマッピング�
 
 ### 2. Debeziumからのログを受信する
 
+前章の [PostgresSQL との連携]({{ HOSTNAME_SUFFIX }}/workshop/camel-k/lab/postgresql-sink){:target="_blank"} で 使用したデータベースは、`Debezium` にて変更ログをキャプチャし、Kafkaイベントに変換するようになっています。
+
 [Kafdrop](http://{{ KAFDROP_URL }}){:target="_blank"} というツールで、Kafka トピックに送信されたメッセージの内容を確認することができます。
 
-こちらのリンクから、[incoming-topic](http://{{ KAFDROP_URL }}/topic/incoming-topic/messages?partition=0&offset=0&count=100&keyFormatDEFAULT=&format=DEFAULT){:target="_blank"} の内容を確認できます。アクセスして確認してみてください。
+こちらのリンクから、[debezium.public.products](http://{{ KAFDROP_URL }}/topic/debezium.public.products/messages?partition=0&offset=0&count=100&keyFormat=DEFAULT&format=DEFAULT){:target="_blank"} の内容を確認できます。アクセスして確認してみてください。
 
-Debezium からのDB変更ログは、`debezium.<table名>` というトピックに格納されています。
-`debezium.public.`
+![](images/11-dbsync-005.png)
+![karavan]({% image_path 11-dbsync-005.png %}){:width="1200px"}
+
+トピックにはメッセージが4件入っていると思います。
+一番下のメッセージが、前章の最後に追加したレコードの内容に対応しています。
+
+```
+{
+   "schema": {
+      "type": "struct",
+      "fields": [
+         {
+            "type": "int32",
+            "optional": false,
+            "default": 0,
+            "field": "id"
+         },
+         {
+            "type": "string",
+            "optional": true,
+            "field": "name"
+         },
+         {
+            "type": "string",
+            "optional": true,
+            "field": "__op"
+         },
+         {
+            "type": "string",
+            "optional": true,
+            "field": "__table"
+         },
+         {
+            "type": "int64",
+            "optional": true,
+            "field": "__lsn"
+         },
+         {
+            "type": "int64",
+            "optional": true,
+            "field": "__source_ts_ms"
+         },
+         {
+            "type": "string",
+            "optional": true,
+            "field": "__deleted"
+         }
+      ],
+      "optional": false,
+      "name": "debezium.public.products.Value"
+   },
+   "payload": {
+      "id": 4,
+      "name": "melon",
+      "__op": "c",
+      "__table": "products",
+      "__lsn": 23000152,
+      "__source_ts_ms": 1682590725891,
+      "__deleted": "false"
+   }
+}
+```
+
+`fields` にトピックの中の項目の属性情報があり、`payload` の中に実際の値が格納されています。
+項目名の先頭に `__` がある項目は、変更イベントのメタデータです。
+
+* **__op**: イベントが生成される原因となった操作
+  * c: CREATE
+  * r: READ
+  * u: UPDATE
+  * d: DELETE
+* **__table**: 変更イベントが発生したテーブル名
+* **__lsn**: Log Sequence Number
+* **__source_ts_ms**: イベントのタイムスタンプ
+* **__deleted**: ???
+
 
 ---
 
