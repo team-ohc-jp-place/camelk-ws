@@ -47,7 +47,7 @@ AtlasMap Data Mapper UI キャンバスを使用してデータマッピング�
 
 ---
 
-### 2. Debeziumからのログを受信する
+### 2. Debezium からのログを受信する
 
 前章の [PostgresSQL との連携]({{ HOSTNAME_SUFFIX }}/workshop/camel-k/lab/postgresql-sink){:target="_blank"} で 使用したデータベースは、`Debezium` にて変更ログをキャプチャし、Kafkaイベントに変換するようになっています。
 
@@ -131,7 +131,100 @@ AtlasMap Data Mapper UI キャンバスを使用してデータマッピング�
 * **__source_ts_ms**: イベントのタイムスタンプ
 * **__deleted**: ???
 
-aaaa
+それでは、Kafka からメッセージを受信する処理を作成していきます。 
+
+OpenShift DevSpaces 左のエクスプローラー上で、右クリックをして、メニューから `Karavan: Create Integration` を選択し、`dbsync` と入力して Enter を押してください。`dbsync.camel.yaml` という名前のファイルが作成されて、Karavan Designer のGUIが開きます。
+
+続いて、Karavan Designer のGUIが開いたら、上部の `Create route` をクリックして、Route を作成しましょう。
+
+`Kamelets` タブから `Kafka Source` を探して選択をしてください。
+右上のテキストボックスに `Kafka Source` と入力をすると、絞り込みができます。
+
+![](images/07-kafka-005.png)
+![karavan]({% image_path 07-kafka-005.png %}){:width="800px"}
+
+Route の source として、Kafka Source コンポーネントが配置されます。
+Kafka Source シンボルをクリックすると、右側にプロパティが表示されますので、確認してください。
+
+Parameters は、以下を入力してください。
+
+* **Topic Names**: debezium.public.products
+* **Bootstrap Servers**: kafka-cluster-kafka-bootstrap.{{ OPENSHIFT_USER }}-dev.svc:9092
+* **Security Protocol**: PLAINTEXT
+* **Username**: demo
+* **Password**: demo
+* **Auto Offset Reset**: earliest
+  * `latest`: 新しいメッセージから受信 （未指定の場合 latest になります）
+  * `earliest`: 最初のメッセージに遡って受信
+
+続いて、受信した Kafka メッセージを確認するための Log を出力しておきます。
+
+`Kafka Source` シンボルの下に小さな＋ボタンが現れますので、それをクリックし、`Routing` のタブから `Log` を探して選択をしてください。
+
+Log の Messege は、`${body}` と入力をしておきます。
+
+![](images/11-dbsync-006.png)
+![karavan]({% image_path 11-dbsync-006.png %}){:width="1200px"}
+
+それでは、実際に動かしてみます。
+右上の ロケットのアイコン のボタンを押してください。
+
+ターミナルが開き、作成したインテグレーションが JBang を通して実行されます。
+特にエラーなく実行されたら、ターミナルにKafkaへの接続情報が表示されます。
+その後 Kafka から受信したメッセージの内容を Log として表示します。
+
+![](images/11-dbsync-007.png)
+![karavan]({% image_path 11-dbsync-007.png %}){:width="1200px"}
+
+
+Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
+
+---
+
+### 3. AtlasMap でデータマッピングをする
+
+Kafka から受信した Debezium のDB変更イベントから、必要なデータを抽出していきます。
+
+[AtlasMap WebUI](http://atlasmap-atlasmap.{{ ROUTE_SUBDOMAIN }}){:target="_blank"} で、データマッピングの設計をすることができます。リンクをクリックして AtlasMap WebUI を開いてください。
+
+![](images/11-dbsync-008.png)
+![karavan]({% image_path 11-dbsync-008.png %}){:width="1200px"}
+
+変換前、変換後のjsonやxmlのスキーマ、もしくはインスタンスをインポートして設計を始めることができます。
+
+OpenShift DevSpaces の ワークスペースの `atlasmap/json` フォルダ内に、変換前、後のjson形式のファイルがありますので、一旦これをローカルにダウンロードして保存してください。
+
+* **変換前**: debezium.json
+* **変換後**: payload.json
+
+AtlasMap WebUI の左側の `Source` の `Import instance or schema file` をクリックします。
+
+![](images/11-dbsync-009.png)
+![karavan]({% image_path 11-dbsync-009.png %}){:width="1200px"}
+
+ローカルにダウンロードした、`debezium.json` を選択してインポートしてください。
+Instance か Schema かを聞かれるので、`Instance` を選択します。
+
+![](images/11-dbsync-010.png)
+![karavan]({% image_path 11-dbsync-010.png %}){:width="400px"}
+
+今度は、右側の `Target`で、同様にして `payload.json` をインポートしてください。
+
+![](images/11-dbsync-011.png)
+![karavan]({% image_path 11-dbsync-011.png %}){:width="1200px"}
+
+それでは、Target側の各項目に対応する、Source側の同じ名前の項目を探し、ドラッグアンドドロップをして繋げてマッピングします。
+Target側の項目は、`payload` の中にあるのでクリックして開いてみてください。
+
+![](images/11-dbsync-012.png)
+![karavan]({% image_path 11-dbsync-012.png %}){:width="1200px"}
+
+上の図のように繋いだら、左上のメニューから、`Export all mappings and support files into a catalog (.adm)` をクリックして、ファイルをエクスポートします。名前は任意のもので良いですが、ここでは `atlasmap-mapping.adm` としておきます。
+
+![](images/11-dbsync-013.png)
+![karavan]({% image_path 11-dbsync-013.png %}){:width="1200px"}
+
+
 
 ---
 
