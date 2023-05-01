@@ -206,9 +206,9 @@ AtlasMap WebUI の左側の `Source` の `Import instance or schema file` をク
 Instance か Schema かを聞かれるので、`Instance` を選択します。
 
 ![](images/11-dbsync-010.png)
-![karavan]({% image_path 11-dbsync-010.png %}){:width="400px"}
+![karavan]({% image_path 11-dbsync-010.png %}){:width="600px"}
 
-今度は、右側の `Target`で、同様にして `payload.json` をインポートしてください。
+今度は、右側の `Target` から、同様にして変換後の `payload.json` をインポートしてください。
 
 ![](images/11-dbsync-011.png)
 ![karavan]({% image_path 11-dbsync-011.png %}){:width="1200px"}
@@ -224,8 +224,29 @@ Target側の項目は、`payload` の中にあるのでクリックして開い�
 ![](images/11-dbsync-013.png)
 ![karavan]({% image_path 11-dbsync-013.png %}){:width="1200px"}
 
+保存した `admファイル` は、ローカルから OpenShift DevSpaces のワークスペースのルートフォルダに保存しておいてください。（ドラッグアンドドロップでコピーできます）
+
+では、次に Camel ルートに Atlasmap を呼び出すコンポーネントを配置します。
+
+Route の Log シンボルの左上に小さな`→`ボタンが現れますので、それをクリックし、`Components` のタブから `AtlasMap` を探して選択をしてください。
+右上のテキストボックスに `AtlasMap` と入力をすると、絞り込みができます。
+
+![](images/11-dbsync-014.png)
+![karavan]({% image_path 11-dbsync-014.png %}){:width="800px"}
+
+AtlasMap のシンボルをクリックすると、右側にプロパティが表示されますので、
+Parameters 項目に、以下の内容を設定してください。
+
+* **Resource Uri**: file:atlasmap-mapping.adm
+
+> ローカル上で実行する場合は、admファイルの相対パスを記述します。OpenShiftへデプロイする場合には、`file:/etc/camel/resource/<file名>` と入力をしてください。
+
+![](images/11-dbsync-015.png)
+![karavan]({% image_path 11-dbsync-015.png %}){:width="1200px"}
 
 
+
+ 
 ---
 
 ### 参考リンク
