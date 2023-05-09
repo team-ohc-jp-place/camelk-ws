@@ -45,4 +45,4 @@ sh ./setup.sh <user-count>
 2023/3/27: OpenShift DevSpaces版にアップデート
 
 2023/5/9: Camel/Kafka/Debezium を使ったDBの同期 のページを追加
-　　　　　　REST API サービスの実装 のページを追加
+          REST API サービスの実装 のページを追加
