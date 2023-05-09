@@ -299,12 +299,12 @@ Message は、以下を入力してください。
 続いて、`Log` の下に、`PostgreSQL Sink` を配置します。`Kamelets` タブから `PostgreSQL Sink` を探して選択をしてください。
 
 ![](images/11-dbsync-020.png)
-![karavan]({% image_path 11-dbsync-020.png %}){:width="1200px"}
+![karavan]({% image_path 11-dbsync-020.png %}){:width="800px"}
 
 PostgreSQL のシンボルをクリックすると、右側にプロパティが表示されますので、
 Parameters 項目に、以下の内容を設定してください。
 
-* **Server Name**: postgresql.{{ OPENSHIFT_USER }}-dev.svc.cluster.local
+* **Server Name**: postgresql-replica.{{ OPENSHIFT_USER }}-dev.svc.cluster.local
 * **Server Port**: 5432
 * **Username**: demo
 * **Password**: demo
@@ -324,31 +324,113 @@ Choice シンボルにマウスカーソルを持っていくと、左上に小�
 ![karavan]({% image_path 11-dbsync-022.png %}){:width="600px"}
 
 先ほどのUPDATE処理と同様に、`Log` と `PostgreSQL Sink` を追加します。
-Parameters 項目に、以下の内容を設定してください。
+各シンボルの Parameters 項目に、以下の内容を設定してください。
 
 `When`
+
 * **Language**: simple
 * **Expression**: ${body.contains("op":"u")}
 * **description**: When: UPDATE
 
 `Log`
-* **Message**: UPDATE: ${body}
+
+* **Message**: DELETE: ${body}
 
 `PostgreSQL Sink`
-* **Server Name**: postgresql.{{ OPENSHIFT_USER }}-dev.svc.cluster.local
+
+* **Server Name**: postgresql-replica.{{ OPENSHIFT_USER }}-dev.svc.cluster.local
 * **Server Port**: 5432
 * **Username**: demo
 * **Password**: demo
 * **Query**: DELETE from products where id=:#id
 * **Database Name**: sampledb
 
-![](2023-05-01-19-05-47.png)
 ![](images/11-dbsync-023.png)
 ![karavan]({% image_path 11-dbsync-023.png %}){:width="1200px"}
 
+以上で、DELETE処理の作成は完了です。
 
+#### 4.3 CREATE処理を作成する
 
+右側の `Otherwise` にCREATE処理を作成します。
 
+まずは、`Log` と `PostgreSQL Sink` を追加します。
+各シンボルの Parameters 項目に、以下の内容を設定してください。
+
+`Otherwise`
+
+* **description**: Otherwise: CREATE
+
+`Log`
+
+* **Message**: CREATE: ${body}
+
+`PostgreSQL Sink`
+
+* **Server Name**: postgresql-replica.{{ OPENSHIFT_USER }}-dev.svc.cluster.local
+* **Server Port**: 5432
+* **Username**: demo
+* **Password**: demo
+* **Query**: INSERT INTO products (id, name) VALUES (:#id, :#name)
+* **Database Name**: sampledb
+
+![](images/11-dbsync-024.png)
+![karavan]({% image_path 11-dbsync-024.png %}){:width="1200px"}
+
+以上で、CREATE処理の作成は完了です。
+
+---
+
+### 5. Camel/Kafka/Debezium を使ったDBの同期の実行
+
+作成したDB同期の処理を実行してみましょう。
+まず、それぞれのDBのテーブルの状態を確認していきます。
+下記のコマンドを実行してください。
+
+* 同期元DBの確認: `oc rsh -n {{ OPENSHIFT-USER }}-dev dc/postgresql psql -U demo -d sampledb -c "SELECT * FROM products;"`
+* 同期先DBの確認: `oc rsh -n {{ OPENSHIFT-USER }}-dev dc/postgresql-replica psql -U demo -d sampledb -c "SELECT * FROM products;"`
+
+![](images/11-dbsync-025.png)
+![karavan]({% image_path 11-dbsync-025.png %}){:width="800px"}
+
+それでは、実際に動かしてみます。
+右上の ロケットのアイコン のボタンを押してください。
+
+ターミナルが開き、作成したインテグレーションが JBang を通して実行されます。
+ターミナルに、同期先のDBに対してCREATE処理が実行されたことを示す Log が表示されているはずです。
+
+![](images/11-dbsync-026.png)
+![karavan]({% image_path 11-dbsync-026.png %}){:width="800px"}
+
+別のターミナルを開き、同期先のDBの内容を確認してみてください。
+
+* 同期先DBの確認: `oc rsh -n {{ OPENSHIFT-USER }}-dev dc/postgresql-replica psql -U demo -d sampledb -c "SELECT * FROM products;"`
+
+同期元と同じレコードが追加されています。
+
+![](images/11-dbsync-027.png)
+![karavan]({% image_path 11-dbsync-027.png %}){:width="800px"}
+
+同期元DBに対して、CREATE\UPDATE\DELETEの操作をして、同期先DBに反映されることを確認してみてください。
+
+* 同期元DB CREATE: `oc rsh -n {{ OPENSHIFT-USER }}-dev dc/postgresql psql -U demo -d sampledb -c "INSERT INTO products (name) VALUES ('strawberry');"`
+* 同期元DB DELETE: `oc rsh -n {{ OPENSHIFT-USER }}-dev dc/postgresql psql -U demo -d sampledb -c "DELETE from products where id=2;"`
+* 同期元DB UPDATE: `oc rsh -n {{ OPENSHIFT-USER }}-dev dc/postgresql psql -U demo -d sampledb -c "UPDATE products SET name=pineapple where id=1;"`
+
+実行後、ターミナルにそれぞれの処理が実行されたことを示す Log が表示されます。
+
+![](images/11-dbsync-028.png)
+![karavan]({% image_path 11-dbsync-028.png %}){:width="800px"}
+
+同期元、同期先のDBの内容を確認して、同期ができていることを確認してください。
+
+* 同期元DBの確認: `oc rsh -n {{ OPENSHIFT-USER }}-dev dc/postgresql psql -U demo -d sampledb -c "SELECT * FROM products;"`
+* 同期先DBの確認: `oc rsh -n {{ OPENSHIFT-USER }}-dev dc/postgresql-replica psql -U demo -d sampledb -c "SELECT * FROM products;"`
+
+![](images/11-dbsync-029.png)
+![karavan]({% image_path 11-dbsync-029.png %}){:width="800px"}
+
+Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
 
 ---
 
