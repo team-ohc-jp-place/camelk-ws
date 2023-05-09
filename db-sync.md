@@ -329,8 +329,8 @@ Choice シンボルにマウスカーソルを持っていくと、左上に小�
 `When`
 
 * **Language**: simple
-* **Expression**: ${body.contains("op":"u")}
-* **description**: When: UPDATE
+* **Expression**: ${body.contains("op":"d")}
+* **description**: When: DELETE
 
 `Log`
 
@@ -400,7 +400,7 @@ Choice シンボルにマウスカーソルを持っていくと、左上に小�
 ターミナルに、同期先のDBに対してCREATE処理が実行されたことを示す Log が表示されているはずです。
 
 ![](images/11-dbsync-026.png)
-![karavan]({% image_path 11-dbsync-026.png %}){:width="800px"}
+![karavan]({% image_path 11-dbsync-026.png %}){:width="1200px"}
 
 別のターミナルを開き、同期先のDBの内容を確認してみてください。
 
@@ -420,7 +420,7 @@ Choice シンボルにマウスカーソルを持っていくと、左上に小�
 実行後、ターミナルにそれぞれの処理が実行されたことを示す Log が表示されます。
 
 ![](images/11-dbsync-028.png)
-![karavan]({% image_path 11-dbsync-028.png %}){:width="800px"}
+![karavan]({% image_path 11-dbsync-028.png %}){:width="1200px"}
 
 同期元、同期先のDBの内容を確認して、同期ができていることを確認してください。
 

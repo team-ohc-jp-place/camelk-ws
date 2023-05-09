@@ -15,6 +15,22 @@
 * **OpenAPI**: [https://www.openapis.org/](https://www.openapis.org/){:target="_blank"}
 * **MinIO**: [https://min.io/](https://min.io/){:target="_blank"}
 
+#### このセクションで作成する内容
+
+* OpenAPI定義をインポートして、RESTエンドポイントを生成
+* オブジェクトストレージに対するCRUD操作の実装
+
+![](2023-05-09-13-21-12.png)
+![](images/10-restapi-035.png)
+![karavan]({% image_path 10-restapi-035.png %}){:width="800px"}
+
+![](2023-05-09-13-22-31.png)
+![](images/10-restapi-036.png)
+![karavan]({% image_path 10-restapi-036.png %}){:width="600px"}
+![](2023-05-09-13-22-53.png)
+![](images/10-restapi-037.png)
+![karavan]({% image_path 10-restapi-037.png %}){:width="600px"}
+
 ---
 
 ### 2. OpenAPI定義をKaravanにインポートする
