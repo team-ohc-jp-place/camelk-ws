@@ -244,9 +244,112 @@ Parameters 項目に、以下の内容を設定してください。
 ![](images/11-dbsync-015.png)
 ![karavan]({% image_path 11-dbsync-015.png %}){:width="1200px"}
 
+それでは、実際に動かしてみます。
+右上の ロケットのアイコン のボタンを押してください。
+
+ターミナルが開き、作成したインテグレーションが JBang を通して実行されます。
+AtlasMapでデータマッピング実施した後のメッセージが Log に表示されているはずです。
+
+![](images/11-dbsync-016.png)
+![karavan]({% image_path 11-dbsync-016.png %}){:width="1200px"}
+
+Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
+
+---
+
+### 4. 同期先のPostgreSQLを更新する
+
+次に、Camel ルートに同期先のPostgreSQLを更新する処理を作成していきます。
+まずは、更新イベントが CREATE/DELETE/UPDATE がどうかを判断する `Choice` コンポーネントを配置します。
+
+* [Choice](https://camel.apache.org/components/{{ CAMEL_VERSION }}/eips/choice-eip.html){:target="_blank"}
+
+#### 4.1 UPDATE処理を作成する
+
+Route にマウスカーソルを持っていくと、Log シンボルの下に小さな＋ボタンが現れますので、それをクリックし、`Routing` タブから `Choice` を探して選択をしてください。
+右上のテキストボックスに `Choice` と入力をすると、絞り込みができます。
+
+![](images/11-dbsync-017.png)
+![karavan]({% image_path 11-dbsync-017.png %}){:width="800px"}
+
+Log の下に、Choice コンポーネントが配置されます。
+
+![](images/11-dbsync-018.png)
+![karavan]({% image_path 11-dbsync-018.png %}){:width="1200px"}
+
+左側の `When` シンボルをクリックすると、右側にプロパティが表示されますので、確認してください。
+
+Parameters は、以下を入力してください。
+
+* **Language**: simple
+* **Expression**: ${body.contains("op":"u")}
+* **description**: When: UPDATE
+
+これは、`Body` メッセージの中に `"op":"u"` が含まれている場合（UPDATE処理の場合）に、実行されます。
+
+![](images/11-dbsync-019.png)
+![karavan]({% image_path 11-dbsync-019.png %}){:width="1200px"}
+
+次に、`When: UPDATE` にマウスカーソルを持っていくと、下に小さな＋ボタンが現れますので、それをクリックし、`Routing` タブから `Log` を探して選択をしてください。
+
+Message は、以下を入力してください。
+
+* **Message**: UPDATE: ${body}
+
+続いて、`Log` の下に、`PostgreSQL Sink` を配置します。`Kamelets` タブから `PostgreSQL Sink` を探して選択をしてください。
+
+![](images/11-dbsync-020.png)
+![karavan]({% image_path 11-dbsync-020.png %}){:width="1200px"}
+
+PostgreSQL のシンボルをクリックすると、右側にプロパティが表示されますので、
+Parameters 項目に、以下の内容を設定してください。
+
+* **Server Name**: postgresql.{{ OPENSHIFT_USER }}-dev.svc.cluster.local
+* **Server Port**: 5432
+* **Username**: demo
+* **Password**: demo
+* **Query**: UPDATE products SET name=:#name where id=:#id
+* **Database Name**: sampledb
+
+![](images/11-dbsync-021.png)
+![karavan]({% image_path 11-dbsync-021.png %}){:width="1200px"}
+
+以上で、UPDATE処理の作成は完了です。
+
+#### 4.2 DELETE処理を作成する
+
+Choice シンボルにマウスカーソルを持っていくと、左上に小さな＋ボタンが現れますので、それをクリックし、`When` を追加してください。
+
+![](images/11-dbsync-022.png)
+![karavan]({% image_path 11-dbsync-022.png %}){:width="600px"}
+
+先ほどのUPDATE処理と同様に、`Log` と `PostgreSQL Sink` を追加します。
+Parameters 項目に、以下の内容を設定してください。
+
+`When`
+* **Language**: simple
+* **Expression**: ${body.contains("op":"u")}
+* **description**: When: UPDATE
+
+`Log`
+* **Message**: UPDATE: ${body}
+
+`PostgreSQL Sink`
+* **Server Name**: postgresql.{{ OPENSHIFT_USER }}-dev.svc.cluster.local
+* **Server Port**: 5432
+* **Username**: demo
+* **Password**: demo
+* **Query**: DELETE from products where id=:#id
+* **Database Name**: sampledb
+
+![](2023-05-01-19-05-47.png)
+![](images/11-dbsync-023.png)
+![karavan]({% image_path 11-dbsync-023.png %}){:width="1200px"}
 
 
- 
+
+
+
 ---
 
 ### 参考リンク
