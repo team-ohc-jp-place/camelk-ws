@@ -10,11 +10,25 @@ Kamelet の **PostgreSQL Sink** を使用して、Camel K と PostgreSQL との�
 ![](images/08-postgresql-014.png)
 ![karavan]({% image_path 08-postgresql-014.png %}){:width="800px"}
 
+#### このセクションで作成する内容
+
+* 以下のコンポーネントは既に用意されています
+  * PostgreSQL
+* 実装する Camelルート
+  * PostgreSQL のテーブルへデータを追加
+  * PostgreSQL のテーブルからデータを取得
+
+![](images/08-postgresql-016.png)
+![karavan]({% image_path 08-postgresql-016.png %}){:width="1200px"}
+
 ---
 
 ### 2. PostgreSQL Sink を使用してテーブルからデータを取得する
 
 PostgreSQL は、OpenShift上に用意されているものを使うことができます。
+
+![](images/08-postgresql-015.png)
+![karavan]({% image_path 08-postgresql-015.png %}){:width="800px"}
 
 PostgreSQL にアクセスするための情報は以下の通りです。
 
@@ -32,32 +46,28 @@ PostgreSQL にアクセスするための情報は以下の通りです。
 |  2  |  orange  |
 |  3  |  lemon  |
 
-ターミナルから、下記のコマンドを実行すると、PostgreSQL の Pod からコマンドを実行することができます。
+実際に確認をしてみましょう。
+OpenShift DevSpaces の Terminal を開き、postgresql の pod にログインし、postgreSQLのコマンドを実行してみてください。
 
-```
-postgresql_pods=$(oc get pods -n {{ OPENSHIFT_USER }}-dev --field-selector status.phase=Running --no-headers -o=custom-columns=NAME:.metadata.name | grep postgresql) 
-oc exec -it $postgresql_pods -n {{ OPENSHIFT_USER }}-dev -- /bin/bash
-```
-
-Pod内に入ったら、以下のコマンドでPosgreSQL を実行してください。
-
-```
+~~~
+oc exec -it -n {{ OPENSHIFT_USER }}-dev -- /bin/bash
 psql sampledb
-```
-![](images/08-postgresql-000.png)
-![karavan]({% image_path 08-postgresql-000.png %}){:width="1200px"}
+~~~
 
-`\d` と入力すると、テーブルの一覧が表示されます。
+![](images/08-postgresql-000.png)
+![karavan]({% image_path 08-postgresql-000.png %}){:width="600px"}
+
+postgreSQL にログインしたら、`\d` と入力すると、テーブルの一覧が表示されます。
 
 ![](images/08-postgresql-001.png)
 ![karavan]({% image_path 08-postgresql-001.png %}){:width="400px"}
 
-products テーブル の 中身を確認してみましょう。`select * from products;` と入力してください。
+`products` テーブル の 中身を確認してみましょう。`select * from products;` と入力してください。
 
 ![](images/08-postgresql-002.png)
 ![karavan]({% image_path 08-postgresql-002.png %}){:width="400px"}
 
-確認ができたら、`exit` を入力して PostgreSQL を終了します。
+確認ができたら、`\q` で PostgreSQL を終了し、`exit` を入力して Pod へのアクセスを終了します。
 
 ---
 
@@ -157,7 +167,7 @@ Parameters 項目に、以下の内容を設定してください。
 他の項目は、デフォルトのままで構いません。
 
 * **Language**: simple
-* **Expression**: {"id":4, "name": "melon"}
+* **Expression**: {"id":4, "name":"melon"}
 
 ![](images/08-postgresql-010.png)
 ![karavan]({% image_path 08-postgresql-010.png %}){:width="800px"}
@@ -194,16 +204,10 @@ Set Body で設定した情報が追加されて、取得してきたデータ�
 Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
 
 実際に、PostgreSQL にアクセスして確認をしてみましょう。
-ターミナルから以下のコマンドを実行して、PostgreSQL にログインをしてみてください。
+OpenShift DevSpaces の Terminal を開き、postgresql の pod にログインし、postgreSQLのコマンドを実行してみてください。
 
 ```
-postgresql_pods=$(oc get pods -n {{ OPENSHIFT_USER }}-dev --field-selector status.phase=Running --no-headers -o=custom-columns=NAME:.metadata.name | grep postgresql) 
-oc exec -it $postgresql_pods -n {{ OPENSHIFT_USER }}-dev -- /bin/bash
-```
-
-Pod内に入ったら、以下のコマンドでPosgreSQL を実行してください。
-
-```
+oc exec -it -n {{ OPENSHIFT_USER }}-dev -- /bin/bash
 psql sampledb
 ```
 
@@ -216,6 +220,7 @@ products テーブル の 中身を確認してみましょう。`select * from 
 また、作成した `postgresql.camel.yaml` を `temp` フォルダに移動をしておいてください。 
 
 ---
+
 ### 参考リンク
 
 * [Red Hat Integration - Kamelets リファレンス](https://access.redhat.com/documentation/ja-jp/red_hat_integration/2022.q4/html/kamelets_reference/postgres-sql-sink){:target="_blank"}

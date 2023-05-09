@@ -19,6 +19,7 @@ vars:
   OPENSHIFT_PASSWORD:
   KAFDROP_URL:
   WEBUI_URL:
+  API_BUCKET:
 
 modules:
   activate:
@@ -30,6 +31,8 @@ modules:
   - split-eip
   - direct-component
   - recipientlist-eip
-  - kafka
+#  - kafka
   - postgresql-sink
+  - db-sync
+  - rest-api-service
   

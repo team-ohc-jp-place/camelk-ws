@@ -25,7 +25,7 @@ Kafka に対してランダムなメッセージを発信するアプリと、Ka
 
 `emitter` というアプリが、Kafka の `incoming-topic` というトピックに対して、10秒間毎に以下のような情報を持ったメッセージをランダムに発信をしています。
 
-```
+~~~
 {
   "orderType": "E", 
   "orderItemName": "Tart Lemon", 
@@ -34,7 +34,7 @@ Kafka に対してランダムなメッセージを発信するアプリと、Ka
   "shipmentAddress": "329-2476 Ut Ave", 
   "zipCode": "25113"
 }
-```
+~~~
 
 ![](images/07-kafka-003.png)
 ![karavan]({% image_path 07-kafka-003.png %}){:width="200px"}
@@ -52,19 +52,22 @@ OpenShift DevSpaces 左のエクスプローラー上で、右クリックをし
 
 続いて、Karavan Designer のGUIが開いたら、上部の `Create route` をクリックして、Route を作成しましょう。
 
-`Kamelets` タブから `Kafka Not Secured Source` を探して選択をしてください。
-右上のテキストボックスに `Kafka Not Secured Source` と入力をすると、絞り込みができます。
+`Kamelets` タブから `Kafka Source` を探して選択をしてください。
+右上のテキストボックスに `Kafka Source` と入力をすると、絞り込みができます。
 
 ![](images/07-kafka-005.png)
 ![karavan]({% image_path 07-kafka-005.png %}){:width="800px"}
 
-Route の source として、Kafka Not Secured Source コンポーネントが配置されます。
-Kafka Not Secured Source シンボルをクリックすると、右側にプロパティが表示されますので、確認してください。
+Route の source として、Kafka Source コンポーネントが配置されます。
+Kafka Source シンボルをクリックすると、右側にプロパティが表示されますので、確認してください。
 
 Parameters は、以下を入力してください。
 
 * **Topic Names**: incoming-topic
 * **Bootstrap Servers**: kafka-cluster-kafka-bootstrap.{{ OPENSHIFT_USER }}-dev.svc:9092
+* **Security Protocol**: PLAINTEXT
+* **Username**: demo
+* **Password**: demo
 * **Auto Offset Reset**: latest
   * `latest`: 新しいメッセージから受信 （未指定の場合 latest になります）
   * `earliest`: 最初のメッセージに遡って受信
@@ -73,7 +76,7 @@ Parameters は、以下を入力してください。
 
 続いて、受信した Kafka メッセージを確認するための Log を出力しておきます。
 
-`Kafka Not Secured Source` シンボルの下に小さな＋ボタンが現れますので、それをクリックし、`Routing` のタブから `Log` を探して選択をしてください。
+`Kafka Source` シンボルの下に小さな＋ボタンが現れますので、それをクリックし、`Routing` のタブから `Log` を探して選択をしてください。
 
 Log の Messege は、`${body}` と入力をしておきます。
 
@@ -116,19 +119,22 @@ WebUI は、`outcoming-topic` という Kafka トピック に送信されたメ
 
 それでは、先ほど作成した `kafka.camel.yaml` に、`outcoming-topic` へメッセージを発信する処理を追加していきます。
 
-Route にマウスカーソルを持っていくと、Log シンボルの下に小さな＋ボタンが現れますので、それをクリックし、`Kamelets` タブから `Kafka Not Secures Sink` を探して選択をしてください。
-右上のテキストボックスに `Kafka Not Secures Sink` と入力をすると、絞り込みができます。
+Route にマウスカーソルを持っていくと、Log シンボルの下に小さな＋ボタンが現れますので、それをクリックし、`Kamelets` タブから `Kafka Sink` を探して選択をしてください。
+右上のテキストボックスに `Kafka Sink` と入力をすると、絞り込みができます。
 
 ![](images/07-kafka-011.png)
 ![karavan]({% image_path 07-kafka-011.png %}){:width="800px"}
 
-Log の下に、Kafka Not Secured Sink コンポーネントが配置されます。
-Kafka Not Secured Sink シンボルをクリックすると、右側にプロパティが表示されますので、確認してください。
+Log の下に、Kafka Sink コンポーネントが配置されます。
+Kafka Sink シンボルをクリックすると、右側にプロパティが表示されますので、確認してください。
 
 Parameters は、以下を入力してください。
 
 * **Topic Names**: outcoming-topic
 * **Bootstrap Servers**: kafka-cluster-kafka-bootstrap.{{ OPENSHIFT_USER }}-dev.svc:9092
+* **Security Protocol**: PLAINTEXT
+* **Username**: demo
+* **Password**: demo
 
 ![](images/07-kafka-012.png)
 ![karavan]({% image_path 07-kafka-012.png %}){:width="1200px"}
@@ -152,4 +158,5 @@ Parameters は、以下を入力してください。
 
 ### 4. 参考リンク
 
-* [Red Hat Integration - Kamelets リファレンス](https://access.redhat.com/documentation/ja-jp/red_hat_integration/2022.q4/html/kamelets_reference/kafka-sink)
+* [Red Hat Integration - Kamelets リファレンス](https://access.redhat.com/documentation/ja-jp/red_hat_integration/2022.q4/html/kamelets_reference/kafka-sink){:target="_blank"}
+* [Red Hat AMQ Streams](https://access.redhat.com/documentation/en-us/red_hat_amq_streams){:target="_blank"}
