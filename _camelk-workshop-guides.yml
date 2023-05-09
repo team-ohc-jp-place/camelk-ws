@@ -31,7 +31,7 @@ modules:
   - split-eip
   - direct-component
   - recipientlist-eip
-  - kafka
+#  - kafka
   - postgresql-sink
   - db-sync
   - rest-api-service

@@ -18,8 +18,8 @@ modules:
     name: Direct コンポーネント
   recipientlist-eip:
     name: Recipient List パターン
-  kafka:
-    name: Kafka との連携
+#  kafka:
+#    name: Kafka との連携
   postgresql-sink:
     name: PostgreSQL との連携
   db-sync:
