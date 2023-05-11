@@ -27,6 +27,7 @@ oc apply -f ./openshift/01_operator/02_subs_amqstreams.yaml
 oc apply -f ./openshift/01_operator/03_subs_devspaces.yaml
 oc apply -f ./openshift/01_operator/04_subs_serverless.yaml
 
+
 # Waiting for getting operator subscription
 echo "Waiting for getting operator subscription"
 while [ true ] ; do
@@ -187,23 +188,24 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
 
   oc rollout latest dc/postgresql -n $PRJ_NAME
 
-  # Emmiter (各user)
-  oc new-app centos/python-36-centos7~https://github.com/kamorisan/event-emmiter \
-    --name=emitter \
-    -e KAFKA_BROKERS=kafka-cluster-kafka-bootstrap.$PRJ_NAME.svc:9092 \
-    -e KAFKA_TOPIC=incoming-topic \
-    -e RATE=10 \
-    -n $PRJ_NAME
+# Kafka のコンテンツは一旦削除 2023/5/8
+#  # Emmiter (各user)
+#  oc new-app centos/python-36-centos7~https://github.com/kamorisan/event-emmiter \
+#    --name=emitter \
+#    -e KAFKA_BROKERS=kafka-cluster-kafka-bootstrap.$PRJ_NAME.svc:9092 \
+#    -e KAFKA_TOPIC=incoming-topic \
+#    -e RATE=10 \
+#    -n $PRJ_NAME
 
-  # QuarkusApp（各user）
-  oc new-app --as-deployment-config --name quarkusapp \
-      --docker-image="kamorisan/quarkusapp:v2" \
-      -e KAFKA_BROKERS=kafka-cluster-kafka-bootstrap.$PRJ_NAME.svc:9092 \
-      -e KAFKA_TOPIC=outcoming-topic \
-      -n $PRJ_NAME
-
-  oc apply -f ./openshift/05_quarkusapp/01_service_quarkusapp.yaml -n $PRJ_NAME
-  oc apply -f ./openshift/05_quarkusapp/02_route_quarkusapp.yaml -n $PRJ_NAME
+#  # QuarkusApp（各user）
+#  oc new-app --as-deployment-config --name quarkusapp \
+#      --docker-image="kamorisan/quarkusapp:v2" \
+#      -e KAFKA_BROKERS=kafka-cluster-kafka-bootstrap.$PRJ_NAME.svc:9092 \
+#      -e KAFKA_TOPIC=outcoming-topic \
+#      -n $PRJ_NAME
+#
+#  oc apply -f ./openshift/05_quarkusapp/01_service_quarkusapp.yaml -n $PRJ_NAME
+#  oc apply -f ./openshift/05_quarkusapp/02_route_quarkusapp.yaml -n $PRJ_NAME
 
   # MinIo
   oc apply -f ./openshift/08_minio/01_minio.yaml -n $PRJ_NAME
@@ -229,7 +231,7 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
   oc create route edge dummy --service=dummy --port=8080 -n $PRJ_NAME
   ROUTE=$(oc get route dummy -o=go-template --template='{{ .spec.host }}' -n $PRJ_NAME)
   KAFDROP_URL=$(oc get route kafdrop -o=go-template --template='{{ .spec.host }}' -n $PRJ_NAME)
-  WEBUI_URL=$(oc get route quarkusapp -o=go-template --template='{{ .spec.host }}' -n $PRJ_NAME)
+  #WEBUI_URL=$(oc get route quarkusapp -o=go-template --template='{{ .spec.host }}' -n $PRJ_NAME)
   DEVSPACES_URL=$(oc get route devspaces -o=go-template --template='{{ .spec.host }}' -n devspaces)
   HOSTNAME_SUFFIX=$(echo $ROUTE | sed 's/^dummy-'$PRJ_NAME'\.//g')
   MASTER_URL=$(oc whoami --show-server)
@@ -238,11 +240,9 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
 
   # Guide Provision
   oc -n $PRJ_NAME new-app quay.io/osevg/workshopper --name=guides \
-      -e POSTGRESQL_SERVER=$POSTGRESQL_SERVER \
       -e MASTER_URL=$MASTER_URL \
       -e CONSOLE_URL=$CONSOLE_URL \
       -e KAFDROP_URL=$KAFDROP_URL \
-      -e WEBUI_URL=$WEBUI_URL \
       -e DEVSPACES_URL=$DEVSPACES_URL \
       -e DEVSPACES_REPO="https://github.com/team-ohc-jp-place/camelk-ws-devspaces.git" \
       -e ROUTE_SUBDOMAIN=$HOSTNAME_SUFFIX \
@@ -259,8 +259,8 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
   oc -n $PRJ_NAME expose svc/guides
 
   # Label
-  oc label deployment/emitter app.openshift.io/runtime=python --overwrite -n $PRJ_NAME
-  oc label dc/quarkusapp app.openshift.io/runtime=quarkus --overwrite -n $PRJ_NAME
+  #oc label deployment/emitter app.openshift.io/runtime=python --overwrite -n $PRJ_NAME
+  #oc label dc/quarkusapp app.openshift.io/runtime=quarkus --overwrite -n $PRJ_NAME
   oc label dc/postgresql app.openshift.io/runtime=postgresql --overwrite -n $PRJ_NAME
   oc label dc/postgresql-replica app.openshift.io/runtime=postgresql --overwrite -n $PRJ_NAME
   oc label dc/kafdrop app.openshift.io/runtime=amq --overwrite -n $PRJ_NAME
