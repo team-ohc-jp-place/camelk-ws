@@ -35,7 +35,7 @@
 
 ### 2. OpenAPI定義をKaravanにインポートする
 
-ベースになる OpenAPIの定義は、`minio/openapi.camel.yaml` に記述されています。
+ベースになる OpenAPIの定義は、`minio/openapi.yaml` に記述されています。
 中身を見て確認をしてみてください。
 
 このAPIを用いて実装したい操作は、以下の内容です。
@@ -50,7 +50,7 @@
 
 <!-- ここから: Karavan の バグ修正後に切り替え 
 
-まずは、OpenShift DevSpaces 左のエクスプローラー上で、`minio` フォルダの中に、`openapi.camel.yaml` というファイルがあるので、右クリックをして、`Karavan: Generate REST API` を選択してください。
+まずは、OpenShift DevSpaces 左のエクスプローラー上で、`minio` フォルダの中に、`openapi.yaml` というファイルがあるので、右クリックをして、`Karavan: Generate REST API` を選択してください。
 
 ![](images/10-restapi-003.png)
 ![karavan]({% image_path 10-restapi-003.png %}){:width="800px"}
@@ -75,7 +75,7 @@
 まずは、OpenAPIの定義をインポートして、REST API のエンドポイントと Camel の Route を生成します。ターミナルを開き、下記のコマンドを実行してください。
 
 ```
-jbang camel@apache/camel generate rest -i minio/openapi.camel.yaml --routes --type=yaml > api.camel.yaml
+jbang camel@apache/camel generate rest -i minio/openapi.yaml --routes --type=yaml > api.camel.yaml
 ```
 
 コマンドの実行完了後、`api.camel.yaml` というファイルが作成されますので、右クリックして、`karavan: Open` を選択します。
