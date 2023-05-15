@@ -334,16 +334,16 @@ Parameters 項目に、以下の内容を設定してください。
 
 作成したインテグレーションを、OpenShiftへデプロイして動かしてみましょう。
 
-ターミナルを開き、OpenShiftの `{{ OPENSHIFT_USER }}_dev` プロジェクトに入ります。
+ターミナルを開き、OpenShiftの `{{ OPENSHIFT_USER }}-dev` プロジェクトに入ります。
 以下のコマンドを実行してください。
 
 ```
-oc project {{ OPENSHIFT_USER }}_dev
+oc project {{ OPENSHIFT_USER }}-dev
 ```
 
 次に作成したインテグレーションをプロジェクトにデプロイします。
 
-`kamel run api.camel.yaml --property file:minio/minio.properties -n {{ OPENSHIFT_USER }}_dev` とターミナルに入力してください。
+`kamel run api.camel.yaml --property file:minio/minio.properties -n {{ OPENSHIFT_USER }}-dev` とターミナルに入力してください。
 
 ターミナルに以下のログが表示されて、OpenShiftに `api` のインテグレーションがデプロイされます。
 

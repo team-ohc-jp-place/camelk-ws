@@ -23,7 +23,7 @@ OpenShift Web Console にアクセスするための情報は以下の通りで�
 ![](images/09-devspaces-002.png)
 ![karavan]({% image_path 09-devspaces-002.png %}){:width="800px"}
 
-OpenShift Web Console にログイン後、左のメニュから `Developer` パースペクティブを選択し、その下のメニューから `Topology` ビューを開きます。Project名は `{{ OPENSHIFT_USER }}_dev` を選択してください。
+OpenShift Web Console にログイン後、左のメニュから `Developer` パースペクティブを選択し、その下のメニューから `Topology` ビューを開きます。Project名は `{{ OPENSHIFT_USER }}-dev` を選択してください。
 
 ![](images/09-devspaces-003.png)
 ![karavan]({% image_path 09-devspaces-003.png %}){:width="1200px"}
@@ -144,7 +144,7 @@ Version は `3.20.3` を選択しておいてください。
 
 先ほどのサンプルを、OpenShiftへデプロイしてみます。
 
-`kamel run example.camel.yaml -n {{ OPENSHIFT_USER }}_dev` とターミナルに入力してみてください。
+`kamel run example.camel.yaml -n {{ OPENSHIFT_USER }}-dev` とターミナルに入力してみてください。
 
 ターミナルに以下のログが表示されて、OpenShiftに `example` のインテグレーションがデプロイされます。
 

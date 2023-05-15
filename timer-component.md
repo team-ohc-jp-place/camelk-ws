@@ -89,7 +89,7 @@ Hello World の文字列が、約1秒間隔に5回表示されることを確認
 
 ### 3. OpenShift へのデプロイ
 
-ターミナルを開き、`kamel run timer.camel.yaml -n {{OPENSHIFT_USER}}_dev` と入力をしてください。
+ターミナルを開き、`kamel run timer.camel.yaml -n {{OPENSHIFT_USER}}-dev` と入力をしてください。
 
 ![](images/01-timer-010.png)
 ![karavan]({% image_path 01-timer-010.png %}){:width="600px"}
