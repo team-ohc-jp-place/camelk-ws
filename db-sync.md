@@ -413,9 +413,9 @@ Choice シンボルにマウスカーソルを持っていくと、左上に小�
 
 同期元DBに対して、CREATE\UPDATE\DELETEの操作をして、同期先DBに反映されることを確認してみてください。
 
-* 同期元DB CREATE: `oc rsh -n {{ OPENSHIFT_USER }}-dev dc/postgresql psql -U demo -d sampledb -c "INSERT INTO products (name) VALUES ('strawberry');"`
+* 同期元DB CREATE: `oc rsh -n {{ OPENSHIFT_USER }}-dev dc/postgresql psql -U demo -d sampledb -c "INSERT INTO products (id, name) VALUES (5, 'strawberry');"`
 * 同期元DB DELETE: `oc rsh -n {{ OPENSHIFT_USER }}-dev dc/postgresql psql -U demo -d sampledb -c "DELETE from products where id=2;"`
-* 同期元DB UPDATE: `oc rsh -n {{ OPENSHIFT_USER }}-dev dc/postgresql psql -U demo -d sampledb -c "UPDATE products SET name=pineapple where id=1;"`
+* 同期元DB UPDATE: `oc rsh -n {{ OPENSHIFT_USER }}-dev dc/postgresql psql -U demo -d sampledb -c "UPDATE products SET name='pineapple' where id=1;"`
 
 実行後、ターミナルにそれぞれの処理が実行されたことを示す Log が表示されます。
 
