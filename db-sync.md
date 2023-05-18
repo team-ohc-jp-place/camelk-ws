@@ -129,7 +129,7 @@ AtlasMap Data Mapper UI キャンバスを使用してデータマッピング�
 * **__table**: 変更イベントが発生したテーブル名
 * **__lsn**: Log Sequence Number
 * **__source_ts_ms**: イベントのタイムスタンプ
-* **__deleted**: ???
+* **__deleted**: 削除されたレコードかどうかを識別
 
 それでは、Kafka からメッセージを受信する処理を作成していきます。 
 

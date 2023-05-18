@@ -9,14 +9,15 @@ objects:
       labels:
         strimzi.io/cluster: debezium-kafka-connect-cluster
       name: debezium-connector-postgresql
+      namespace: ${PJ_NAME}
     spec:
       class: io.debezium.connector.postgresql.PostgresConnector
       tasksMax: 1
       config:
         #Kafka, DB接続情報
-        database.history.kafka.bootstrap.servers: kafka-cluster-kafka-bootstrap.${{PJ_NAME}}.svc:9092
+        database.history.kafka.bootstrap.servers: "kafka-cluster-kafka-bootstrap.${PJ_NAME}.svc:9092"
         database.history.kafka.topic: schema-changes.products
-        database.hostname: postgresql.${{PJ_NAME}}.svc.cluster.local
+        database.hostname: "postgresql.${PJ_NAME}.svc.cluster.local"
         database.port: 5432
         database.user: demo
         database.password: demo

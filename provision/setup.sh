@@ -224,7 +224,7 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
   oc rsh -n $PRJ_NAME dc/postgresql-replica psql -U demo -d sampledb -c "CREATE TABLE products (id SERIAL PRIMARY KEY, name varchar);"
 
   oc process -n $PRJ_NAME -f ./openshift/09_debezium/01_dbz-connect.yaml --param=PJ_NAME=$PRJ_NAME | oc apply -f -
-  oc process -n $PRJ_NAME -f ./openshift/09_debezium/02_postgresql-connector --param=PJ_NAME=$PRJ_NAME | oc apply -f -
+  oc process -n $PRJ_NAME -f ./openshift/09_debezium/02_postgresql-connector.yaml --param=PJ_NAME=$PRJ_NAME | oc apply -f -
 
   # Guides
   # get routing suffix

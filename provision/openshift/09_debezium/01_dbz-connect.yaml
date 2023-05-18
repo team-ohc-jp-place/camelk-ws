@@ -7,6 +7,7 @@ objects:
     kind: KafkaConnect
     metadata:
       name: debezium-kafka-connect-cluster
+      namespace: ${PJ_NAME}
       annotations:
         strimzi.io/use-connector-resources: "true"
     spec:
@@ -21,11 +22,12 @@ objects:
               - type: zip
                 url: https://maven.repository.redhat.com/ga/io/debezium/debezium-connector-postgres/2.1.4.Final-redhat-00001/debezium-connector-postgres-2.1.4.Final-redhat-00001-plugin.zip
                 #url: https://maven.repository.redhat.com/ga/io/debezium/debezium-connector-postgres/1.9.7.Final-redhat-00003/debezium-connector-postgres-1.9.7.Final-redhat-00003-plugin.zip
-      bootstrapServers: kafka-cluster-kafka-bootstrap.${{PJ_NAME}}.svc:9092
+      bootstrapServers: "kafka-cluster-kafka-bootstrap.${PJ_NAME}.svc:9092"
   - apiVersion: image.openshift.io/v1
     kind: ImageStream
     metadata:
       name: debezium-streams-connect
+      namespace: ${PJ_NAME}
 parameters:
   - name: PJ_NAME
     displayName: project name
