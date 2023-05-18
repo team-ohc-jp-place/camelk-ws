@@ -50,7 +50,7 @@ PostgreSQL にアクセスするための情報は以下の通りです。
 OpenShift DevSpaces の Terminal を開き、postgresql の pod にログインし、postgreSQLのコマンドを実行してみてください。
 
 ~~~
-oc exec -it -n {{ OPENSHIFT_USER }}-dev -- /bin/bash
+oc exec -it dc/postgresql -n {{ OPENSHIFT_USER }}-dev -- /bin/bash
 psql sampledb
 ~~~
 
@@ -206,10 +206,10 @@ Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱の�
 実際に、PostgreSQL にアクセスして確認をしてみましょう。
 OpenShift DevSpaces の Terminal を開き、postgresql の pod にログインし、postgreSQLのコマンドを実行してみてください。
 
-```
-oc exec -it -n {{ OPENSHIFT_USER }}-dev -- /bin/bash
+~~~
+oc exec -it dc/postgresql -n {{ OPENSHIFT_USER }}-dev -- /bin/bash
 psql sampledb
-```
+~~~
 
 products テーブル の 中身を確認してみましょう。`select * from products;` と入力してください。
 

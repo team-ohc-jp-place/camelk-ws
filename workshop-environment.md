@@ -23,7 +23,7 @@ OpenShift Web Console にアクセスするための情報は以下の通りで�
 ![](images/09-devspaces-002.png)
 ![karavan]({% image_path 09-devspaces-002.png %}){:width="800px"}
 
-OpenShift Web Console にログイン後、左のメニュから `Developer` パースペクティブを選択し、その下のメニューから `Topology` ビューを開きます。Project名は `{{ OPENSHIFT_USER }}_dev` を選択してください。
+OpenShift Web Console にログイン後、左のメニュから `Developer` パースペクティブを選択し、その下のメニューから `Topology` ビューを開きます。Project名は `{{ OPENSHIFT_USER }}-dev` を選択してください。
 
 ![](images/09-devspaces-003.png)
 ![karavan]({% image_path 09-devspaces-003.png %}){:width="1200px"}
@@ -33,9 +33,9 @@ OpenShift Web Console にログイン後、左のメニュから `Developer` パ
 * **guides**: 本ワークショップのガイドドキュメント
 * **kafka-cluster**: Kafka のクラスター
 * **kafdrop**: Kafka 用の Web UI でブローカーやトピックなどの情報やメッセージの表示を行います
-* **emitter**: Kafka トピックにメッセージを発信するPythonアプリ
-* **quarkusapp**: Kafka トピックに送信されたメッセージを受信して表示するWebアプリ
 * **postgresql**: サンプルデータが格納されたPostgreSQL
+* **postgresql-replica**: Debeziumを使用してデータを同期をするPostgreSQL
+* **debezium**: データベースの更新をイベントに変換する Change Data Capture
 * **minio**: Amazon S3と互換性のあるオブジェクト・ストレージ・サーバー
 
 あらかじめ、KafkaやPostgreSQLといったリソースが用意されています。
@@ -100,6 +100,9 @@ RECOMMENDED に Karavan が表示されていますので、選択してイン�
 ![](images/09-devspaces-011.png)
 ![karavan]({% image_path 09-devspaces-011.png %}){:width="1200px"}
 
+
+<!-- ## Karavan Updateで不要になった
+
 続いて、Karavan の設定を確認します。
 拡張機能の Karavan の歯車のアイコンをクリックし、 Extention Settings を選択してください。
 
@@ -111,6 +114,8 @@ Version は `3.20.3` を選択しておいてください。
 
 ![](images/09-devspaces-018.png)
 ![karavan]({% image_path 09-devspaces-018.png %}){:width="800px"}
+
+-->
 
 ### JBang によるインテグレーション実施のテスト
 
@@ -139,7 +144,7 @@ Version は `3.20.3` を選択しておいてください。
 
 先ほどのサンプルを、OpenShiftへデプロイしてみます。
 
-`kamel run example.camel.yaml -n {{ OPENSHIFT_USER }}_dev` とターミナルに入力してみてください。
+`kamel run example.camel.yaml -n {{ OPENSHIFT_USER }}-dev` とターミナルに入力してみてください。
 
 ターミナルに以下のログが表示されて、OpenShiftに `example` のインテグレーションがデプロイされます。
 
