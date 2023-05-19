@@ -3,6 +3,7 @@
 ---
 
 環境構築に OpenShift CLI （ocコマンド）が必要です。
+Client Version: 4.13.0 で確認済み。
 
 ### デプロイ方法
 
