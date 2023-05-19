@@ -7,7 +7,7 @@ Client Version: 4.13.0 で確認済み。
 
 ### デプロイ方法
 
-1. OpenShift にログインする　（RHPDS の OpenShift 4.11 Workshop で動作確認）
+1. OpenShift にログインする　（RHPDS の OpenShift 4.11, 4.12 Workshop で動作確認）
 2. 本リポジトリ内の provisionフォルダ内の setup.sh を、実行する。引数にはユーザー数を入れてください。
    （mac なら以下のコマンドを実行）
 
