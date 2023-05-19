@@ -282,7 +282,7 @@ Log の下に、Choice コンポーネントが配置されます。
 Parameters は、以下を入力してください。
 
 * **Language**: simple
-* **Expression**: ${body.contains("op":"u")}
+* **Expression**: `${body.contains("op":"u")}`
 * **description**: When: UPDATE
 
 これは、`Body` メッセージの中に `"op":"u"` が含まれている場合（UPDATE処理の場合）に、実行されます。
@@ -308,7 +308,7 @@ Parameters 項目に、以下の内容を設定してください。
 * **Server Port**: 5432
 * **Username**: demo
 * **Password**: demo
-* **Query**: UPDATE products SET name=:#name where id=:#id
+* **Query**: `UPDATE products SET name=:#name where id=:#id`
 * **Database Name**: sampledb
 
 ![](images/11-dbsync-021.png)
@@ -329,7 +329,7 @@ Choice シンボルにマウスカーソルを持っていくと、左上に小�
 `When`
 
 * **Language**: simple
-* **Expression**: ${body.contains("op":"d")}
+* **Expression**: `${body.contains("op":"d")}`
 * **description**: When: DELETE
 
 `Log`
@@ -342,7 +342,7 @@ Choice シンボルにマウスカーソルを持っていくと、左上に小�
 * **Server Port**: 5432
 * **Username**: demo
 * **Password**: demo
-* **Query**: DELETE from products where id=:#id
+* **Query**: `DELETE from products where id=:#id`
 * **Database Name**: sampledb
 
 ![](images/11-dbsync-023.png)
@@ -371,7 +371,7 @@ Choice シンボルにマウスカーソルを持っていくと、左上に小�
 * **Server Port**: 5432
 * **Username**: demo
 * **Password**: demo
-* **Query**: INSERT INTO products (id, name) VALUES (:#id, :#name)
+* **Query**: `INSERT INTO products (id, name) VALUES (:#id, :#name)`
 * **Database Name**: sampledb
 
 ![](images/11-dbsync-024.png)
