@@ -31,10 +31,10 @@ oc apply -f ./openshift/01_operator/04_subs_serverless.yaml
 # Waiting for getting operator subscription
 echo "Waiting for getting operator subscription"
 while [ true ] ; do
-  if [ "$(oc -n openshift-operators get subscription amq-streams -o=jsonpath='{.status.installPlanRef.name}')" ] ; then
-    if [ "$(oc -n openshift-operators get subscription red-hat-camel-k -o=jsonpath='{.status.installPlanRef.name}')" ] ; then
-      if [ "$(oc -n openshift-operators get subscription devspaces -o=jsonpath='{.status.installPlanRef.name}')" ] ; then
-        if [ "$(oc -n openshift-serverless get subscription serverless-operator -o=jsonpath='{.status.installPlanRef.name}')" ] ; then
+  if [ "$(oc -n openshift-operators get subs amq-streams -o=jsonpath='{.status.installPlanRef.name}')" ] ; then
+    if [ "$(oc -n openshift-operators get subs red-hat-camel-k -o=jsonpath='{.status.installPlanRef.name}')" ] ; then
+      if [ "$(oc -n openshift-operators get subs devspaces -o=jsonpath='{.status.installPlanRef.name}')" ] ; then
+        if [ "$(oc -n openshift-serverless get subs serverless-operator -o=jsonpath='{.status.installPlanRef.name}')" ] ; then
           sleep 10
           break
         fi
@@ -64,7 +64,7 @@ oc new-app --template=postgresql-persistent \
 
 sleep 15
 
-oc new-app -f https://raw.githubusercontent.com/wkulhanek/docker-openshift-etherpad/master/etherpad-template.yaml \
+oc new-app -f ./openshift/11_etherpad/01_etherpad-template.yaml \
   -p DB_TYPE=postgres \
   -p DB_HOST=postgresql \
   -p DB_PORT=5432 \
@@ -77,7 +77,7 @@ oc new-app -f https://raw.githubusercontent.com/wkulhanek/docker-openshift-ether
 # Devspaces Create Workspaces
 oc project devspaces
 while [ 1 ]; do
-  CSV=$(oc -n openshift-operators get subscription devspaces -o=jsonpath='{.status.currentCSV}')
+  CSV=$(oc -n openshift-operators get subs devspaces -o=jsonpath='{.status.currentCSV}')
   STAT=$(oc -n openshift-operators get ClusterServiceVersion $CSV -o=jsonpath='{.status.phase}')
   if [ "$STAT" = "Succeeded" ] ; then
     sleep 10
@@ -116,7 +116,7 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
   ## kafka-cluster
   echo "Waiting for preparing amq-streams"
   while [ 1 ]; do
-    CSV=$(oc -n openshift-operators get subscription amq-streams -o=jsonpath='{.status.currentCSV}')
+    CSV=$(oc -n openshift-operators get subs amq-streams -o=jsonpath='{.status.currentCSV}')
     STAT=$(oc -n openshift-operators get ClusterServiceVersion $CSV -o=jsonpath='{.status.phase}')
     if [ "$STAT" = "Succeeded" ] ; then
       oc apply -f ./openshift/03_amqstreams/01_kafka_cluster.yaml -n $PRJ_NAME
@@ -149,7 +149,7 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
   ## examle
   echo "Waiting for preparing camel-k"
   while [ 1 ]; do
-    CSV=$(oc -n openshift-operators get subscription red-hat-camel-k -o=jsonpath='{.status.currentCSV}')
+    CSV=$(oc -n openshift-operators get subs red-hat-camel-k -o=jsonpath='{.status.currentCSV}')
     STAT=$(oc -n openshift-operators get ClusterServiceVersion $CSV -o=jsonpath='{.status.phase}')
     if [ "$STAT" = "Succeeded" ] ; then
       oc apply -f ./openshift/06_camelk/02_example.yaml -n $PRJ_NAME
