@@ -16,7 +16,7 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
   oc new-project user${m}-dev
   oc new-project user${m}-devspaces
 done
-oc new-project atlasmap
+#oc new-project atlasmap
 oc new-project devspaces
 oc new-project knative-serving
 oc new-project knative-eventing
@@ -46,11 +46,11 @@ while [ true ] ; do
   sleep 10
 done
 
-# AtlasMap
-oc new-app --name=atlasmap java:8 --binary=true -n atlasmap
-oc start-build atlasmap --from-file=./openshift/10_atlasmap/atlasmap-standalone-2.5.2.jar -n atlasmap
-oc patch svc atlasmap -n atlasmap --type=json -p '[{"op": "replace", "path": "/spec/ports/0/port", "value":8585},{"op": "replace", "path": "/spec/ports/0/targetPort", "value":8585}]'
-oc expose svc/atlasmap -n atlasmap
+# AtlasMapは不使用にした
+#oc new-app --name=atlasmap java:8 --binary=true -n atlasmap
+#oc start-build atlasmap --from-file=./openshift/10_atlasmap/atlasmap-standalone-2.5.2.jar -n atlasmap
+#oc patch svc atlasmap -n atlasmap --type=json -p '[{"op": "replace", "path": "/spec/ports/0/port", "value":8585},{"op": "replace", "path": "/spec/ports/0/targetPort", "value":8585}]'
+#oc expose svc/atlasmap -n atlasmap
 
 # Etherpad
 oc new-project gpte-etherpad --display-name "OpenTLC Shared Etherpad"
@@ -64,7 +64,7 @@ oc new-app --template=postgresql-persistent \
 
 sleep 15
 
-oc new-app -f ./openshift/11_etherpad/01_etherpad-template.yaml \
+oc new-app -f ./openshift/10_etherpad/01_etherpad-template.yaml \
   -p DB_TYPE=postgres \
   -p DB_HOST=postgresql \
   -p DB_PORT=5432 \
@@ -266,8 +266,10 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
   oc label dc/kafdrop app.openshift.io/runtime=amq --overwrite -n $PRJ_NAME
 
   oc delete Integration example -n $PRJ_NAME
-  oc delete LimitRanges $PRJ_NAME-core-resource-limits -n $PRJ_NAME
-  oc delete LimitRanges $DEVSPACES_NAME-core-resource-limits -n $DEVSPACES_NAME
+
+  # LimitRanges は無くなった？
+  #oc delete LimitRanges $PRJ_NAME-core-resource-limits -n $PRJ_NAME
+  #oc delete LimitRanges $DEVSPACES_NAME-core-resource-limits -n $DEVSPACES_NAME
 
   echo "Completed... \n"
   echo "http://guides-$PRJ_NAME.$HOSTNAME_SUFFIX/workshop/camel-k"
