@@ -239,19 +239,19 @@ Log の下に、Choice コンポーネントが配置されます。
 Parameters は、以下を入力してください。
 
 * **Language**: simple
-* **Expression**: `${body.contains("op":"u")}`
-* **description**: When: UPDATE
+* **Expression**: `${body['__op']} == 'u'`
+* **description**: Update
 
-これは、`Body` メッセージの中に `"op":"u"` が含まれている場合（UPDATE処理の場合）に、実行されます。
+これは、`Body` メッセージの中に `"__op":"u"` が含まれている場合（UPDATE処理の場合）に、実行されます。
 
 ![](images/11-dbsync-019.png)
 ![karavan]({% image_path 11-dbsync-019.png %}){:width="1200px"}
 
-次に、`When: UPDATE` にマウスカーソルを持っていくと、下に小さな＋ボタンが現れますので、それをクリックし、`Routing` タブから `Log` を探して選択をしてください。
+次に、`Update` にマウスカーソルを持っていくと、下に小さな＋ボタンが現れますので、それをクリックし、`Routing` タブから `Log` を探して選択をしてください。
 
 Message は、以下を入力してください。
 
-* **Message**: UPDATE: ${body}
+* **Message**: Update: ${body}
 
 続いて、`Log` の下に、`PostgreSQL Sink` を配置します。`Kamelets` タブから `PostgreSQL Sink` を探して選択をしてください。
 
@@ -271,6 +271,24 @@ Parameters 項目に、以下の内容を設定してください。
 ![](images/11-dbsync-021.png)
 ![karavan]({% image_path 11-dbsync-021.png %}){:width="1200px"}
 
+続いて、PostgreSQL Sink に入力するデータをJSON形式に変換するための Marshal を追加します。
+PostgreSQL Sink シンボルにマウスカーソルを持っていくと、左上に小さく `→` ボタンが表示されますので、クリックして、`Transformation` タブから `Marshal` を探して選択をしてください。
+右上のテキストボックスに `Marshal` と入力をすると、絞り込みができます。
+
+これで、`Log` と `PostgreSQL Sink` の間に、`Marshal` が追加されます。
+
+`Marshal` のシンボルをクリックすると、右側にプロパティが表示されますので、
+Parameters 項目に、以下の内容を設定してください。
+他の項目は、デフォルトのままで構いません。
+
+* **Data Format**: json
+* **Library**: Jackson
+
+また、Set Body と Choice の間の `Log` は削除しておいてください。
+
+![](images/11-dbsync-013.png)
+![karavan]({% image_path 11-dbsync-013.png %}){:width="1200px"}
+
 以上で、UPDATE処理の作成は完了です。
 
 #### 4.2 DELETE処理を作成する
@@ -280,18 +298,23 @@ Choice シンボルにマウスカーソルを持っていくと、左上に小�
 ![](images/11-dbsync-022.png)
 ![karavan]({% image_path 11-dbsync-022.png %}){:width="600px"}
 
-先ほどのUPDATE処理と同様に、`Log` と `PostgreSQL Sink` を追加します。
+先ほどのUPDATE処理と同様に、`Log` と `Marshall` と `PostgreSQL Sink` を追加します。
 各シンボルの Parameters 項目に、以下の内容を設定してください。
 
 `When`
 
 * **Language**: simple
-* **Expression**: `${body.contains("op":"d")}`
-* **description**: When: DELETE
+* **Expression**: `${body['__op']} == 'd'`
+* **description**: Delete
 
 `Log`
 
 * **Message**: DELETE: ${body}
+
+`Marshall`
+
+* **Data Format**: json
+* **Library**: Jackson
 
 `PostgreSQL Sink`
 
@@ -311,16 +334,21 @@ Choice シンボルにマウスカーソルを持っていくと、左上に小�
 
 右側の `Otherwise` にCREATE処理を作成します。
 
-まずは、`Log` と `PostgreSQL Sink` を追加します。
+UPDATEとDELETEと同様にして、`Log` と `Marshall` と `PostgreSQL Sink` を追加します。
 各シンボルの Parameters 項目に、以下の内容を設定してください。
 
 `Otherwise`
 
-* **description**: Otherwise: CREATE
+* **description**: Create
 
 `Log`
 
 * **Message**: CREATE: ${body}
+
+`Marshall`
+
+* **Data Format**: json
+* **Library**: Jackson
 
 `PostgreSQL Sink`
 
