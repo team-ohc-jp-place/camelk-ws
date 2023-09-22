@@ -88,8 +88,7 @@ OpenShift DevSpaces の Dashboard が表示されます。
 ![](images/we-karavan-vscode.png)
 ![karavan]({% image_path we-karavan-vscode.png %}){:width="1200px"}
 
-OpenShift DevSpaces の左端のVSCODE拡張機能のメニューを選択します。
-RECOMMENDED に Karavan が表示されていますので、選択してインストールを実施してください。
+OpenShift DevSpaces 左のエクスプローラーの、`extention` フォルダの中に、`camel-karavan.karavan-3.xx.x.vsix` というファイルがあるので、右クリックをして、メニューから `Install Extension VSIX` を選択して実行してください。
 
 ![](images/09-devspaces-010.png)
 ![karavan]({% image_path 09-devspaces-010.png %}){:width="1200px"}
