@@ -17,20 +17,6 @@
 ![](images/11-dbsync-002.png)
 ![karavan]({% image_path 11-dbsync-002.png %}){:width="800px"}
 
-<!-->
-#### AtlasMap について
-
-[AtlasMap](https://debezium.io/){:target="_blank"} はデータマッピングソリューションです。
-データマッピングというのは、あるサービスと別のサービス（またはデータベースなど）を接続するときに、どの項目をどの項目に移送するのか、または編集を施すのか、といった作業のことです。
-AtlasMap Data Mapper UI キャンバスを使用してデータマッピングを設計し、ランタイム エンジンを介してそのデータマッピングを実行することができます。
-[camel-atlasmap](https://camel.apache.org/components/{{ CAMEL_VERSION }}/atlasmap-component.html){:target="_blank"} コンポーネントを使用して、Apache Camel ルートの一部としてデータ マッピングを実行することもできます。
-
-![](images/11-dbsync-003.png)
-![karavan]({% image_path 11-dbsync-003.png %}){:width="1200px"}
-
-※ 現時点においては、**camel-atlasmap** は Red Hatのサポートではなく、コミュニティサポートです。
-<-->
-
 #### このセクションで作成する内容
 
 * 以下のコンポーネントは既に用意されています

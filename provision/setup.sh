@@ -98,7 +98,7 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
   export PRJ_NAME=user${m}-dev
   export DEVSPACES_NAME=user${m}-devspaces
   export OPENSHIFT_USER=user${m}
-  export OPENSHIFT_PASSWORD=openshift
+  export OPENSHIFT_PASSWORD=G0motdgrIMLaMTRQ #適宜変更
 
   oc project $PRJ_NAME
 
