@@ -167,7 +167,7 @@ Parameters 項目に、以下の内容を設定してください。
 他の項目は、デフォルトのままで構いません。
 
 * **Language**: simple
-* **Expression**: {"id":4, "name":"melon"}
+* **Expression**: {&quot;id&quot;:4, &quot;name&quot;:&quot;melon&quot;}
 
 ![](images/08-postgresql-010.png)
 ![karavan]({% image_path 08-postgresql-010.png %}){:width="800px"}

@@ -17,18 +17,6 @@
 ![](images/11-dbsync-002.png)
 ![karavan]({% image_path 11-dbsync-002.png %}){:width="800px"}
 
-#### AtlasMap について
-
-[AtlasMap](https://debezium.io/){:target="_blank"} はデータマッピングソリューションです。
-データマッピングというのは、あるサービスと別のサービス（またはデータベースなど）を接続するときに、どの項目をどの項目に移送するのか、または編集を施すのか、といった作業のことです。
-AtlasMap Data Mapper UI キャンバスを使用してデータマッピングを設計し、ランタイム エンジンを介してそのデータマッピングを実行することができます。
-[camel-atlasmap](https://camel.apache.org/components/{{ CAMEL_VERSION }}/atlasmap-component.html){:target="_blank"} コンポーネントを使用して、Apache Camel ルートの一部としてデータ マッピングを実行することもできます。
-
-![](images/11-dbsync-003.png)
-![karavan]({% image_path 11-dbsync-003.png %}){:width="1200px"}
-
-※ 現時点においては、**camel-atlasmap** は Red Hatのサポートではなく、コミュニティサポートです。
-
 #### このセクションで作成する内容
 
 * 以下のコンポーネントは既に用意されています
@@ -37,10 +25,9 @@ AtlasMap Data Mapper UI キャンバスを使用してデータマッピング�
     * postgresql-replica
   * 同期元のPostgreSQLの変更ログをキャプチャするDebezium
 * 実装する Camelルート
-  * DBイベントを受信する Kafka Source
-  * データマッピングで必要な項目を抽出
+  * DB更新イベントを受信する Kafka Source
+  * DB更新の内容を抽出
   * CREATE/DELETE/UPDATE で処理を分岐して、同期先の PostgreSQL を操作
-
 
 ![](images/11-dbsync-004.png)
 ![karavan]({% image_path 11-dbsync-004.png %}){:width="1200px"}
@@ -181,65 +168,21 @@ Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱の�
 
 ---
 
-### 3. AtlasMap でデータマッピングをする
+### 3. DB更新イベントを抽出する
 
-Kafka から受信した Debezium のDB変更イベントから、必要なデータを抽出していきます。
+Kafkaイベントの中から、`Payload` だけを抽出してBodyに格納します。
 
-[AtlasMap WebUI](http://atlasmap-atlasmap.{{ ROUTE_SUBDOMAIN }}){:target="_blank"} で、データマッピングの設計をすることができます。リンクをクリックして AtlasMap WebUI を開いてください。
-
-![](images/11-dbsync-008.png)
-![karavan]({% image_path 11-dbsync-008.png %}){:width="1200px"}
-
-変換前、変換後のjsonやxmlのスキーマ、もしくはインスタンスをインポートして設計を始めることができます。
-
-OpenShift DevSpaces の ワークスペースの `atlasmap/json` フォルダ内に、変換前、後のjson形式のファイルがありますので、一旦これをローカルにダウンロードして保存してください。
-
-* **変換前**: debezium.json
-* **変換後**: payload.json
-
-AtlasMap WebUI の左側の `Source` の `Import instance or schema file` をクリックします。
-
-![](images/11-dbsync-009.png)
-![karavan]({% image_path 11-dbsync-009.png %}){:width="1200px"}
-
-ローカルにダウンロードした、`debezium.json` を選択してインポートしてください。
-Instance か Schema かを聞かれるので、`Instance` を選択します。
-
-![](images/11-dbsync-010.png)
-![karavan]({% image_path 11-dbsync-010.png %}){:width="600px"}
-
-今度は、右側の `Target` から、同様にして変換後の `payload.json` をインポートしてください。
-
-![](images/11-dbsync-011.png)
-![karavan]({% image_path 11-dbsync-011.png %}){:width="1200px"}
-
-それでは、Target側の各項目に対応する、Source側の同じ名前の項目を探し、ドラッグアンドドロップをして繋げてマッピングします。
-Target側の項目は、`payload` の中にあるのでクリックして開いてみてください。
-
-![](images/11-dbsync-012.png)
-![karavan]({% image_path 11-dbsync-012.png %}){:width="1200px"}
-
-上の図のように繋いだら、左上のメニューから、`Export all mappings and support files into a catalog (.adm)` をクリックして、ファイルをエクスポートします。名前は任意のもので良いですが、ここでは `atlasmap-mapping.adm` としておきます。
-
-![](images/11-dbsync-013.png)
-![karavan]({% image_path 11-dbsync-013.png %}){:width="1200px"}
-
-保存した `admファイル` は、ローカルから OpenShift DevSpaces のワークスペースのルートフォルダに保存しておいてください。（ドラッグアンドドロップでコピーできます）
-
-では、次に Camel ルートに Atlasmap を呼び出すコンポーネントを配置します。
-
-Route の Log シンボルの左上に小さな`→`ボタンが現れますので、それをクリックし、`Components` のタブから `AtlasMap` を探して選択をしてください。
-右上のテキストボックスに `AtlasMap` と入力をすると、絞り込みができます。
+Route の Log シンボルの左上に小さな`→`ボタンが現れますので、それをクリックし、`Transformation` のタブから `Set Body` を探して選択をしてください。
+右上のテキストボックスに `Set Body` と入力をすると、絞り込みができます。
 
 ![](images/11-dbsync-014.png)
 ![karavan]({% image_path 11-dbsync-014.png %}){:width="800px"}
 
-AtlasMap のシンボルをクリックすると、右側にプロパティが表示されますので、
-Parameters 項目に、以下の内容を設定してください。
+`Set Body` のシンボルをクリックすると、右側にプロパティが表示されますので、
+以下の内容を設定してください。
 
-* **Resource Uri**: file:atlasmap-mapping.adm
-
-> ローカル上で実行する場合は、admファイルの相対パスを記述します。OpenShiftへデプロイする場合には、`file:/etc/camel/resource/<file名>` と入力をしてください。
+* **Language**: jsonpath
+* **Expression**: $.payload
 
 ![](images/11-dbsync-015.png)
 ![karavan]({% image_path 11-dbsync-015.png %}){:width="1200px"}
@@ -248,7 +191,7 @@ Parameters 項目に、以下の内容を設定してください。
 右上の ロケットのアイコン のボタンを押してください。
 
 ターミナルが開き、作成したインテグレーションが JBang を通して実行されます。
-AtlasMapでデータマッピング実施した後のメッセージが Log に表示されているはずです。
+Set Bodyで payload を抽出した後のメッセージが Log に表示されているはずです。
 
 ![](images/11-dbsync-016.png)
 ![karavan]({% image_path 11-dbsync-016.png %}){:width="1200px"}
@@ -282,19 +225,19 @@ Log の下に、Choice コンポーネントが配置されます。
 Parameters は、以下を入力してください。
 
 * **Language**: simple
-* **Expression**: `${body.contains("op":"u")}`
-* **description**: When: UPDATE
+* **Expression**: `${body['__op']} == 'u'`
+* **description**: Update
 
-これは、`Body` メッセージの中に `"op":"u"` が含まれている場合（UPDATE処理の場合）に、実行されます。
+これは、`Body` メッセージの中に `"__op":"u"` が含まれている場合（UPDATE処理の場合）に、実行されます。
 
 ![](images/11-dbsync-019.png)
 ![karavan]({% image_path 11-dbsync-019.png %}){:width="1200px"}
 
-次に、`When: UPDATE` にマウスカーソルを持っていくと、下に小さな＋ボタンが現れますので、それをクリックし、`Routing` タブから `Log` を探して選択をしてください。
+次に、`Update` にマウスカーソルを持っていくと、下に小さな＋ボタンが現れますので、それをクリックし、`Routing` タブから `Log` を探して選択をしてください。
 
 Message は、以下を入力してください。
 
-* **Message**: UPDATE: ${body}
+* **Message**: Update: ${body}
 
 続いて、`Log` の下に、`PostgreSQL Sink` を配置します。`Kamelets` タブから `PostgreSQL Sink` を探して選択をしてください。
 
@@ -314,6 +257,24 @@ Parameters 項目に、以下の内容を設定してください。
 ![](images/11-dbsync-021.png)
 ![karavan]({% image_path 11-dbsync-021.png %}){:width="1200px"}
 
+続いて、PostgreSQL Sink に入力するデータをJSON形式に変換するための Marshal を追加します。
+PostgreSQL Sink シンボルにマウスカーソルを持っていくと、左上に小さく `→` ボタンが表示されますので、クリックして、`Transformation` タブから `Marshal` を探して選択をしてください。
+右上のテキストボックスに `Marshal` と入力をすると、絞り込みができます。
+
+これで、`Log` と `PostgreSQL Sink` の間に、`Marshal` が追加されます。
+
+`Marshal` のシンボルをクリックすると、右側にプロパティが表示されますので、
+Parameters 項目に、以下の内容を設定してください。
+他の項目は、デフォルトのままで構いません。
+
+* **Data Format**: json
+* **Library**: Jackson
+
+また、Set Body と Choice の間の `Log` は削除しておいてください。
+
+![](images/11-dbsync-013.png)
+![karavan]({% image_path 11-dbsync-013.png %}){:width="1200px"}
+
 以上で、UPDATE処理の作成は完了です。
 
 #### 4.2 DELETE処理を作成する
@@ -323,18 +284,23 @@ Choice シンボルにマウスカーソルを持っていくと、左上に小�
 ![](images/11-dbsync-022.png)
 ![karavan]({% image_path 11-dbsync-022.png %}){:width="600px"}
 
-先ほどのUPDATE処理と同様に、`Log` と `PostgreSQL Sink` を追加します。
+先ほどのUPDATE処理と同様に、`Log` と `Marshall` と `PostgreSQL Sink` を追加します。
 各シンボルの Parameters 項目に、以下の内容を設定してください。
 
 `When`
 
 * **Language**: simple
-* **Expression**: `${body.contains("op":"d")}`
-* **description**: When: DELETE
+* **Expression**: `${body['__op']} == 'd'`
+* **description**: Delete
 
 `Log`
 
 * **Message**: DELETE: ${body}
+
+`Marshall`
+
+* **Data Format**: json
+* **Library**: Jackson
 
 `PostgreSQL Sink`
 
@@ -354,16 +320,21 @@ Choice シンボルにマウスカーソルを持っていくと、左上に小�
 
 右側の `Otherwise` にCREATE処理を作成します。
 
-まずは、`Log` と `PostgreSQL Sink` を追加します。
+UPDATEとDELETEと同様にして、`Log` と `Marshall` と `PostgreSQL Sink` を追加します。
 各シンボルの Parameters 項目に、以下の内容を設定してください。
 
 `Otherwise`
 
-* **description**: Otherwise: CREATE
+* **description**: Create
 
 `Log`
 
 * **Message**: CREATE: ${body}
+
+`Marshall`
+
+* **Data Format**: json
+* **Library**: Jackson
 
 `PostgreSQL Sink`
 
