@@ -38,9 +38,9 @@
 
 前章の [PostgresSQL との連携]({{ HOSTNAME_SUFFIX }}/workshop/camel-k/lab/postgresql-sink){:target="_blank"} で 使用したデータベースは、`Debezium` にて変更ログをキャプチャし、Kafkaイベントに変換するようになっています。
 
-[Kafdrop](http://{{ KAFDROP_URL }}){:target="_blank"} というツールで、Kafka トピックに送信されたメッセージの内容を確認することができます。
+[Kafdrop](http://kafdrop-{{ USER_ID }}-dev.{{ ROUTE_SUBDOMAIN }}){:target="_blank"} というツールで、Kafka トピックに送信されたメッセージの内容を確認することができます。
 
-こちらのリンクから、[debezium.public.products](http://{{ KAFDROP_URL }}/topic/debezium.public.products/messages?partition=0&offset=0&count=100&keyFormat=DEFAULT&format=DEFAULT){:target="_blank"} の内容を確認できます。アクセスして確認してみてください。
+こちらのリンクから、[debezium.public.products](http://kafdrop-{{ USER_ID }}-dev.{{ ROUTE_SUBDOMAIN }}/topic/debezium.public.products/messages?partition=0&offset=0&count=100&keyFormat=DEFAULT&format=DEFAULT){:target="_blank"} の内容を確認できます。アクセスして確認してみてください。
 
 ![](images/11-dbsync-005.png)
 ![karavan]({% image_path 11-dbsync-005.png %}){:width="1200px"}
@@ -408,4 +408,3 @@ Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱の�
 ### 参考リンク
 
 * [Red Hat build of Debezium](https://access.redhat.com/documentation/en-us/red_hat_build_of_debezium){:target="_blank"}
-* [AtlasMap](https://www.atlasmap.io/){:target="_blank"}
