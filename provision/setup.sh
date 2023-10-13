@@ -16,10 +16,11 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
   oc new-project user${m}-dev
   oc new-project user${m}-devspaces
 done
-#oc new-project atlasmap
+
 oc new-project devspaces
 oc new-project knative-serving
 oc new-project knative-eventing
+oc new-project guides
 
 # Operator Install
 oc apply -f ./openshift/01_operator/01_subs_camelk.yaml
@@ -45,12 +46,6 @@ while [ true ] ; do
   echo waiting...
   sleep 10
 done
-
-# AtlasMapは不使用にした
-#oc new-app --name=atlasmap java:8 --binary=true -n atlasmap
-#oc start-build atlasmap --from-file=./openshift/10_atlasmap/atlasmap-standalone-2.5.2.jar -n atlasmap
-#oc patch svc atlasmap -n atlasmap --type=json -p '[{"op": "replace", "path": "/spec/ports/0/port", "value":8585},{"op": "replace", "path": "/spec/ports/0/targetPort", "value":8585}]'
-#oc expose svc/atlasmap -n atlasmap
 
 # Etherpad
 oc new-project gpte-etherpad --display-name "OpenTLC Shared Etherpad"
@@ -91,6 +86,39 @@ done
 # OpenShift Serverless
 oc apply -f ./openshift/07_serverless/01_knative_serving.yaml
 oc apply -f ./openshift/07_serverless/02_knative_eventing.yaml
+
+
+## 2023.10 Guidesを共通プロジェクトに
+# get routing suffix
+oc create route edge dummy --service=dummy --port=8080 -n guides
+ROUTE=$(oc get route dummy -o=go-template --template='{{ .spec.host }}' -n guides)
+KAFDROP_URL="dummy"
+#WEBUI_URL=$(oc get route quarkusapp -o=go-template --template='{{ .spec.host }}' -n $PRJ_NAME)
+DEVSPACES_URL=$(oc get route devspaces -o=go-template --template='{{ .spec.host }}' -n devspaces)
+HOSTNAME_SUFFIX=$(echo $ROUTE | sed 's/^dummy-'guides'\.//g')
+MASTER_URL=$(oc whoami --show-server)
+CONSOLE_URL=$(oc whoami --show-console)
+oc delete route dummy
+
+# Guide Provision #Kafdrop
+oc -n guides new-app quay.io/jamesfalkner/workshopper --name=guides \
+    -e MASTER_URL=$MASTER_URL \
+    -e CONSOLE_URL=$CONSOLE_URL \
+    -e KAFDROP_URL=$KAFDROP_URL \
+    -e DEVSPACES_URL=$DEVSPACES_URL \
+    -e DEVSPACES_REPO="https://github.com/team-ohc-jp-place/camelk-ws-devspaces.git" \
+    -e ROUTE_SUBDOMAIN=$HOSTNAME_SUFFIX \
+    -e CAMEL_VERSION="3.20.x" \
+    -e CAMELK_VERSION="1.11.x" \
+    -e KAMELETS_VERSION="0.9.x" \
+    -e API_BUCKET="{{api.bucket}}" \
+    -e OPENSHIFT_USER=$OPENSHIFT_USER \
+    -e OPENSHIFT_PASSWORD=$OPENSHIFT_PASSWORD \
+    -e CONTENT_URL_PREFIX="https://raw.githubusercontent.com/team-ohc-jp-place/camelk-ws/devspaces_v1" \
+    -e WORKSHOPS_URLS="https://raw.githubusercontent.com/team-ohc-jp-place/camelk-ws/devspaces_v1/_camelk-workshop-guides.yml" \
+    -e LOG_TO_STDOUT=true
+
+oc -n guides expose svc/guides
 
 for m in $(eval echo "{1..$USER_COUNT}"); do
 
@@ -188,25 +216,6 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
 
   oc rollout latest dc/postgresql -n $PRJ_NAME
 
-# Kafka のコンテンツは一旦削除 2023/5/8
-#  # Emmiter (各user)
-#  oc new-app centos/python-36-centos7~https://github.com/kamorisan/event-emmiter \
-#    --name=emitter \
-#    -e KAFKA_BROKERS=kafka-cluster-kafka-bootstrap.$PRJ_NAME.svc:9092 \
-#    -e KAFKA_TOPIC=incoming-topic \
-#    -e RATE=10 \
-#    -n $PRJ_NAME
-
-#  # QuarkusApp（各user）
-#  oc new-app --as-deployment-config --name quarkusapp \
-#      --docker-image="kamorisan/quarkusapp:v2" \
-#      -e KAFKA_BROKERS=kafka-cluster-kafka-bootstrap.$PRJ_NAME.svc:9092 \
-#      -e KAFKA_TOPIC=outcoming-topic \
-#      -n $PRJ_NAME
-#
-#  oc apply -f ./openshift/05_quarkusapp/01_service_quarkusapp.yaml -n $PRJ_NAME
-#  oc apply -f ./openshift/05_quarkusapp/02_route_quarkusapp.yaml -n $PRJ_NAME
-
   # MinIo
   oc apply -f ./openshift/08_minio/01_minio.yaml -n $PRJ_NAME
 
@@ -239,7 +248,7 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
   oc delete route dummy
 
   # Guide Provision
-  oc -n $PRJ_NAME new-app quay.io/osevg/workshopper --name=guides \
+  oc -n $PRJ_NAME new-app quay.io/jamesfalkner/workshopper --name=guides \
       -e MASTER_URL=$MASTER_URL \
       -e CONSOLE_URL=$CONSOLE_URL \
       -e KAFDROP_URL=$KAFDROP_URL \

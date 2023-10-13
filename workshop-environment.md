@@ -17,13 +17,13 @@
 こちらのリンクから、[OpenShift Web Console]({{ CONSOLE_URL }}){:target="_blank"} にアクセスをしてください。
 OpenShift Web Console にアクセスするための情報は以下の通りです。
 
-* **Username**: {{ OPENSHIFT_USER }}
+* **Username**: {{ USER_ID }}
 * **Password**: {{ OPENSHIFT_PASSWORD }}
 
 ![](images/09-devspaces-002.png)
 ![karavan]({% image_path 09-devspaces-002.png %}){:width="800px"}
 
-OpenShift Web Console にログイン後、左のメニュから `Developer` パースペクティブを選択し、その下のメニューから `Topology` ビューを開きます。Project名は `{{ OPENSHIFT_USER }}-dev` を選択してください。
+OpenShift Web Console にログイン後、左のメニュから `Developer` パースペクティブを選択し、その下のメニューから `Topology` ビューを開きます。Project名は `{{ USER_ID }}-dev` を選択してください。
 
 ![](images/09-devspaces-003.png)
 ![karavan]({% image_path 09-devspaces-003.png %}){:width="1200px"}
@@ -143,14 +143,14 @@ Version は `3.20.3` を選択しておいてください。
 
 先ほどのサンプルを、OpenShiftへデプロイしてみます。
 
-`kamel run example.camel.yaml -n {{ OPENSHIFT_USER }}-dev` とターミナルに入力してみてください。
+`kamel run example.camel.yaml -n {{ USER_ID }}-dev` とターミナルに入力してみてください。
 
 ターミナルに以下のログが表示されて、OpenShiftに `example` のインテグレーションがデプロイされます。
 
 ![](images/09-devspaces-014.png)
 ![karavan]({% image_path 09-devspaces-014.png %}){:width="600px"}
 
-OpenShift Web Console の [Topology view]({{ CONSOLE_URL }}/topology/ns/{{ OPENSHIFT_USER }}-dev){:target="_blank"} にアクセスして確認します。
+OpenShift Web Console の [Topology view]({{ CONSOLE_URL }}/topology/ns/{{ USER_ID }}-dev){:target="_blank"} にアクセスして確認します。
 新しく、`example` の Pod が起動していますので、 `view logs` をクリックします。
 
 ![](images/09-devspaces-015.png)

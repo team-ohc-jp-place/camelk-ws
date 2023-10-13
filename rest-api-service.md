@@ -334,23 +334,23 @@ Parameters 項目に、以下の内容を設定してください。
 
 作成したインテグレーションを、OpenShiftへデプロイして動かしてみましょう。
 
-ターミナルを開き、OpenShiftの `{{ OPENSHIFT_USER }}-dev` プロジェクトに入ります。
+ターミナルを開き、OpenShiftの `{{ USER_ID }}-dev` プロジェクトに入ります。
 以下のコマンドを実行してください。
 
 ```
-oc project {{ OPENSHIFT_USER }}-dev
+oc project {{ USER_ID }}-dev
 ```
 
 次に作成したインテグレーションをプロジェクトにデプロイします。
 
-`kamel run api.camel.yaml --property file:minio/minio.properties -n {{ OPENSHIFT_USER }}-dev` とターミナルに入力してください。
+`kamel run api.camel.yaml --property file:minio/minio.properties -n {{ USER_ID }}-dev` とターミナルに入力してください。
 
 ターミナルに以下のログが表示されて、OpenShiftに `api` のインテグレーションがデプロイされます。
 
 ![](images/10-restapi-025.png)
 ![karavan]({% image_path 10-restapi-025.png %}){:width="800px"}
 
-OpenShift Web Console の [Topology view]({{ CONSOLE_URL }}/topology/ns/{{ OPENSHIFT_USER }}-dev){:target="_blank"} にアクセスして確認します。
+OpenShift Web Console の [Topology view]({{ CONSOLE_URL }}/topology/ns/{{ USER_ID }}-dev){:target="_blank"} にアクセスして確認します。
 新しく、サーバーレスアプリケーションとして、`api` が作成されていることを確認してください。
 
 ><pre>

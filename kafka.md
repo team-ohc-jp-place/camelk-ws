@@ -18,7 +18,7 @@ Kafka に対してランダムなメッセージを発信するアプリと、Ka
 
 ### 2. Kafka Source を使用して、Kafka トピックからメッセージを受信する
 
-こちらのリンクから、OpenShift Web Console の [Topology view]({{ CONSOLE_URL }}/topology/ns/{{ OPENSHIFT_USER }}-dev?view=graph){:target="_blank"} にアクセスをしてください。
+こちらのリンクから、OpenShift Web Console の [Topology view]({{ CONSOLE_URL }}/topology/ns/{{ USER_ID }}-dev?view=graph){:target="_blank"} にアクセスをしてください。
 
 ![](images/07-kafka-002.png)
 ![karavan]({% image_path 07-kafka-002.png %}){:width="200px"}
@@ -64,7 +64,7 @@ Kafka Source シンボルをクリックすると、右側にプロパティが�
 Parameters は、以下を入力してください。
 
 * **Topic Names**: incoming-topic
-* **Bootstrap Servers**: kafka-cluster-kafka-bootstrap.{{ OPENSHIFT_USER }}-dev.svc:9092
+* **Bootstrap Servers**: kafka-cluster-kafka-bootstrap.{{ USER_ID }}-dev.svc:9092
 * **Security Protocol**: PLAINTEXT
 * **Username**: demo
 * **Password**: demo
@@ -107,7 +107,7 @@ Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱の�
 WebUI は、`outcoming-topic` という Kafka トピック に送信されたメッセージを受信して、表示をします。
 
 こちらのリンクから、[WebUI](http://{{ WEBUI_URL }}){:target="_blank"} にアクセスすることができます。
-もしくは、OpenShift Web Console の [Topology view]({{ CONSOLE_URL }}/topology/ns/{{ OPENSHIFT_USER }}-dev?view=graph){:target="_blank"} にアクセスし、`quarkusapp` の Route URL よりアクセスしてください。
+もしくは、OpenShift Web Console の [Topology view]({{ CONSOLE_URL }}/topology/ns/{{ USER_ID }}-dev?view=graph){:target="_blank"} にアクセスし、`quarkusapp` の Route URL よりアクセスしてください。
 
 ![](images/07-kafka-009.png)
 ![karavan]({% image_path 07-kafka-009.png %}){:width="200px"}
@@ -131,7 +131,7 @@ Kafka Sink シンボルをクリックすると、右側にプロパティが表
 Parameters は、以下を入力してください。
 
 * **Topic Names**: outcoming-topic
-* **Bootstrap Servers**: kafka-cluster-kafka-bootstrap.{{ OPENSHIFT_USER }}-dev.svc:9092
+* **Bootstrap Servers**: kafka-cluster-kafka-bootstrap.{{ USER_ID }}-dev.svc:9092
 * **Security Protocol**: PLAINTEXT
 * **Username**: demo
 * **Password**: demo

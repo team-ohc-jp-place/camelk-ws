@@ -32,7 +32,7 @@ PostgreSQL は、OpenShift上に用意されているものを使うことがで
 
 PostgreSQL にアクセスするための情報は以下の通りです。
 
-* **Server Name**: postgresql.{{ OPENSHIFT_USER }}-dev.svc.cluster.local （cluster内からのみアクセス可能）
+* **Server Name**: postgresql.{{ USER_ID }}-dev.svc.cluster.local （cluster内からのみアクセス可能）
 * **Server Port**: 5432
 * **User Name**: demo
 * **Password**: demo
@@ -50,7 +50,7 @@ PostgreSQL にアクセスするための情報は以下の通りです。
 OpenShift DevSpaces の Terminal を開き、postgresql の pod にログインし、postgreSQLのコマンドを実行してみてください。
 
 ~~~
-oc exec -it dc/postgresql -n {{ OPENSHIFT_USER }}-dev -- /bin/bash
+oc exec -it dc/postgresql -n {{ USER_ID }}-dev -- /bin/bash
 psql sampledb
 ~~~
 
@@ -102,7 +102,7 @@ PostgreSQL のシンボルをクリックすると、右側にプロパティが
 先ほどの PostgreSQL の情報を設定していきます。
 Parameters 項目に、以下の内容を設定してください。
 
-* **Server Name**: postgresql.{{ OPENSHIFT_USER }}-dev.svc.cluster.local
+* **Server Name**: postgresql.{{ USER_ID }}-dev.svc.cluster.local
 * **Server Port**: 5432
 * **Username**: demo
 * **Password**: demo
@@ -181,7 +181,7 @@ Marshal シンボルにマウスカーソルを持っていくと、左上に小
 PostgreSQL のシンボルをクリックすると、右側にプロパティが表示されますので、
 Parameters 項目に、以下の内容を設定してください。
 
-* **Server Name**: postgresql.{{ OPENSHIFT_USER }}-dev.svc.cluster.local
+* **Server Name**: postgresql.{{ USER_ID }}-dev.svc.cluster.local
 * **Server Port**: 5432
 * **Username**: demo
 * **Password**: demo
@@ -207,7 +207,7 @@ Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱の�
 OpenShift DevSpaces の Terminal を開き、postgresql の pod にログインし、postgreSQLのコマンドを実行してみてください。
 
 ~~~
-oc exec -it dc/postgresql -n {{ OPENSHIFT_USER }}-dev -- /bin/bash
+oc exec -it dc/postgresql -n {{ USER_ID }}-dev -- /bin/bash
 psql sampledb
 ~~~
 

@@ -136,7 +136,7 @@ Kafka Source シンボルをクリックすると、右側にプロパティが�
 Parameters は、以下を入力してください。
 
 * **Topic Names**: debezium.public.products
-* **Bootstrap Servers**: kafka-cluster-kafka-bootstrap.{{ OPENSHIFT_USER }}-dev.svc:9092
+* **Bootstrap Servers**: kafka-cluster-kafka-bootstrap.{{ USER_ID }}-dev.svc:9092
 * **Security Protocol**: PLAINTEXT
 * **Username**: demo
 * **Password**: demo
@@ -247,7 +247,7 @@ Message は、以下を入力してください。
 PostgreSQL のシンボルをクリックすると、右側にプロパティが表示されますので、
 Parameters 項目に、以下の内容を設定してください。
 
-* **Server Name**: postgresql-replica.{{ OPENSHIFT_USER }}-dev.svc.cluster.local
+* **Server Name**: postgresql-replica.{{ USER_ID }}-dev.svc.cluster.local
 * **Server Port**: 5432
 * **Username**: demo
 * **Password**: demo
@@ -304,7 +304,7 @@ Choice シンボルにマウスカーソルを持っていくと、左上に小�
 
 `PostgreSQL Sink`
 
-* **Server Name**: postgresql-replica.{{ OPENSHIFT_USER }}-dev.svc.cluster.local
+* **Server Name**: postgresql-replica.{{ USER_ID }}-dev.svc.cluster.local
 * **Server Port**: 5432
 * **Username**: demo
 * **Password**: demo
@@ -338,7 +338,7 @@ UPDATEとDELETEと同様にして、`Log` と `Marshall` と `PostgreSQL Sink` �
 
 `PostgreSQL Sink`
 
-* **Server Name**: postgresql-replica.{{ OPENSHIFT_USER }}-dev.svc.cluster.local
+* **Server Name**: postgresql-replica.{{ USER_ID }}-dev.svc.cluster.local
 * **Server Port**: 5432
 * **Username**: demo
 * **Password**: demo
@@ -358,8 +358,8 @@ UPDATEとDELETEと同様にして、`Log` と `Marshall` と `PostgreSQL Sink` �
 まず、それぞれのDBのテーブルの状態を確認していきます。
 下記のコマンドを実行してください。
 
-* 同期元DBの確認: `oc rsh -n {{ OPENSHIFT_USER }}-dev dc/postgresql psql -U demo -d sampledb -c "SELECT * FROM products;"`
-* 同期先DBの確認: `oc rsh -n {{ OPENSHIFT_USER }}-dev dc/postgresql-replica psql -U demo -d sampledb -c "SELECT * FROM products;"`
+* 同期元DBの確認: `oc rsh -n {{ USER_ID }}-dev dc/postgresql psql -U demo -d sampledb -c "SELECT * FROM products;"`
+* 同期先DBの確認: `oc rsh -n {{ USER_ID }}-dev dc/postgresql-replica psql -U demo -d sampledb -c "SELECT * FROM products;"`
 
 ![](images/11-dbsync-025.png)
 ![karavan]({% image_path 11-dbsync-025.png %}){:width="800px"}
@@ -375,7 +375,7 @@ UPDATEとDELETEと同様にして、`Log` と `Marshall` と `PostgreSQL Sink` �
 
 別のターミナルを開き、同期先のDBの内容を確認してみてください。
 
-* 同期先DBの確認: `oc rsh -n {{ OPENSHIFT_USER }}-dev dc/postgresql-replica psql -U demo -d sampledb -c "SELECT * FROM products;"`
+* 同期先DBの確認: `oc rsh -n {{ USER_ID }}-dev dc/postgresql-replica psql -U demo -d sampledb -c "SELECT * FROM products;"`
 
 同期元と同じレコードが追加されています。
 
@@ -384,9 +384,9 @@ UPDATEとDELETEと同様にして、`Log` と `Marshall` と `PostgreSQL Sink` �
 
 同期元DBに対して、CREATE\UPDATE\DELETEの操作をして、同期先DBに反映されることを確認してみてください。
 
-* 同期元DB CREATE: `oc rsh -n {{ OPENSHIFT_USER }}-dev dc/postgresql psql -U demo -d sampledb -c "INSERT INTO products (id, name) VALUES (5, 'strawberry');"`
-* 同期元DB DELETE: `oc rsh -n {{ OPENSHIFT_USER }}-dev dc/postgresql psql -U demo -d sampledb -c "DELETE from products where id=2;"`
-* 同期元DB UPDATE: `oc rsh -n {{ OPENSHIFT_USER }}-dev dc/postgresql psql -U demo -d sampledb -c "UPDATE products SET name='pineapple' where id=1;"`
+* 同期元DB CREATE: `oc rsh -n {{ USER_ID }}-dev dc/postgresql psql -U demo -d sampledb -c "INSERT INTO products (id, name) VALUES (5, 'strawberry');"`
+* 同期元DB DELETE: `oc rsh -n {{ USER_ID }}-dev dc/postgresql psql -U demo -d sampledb -c "DELETE from products where id=2;"`
+* 同期元DB UPDATE: `oc rsh -n {{ USER_ID }}-dev dc/postgresql psql -U demo -d sampledb -c "UPDATE products SET name='pineapple' where id=1;"`
 
 実行後、ターミナルにそれぞれの処理が実行されたことを示す Log が表示されます。
 
@@ -395,8 +395,8 @@ UPDATEとDELETEと同様にして、`Log` と `Marshall` と `PostgreSQL Sink` �
 
 同期元、同期先のDBの内容を確認して、同期ができていることを確認してください。
 
-* 同期元DBの確認: `oc rsh -n {{ OPENSHIFT_USER }}-dev dc/postgresql psql -U demo -d sampledb -c "SELECT * FROM products;"`
-* 同期先DBの確認: `oc rsh -n {{ OPENSHIFT_USER }}-dev dc/postgresql-replica psql -U demo -d sampledb -c "SELECT * FROM products;"`
+* 同期元DBの確認: `oc rsh -n {{ USER_ID }}-dev dc/postgresql psql -U demo -d sampledb -c "SELECT * FROM products;"`
+* 同期先DBの確認: `oc rsh -n {{ USER_ID }}-dev dc/postgresql-replica psql -U demo -d sampledb -c "SELECT * FROM products;"`
 
 ![](images/11-dbsync-029.png)
 ![karavan]({% image_path 11-dbsync-029.png %}){:width="800px"}
