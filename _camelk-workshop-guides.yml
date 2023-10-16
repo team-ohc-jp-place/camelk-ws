@@ -14,10 +14,7 @@ vars:
   KAMELETS_VERSION:
   DEVSPACES_URL:
   DEVSPACES_REPO:
-  OPENSHIFT_USER:
   OPENSHIFT_PASSWORD:
-  KAFDROP_URL:
-  #WEBUI_URL:
   API_BUCKET:
 
 modules:
@@ -30,7 +27,6 @@ modules:
   - split-eip
   - direct-component
   - recipientlist-eip
-#  - kafka
   - postgresql-sink
   - db-sync
   - rest-api-service

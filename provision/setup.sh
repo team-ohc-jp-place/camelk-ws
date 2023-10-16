@@ -1,13 +1,14 @@
 #!/bin/bash
 
-if [ $# != 1 ]; then
-    echo "引数にユーザー数を指定してください"
-    echo 例 \: $0 5
+if [ $# != 2 ]; then
+    echo "引数にユーザー数とOCPのパスワードを指定してください"
+    echo 例 \: $0 5 password
     exit 1
 fi
 
 # config
-export USER_COUNT=$1
+export USER_COUNT=$1 #入力
+export OPENSHIFT_PASSWORD=$2 #入力
 
 # Create Project
 
@@ -20,7 +21,7 @@ done
 oc new-project devspaces
 oc new-project knative-serving
 oc new-project knative-eventing
-oc new-project guides
+oc new-project infra
 
 # Operator Install
 oc apply -f ./openshift/01_operator/01_subs_camelk.yaml
@@ -90,43 +91,60 @@ oc apply -f ./openshift/07_serverless/02_knative_eventing.yaml
 
 ## 2023.10 Guidesを共通プロジェクトに
 # get routing suffix
-oc create route edge dummy --service=dummy --port=8080 -n guides
-ROUTE=$(oc get route dummy -o=go-template --template='{{ .spec.host }}' -n guides)
-KAFDROP_URL="dummy"
-#WEBUI_URL=$(oc get route quarkusapp -o=go-template --template='{{ .spec.host }}' -n $PRJ_NAME)
-DEVSPACES_URL=$(oc get route devspaces -o=go-template --template='{{ .spec.host }}' -n devspaces)
-HOSTNAME_SUFFIX=$(echo $ROUTE | sed 's/^dummy-'guides'\.//g')
+oc create route edge dummy --service=dummy --port=8080 -n infra
+ROUTE=$(oc get route dummy -o=go-template --template='{{ .spec.host }}' -n infra)
+HOSTNAME_SUFFIX=$(echo $ROUTE | sed 's/^dummy-'infra'\.//g')
+DEVSPACES_URL=https://devspaces.$HOSTNAME_SUFFIX
 MASTER_URL=$(oc whoami --show-server)
 CONSOLE_URL=$(oc whoami --show-console)
-oc delete route dummy
+oc delete route dummy -n infra
 
-# Guide Provision #Kafdrop
-oc -n guides new-app quay.io/jamesfalkner/workshopper --name=guides \
-    -e MASTER_URL=$MASTER_URL \
-    -e CONSOLE_URL=$CONSOLE_URL \
-    -e KAFDROP_URL=$KAFDROP_URL \
-    -e DEVSPACES_URL=$DEVSPACES_URL \
-    -e DEVSPACES_REPO="https://github.com/team-ohc-jp-place/camelk-ws-devspaces.git" \
-    -e ROUTE_SUBDOMAIN=$HOSTNAME_SUFFIX \
-    -e CAMEL_VERSION="3.20.x" \
-    -e CAMELK_VERSION="1.11.x" \
-    -e KAMELETS_VERSION="0.9.x" \
-    -e API_BUCKET="{{api.bucket}}" \
-    -e OPENSHIFT_USER=$OPENSHIFT_USER \
-    -e OPENSHIFT_PASSWORD=$OPENSHIFT_PASSWORD \
-    -e CONTENT_URL_PREFIX="https://raw.githubusercontent.com/team-ohc-jp-place/camelk-ws/devspaces_v1" \
-    -e WORKSHOPS_URLS="https://raw.githubusercontent.com/team-ohc-jp-place/camelk-ws/devspaces_v1/_camelk-workshop-guides.yml" \
-    -e LOG_TO_STDOUT=true
+## username-destribution のための Redis
+# Redis
+oc new-app -f ./openshift/11_redis/01_redis_persistent.yaml \
+  -e REDIS_PASSWORD=redis \
+  -n infra
 
-oc -n guides expose svc/guides
+#username-destribution
+oc new-app --name=get-a-username -n infra \
+	--as-deployment-config quay.io/openshiftlabs/username-distribution:1.4 \
+	-e LAB_REDIS_HOST=redis.infra.svc.cluster.local \
+	-e LAB_REDIS_PASS=redis \
+	-e LAB_TITLE="Camel K HandsOn Workshop" \
+	-e LAB_DURATION_HOURS=1week \
+	-e LAB_USER_COUNT=2 \
+	-e LAB_USER_PASS=$OPENSHIFT_PASSWORD \
+  -e LAB_USER_ACCESS_TOKEN=openshift \
+	-e LAB_USER_PREFIX=user \
+	-e LAB_USER_PAD_ZERO=false \
+	-e LAB_ADMIN_PASS=redhatadmin! \
+	-e LAB_MODULE_URLS="https://etherpad-gpte-etherpad.$HOSTNAME_SUFFIX/p/Camel_K_Workshop;Etherpad,http://guides-infra.$HOSTNAME_SUFFIX/workshop/camel-k;Workshop Guides Page" \
+
+oc expose svc/get-a-username -n infra
+
+# Guide Provision
+  oc -n infra new-app quay.io/jamesfalkner/workshopper --name=guides \
+      -e MASTER_URL=$MASTER_URL \
+      -e CONSOLE_URL=$CONSOLE_URL \
+      -e DEVSPACES_URL=$DEVSPACES_URL \
+      -e DEVSPACES_REPO="https://github.com/team-ohc-jp-place/camelk-ws-devspaces.git" \
+      -e ROUTE_SUBDOMAIN=$HOSTNAME_SUFFIX \
+      -e CAMEL_VERSION="3.20.x" \
+      -e CAMELK_VERSION="1.11.x" \
+      -e KAMELETS_VERSION="0.9.x" \
+      -e API_BUCKET="{{api.bucket}}" \
+      -e OPENSHIFT_PASSWORD=$OPENSHIFT_PASSWORD \
+      -e CONTENT_URL_PREFIX="https://raw.githubusercontent.com/team-ohc-jp-place/camelk-ws/devspaces_v1" \
+      -e WORKSHOPS_URLS="https://raw.githubusercontent.com/team-ohc-jp-place/camelk-ws/devspaces_v1/_camelk-workshop-guides.yml" \
+      -e LOG_TO_STDOUT=true
+
+oc -n infra expose svc/guides
 
 for m in $(eval echo "{1..$USER_COUNT}"); do
 
   # config for user
   export PRJ_NAME=user${m}-dev
-  export DEVSPACES_NAME=user${m}-devspaces
   export OPENSHIFT_USER=user${m}
-  export OPENSHIFT_PASSWORD=G0motdgrIMLaMTRQ #適宜変更
 
   oc project $PRJ_NAME
 
@@ -235,52 +253,14 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
   oc process -n $PRJ_NAME -f ./openshift/09_debezium/01_dbz-connect.yaml --param=PJ_NAME=$PRJ_NAME | oc apply -f -
   oc process -n $PRJ_NAME -f ./openshift/09_debezium/02_postgresql-connector.yaml --param=PJ_NAME=$PRJ_NAME | oc apply -f -
 
-  # Guides
-  # get routing suffix
-  oc create route edge dummy --service=dummy --port=8080 -n $PRJ_NAME
-  ROUTE=$(oc get route dummy -o=go-template --template='{{ .spec.host }}' -n $PRJ_NAME)
-  KAFDROP_URL=$(oc get route kafdrop -o=go-template --template='{{ .spec.host }}' -n $PRJ_NAME)
-  #WEBUI_URL=$(oc get route quarkusapp -o=go-template --template='{{ .spec.host }}' -n $PRJ_NAME)
-  DEVSPACES_URL=$(oc get route devspaces -o=go-template --template='{{ .spec.host }}' -n devspaces)
-  HOSTNAME_SUFFIX=$(echo $ROUTE | sed 's/^dummy-'$PRJ_NAME'\.//g')
-  MASTER_URL=$(oc whoami --show-server)
-  CONSOLE_URL=$(oc whoami --show-console)
-  oc delete route dummy
-
-  # Guide Provision
-  oc -n $PRJ_NAME new-app quay.io/jamesfalkner/workshopper --name=guides \
-      -e MASTER_URL=$MASTER_URL \
-      -e CONSOLE_URL=$CONSOLE_URL \
-      -e KAFDROP_URL=$KAFDROP_URL \
-      -e DEVSPACES_URL=$DEVSPACES_URL \
-      -e DEVSPACES_REPO="https://github.com/team-ohc-jp-place/camelk-ws-devspaces.git" \
-      -e ROUTE_SUBDOMAIN=$HOSTNAME_SUFFIX \
-      -e CAMEL_VERSION="3.20.x" \
-      -e CAMELK_VERSION="1.11.x" \
-      -e KAMELETS_VERSION="0.9.x" \
-      -e API_BUCKET="{{api.bucket}}" \
-      -e OPENSHIFT_USER=$OPENSHIFT_USER \
-      -e OPENSHIFT_PASSWORD=$OPENSHIFT_PASSWORD \
-      -e CONTENT_URL_PREFIX="https://raw.githubusercontent.com/team-ohc-jp-place/camelk-ws/devspaces_v1" \
-      -e WORKSHOPS_URLS="https://raw.githubusercontent.com/team-ohc-jp-place/camelk-ws/devspaces_v1/_camelk-workshop-guides.yml" \
-      -e LOG_TO_STDOUT=true
-
-  oc -n $PRJ_NAME expose svc/guides
-
   # Label
-  #oc label deployment/emitter app.openshift.io/runtime=python --overwrite -n $PRJ_NAME
-  #oc label dc/quarkusapp app.openshift.io/runtime=quarkus --overwrite -n $PRJ_NAME
   oc label dc/postgresql app.openshift.io/runtime=postgresql --overwrite -n $PRJ_NAME
   oc label dc/postgresql-replica app.openshift.io/runtime=postgresql --overwrite -n $PRJ_NAME
   oc label dc/kafdrop app.openshift.io/runtime=amq --overwrite -n $PRJ_NAME
 
   oc delete Integration example -n $PRJ_NAME
 
-  # LimitRanges は無くなった？
-  #oc delete LimitRanges $PRJ_NAME-core-resource-limits -n $PRJ_NAME
-  #oc delete LimitRanges $DEVSPACES_NAME-core-resource-limits -n $DEVSPACES_NAME
-
-  echo "Completed... \n"
-  echo "http://guides-$PRJ_NAME.$HOSTNAME_SUFFIX/workshop/camel-k"
-
 done
+
+echo "Completed... \n"
+echo "http://guides-infra.$HOSTNAME_SUFFIX/workshop/camel-k"
