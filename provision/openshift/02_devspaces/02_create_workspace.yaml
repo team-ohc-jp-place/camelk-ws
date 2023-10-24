@@ -1,118 +1,48 @@
-apiVersion: workspace.devfile.io/v1alpha2
-kind: DevWorkspace
-metadata:
-  name: demo-project
-  namespace: user1-devspaces
-spec:
-  contributions:
-    - kubernetes:
-        name: che-code-workspace9999fa88d6ba479f
-        namespace: user1-devspaces
-      name: che-code-workspace9999fa88d6ba479f
-  routingClass: che
-  started: true
-  template:
-    attributes:
-      controller.devfile.io/devworkspace-config:
-        name: devworkspace-config
-        namespace: user2-dev
-      controller.devfile.io/storage-type: per-user
-      dw.metadata.annotations:
-        che.eclipse.org/che-editor: che-incubator/che-code/insiders
-        che.eclipse.org/devfile-source: |
-          scm:
-            repo: 'https://github.com/mgubaidullin/devspaces-karavan.git'
-            fileName: devfile.yaml
-          factory:
-            params: 'url=https://github.com/mgubaidullin/devspaces-karavan'
-    projects:
-      - git:
-          remotes:
-            origin: 'https://github.com/mgubaidullin/devspaces-karavan.git'
-        name: devspaces-karavan
-    components:
-      - attributes:
-          che-code.eclipse.org/contribute-cpuLimit: true
-          che-code.eclipse.org/contribute-cpuRequest: true
-          che-code.eclipse.org/contribute-endpoint/che-code: 3100
-          che-code.eclipse.org/contribute-endpoint/code-redirect-1: 13131
-          che-code.eclipse.org/contribute-endpoint/code-redirect-2: 13132
-          che-code.eclipse.org/contribute-endpoint/code-redirect-3: 13133
-          che-code.eclipse.org/contribute-entry-point: true
-          che-code.eclipse.org/contribute-memoryLimit: true
-          che-code.eclipse.org/contribute-memoryRequest: true
-          che-code.eclipse.org/contribute-volume-mount/checode: /checode
-          che-code.eclipse.org/contributed-container: tools
-          che-code.eclipse.org/original-cpuLimit: 1000m
-          che-code.eclipse.org/original-cpuRequest: 500m
-          che-code.eclipse.org/original-memoryLimit: 3Gi
-          che-code.eclipse.org/original-memoryRequest: 1Gi
-        container:
-          command:
-            - /checode/entrypoint-volume.sh
-          cpuLimit: 1500m
-          cpuRequest: 530m
-          endpoints:
-            - attributes:
-                contributed-by: che-code.eclipse.org
-                cookiesAuthEnabled: true
-                discoverable: false
-                type: main
-                urlRewriteSupported: true
-              exposure: public
-              name: che-code
-              path: '?tkn=eclipse-che'
-              protocol: https
-              secure: false
-              targetPort: 3100
-            - attributes:
-                contributed-by: che-code.eclipse.org
-                discoverable: false
-                urlRewriteSupported: false
-              exposure: public
-              name: code-redirect-1
-              protocol: http
-              targetPort: 13131
-            - attributes:
-                contributed-by: che-code.eclipse.org
-                discoverable: false
-                urlRewriteSupported: false
-              exposure: public
-              name: code-redirect-2
-              protocol: http
-              targetPort: 13132
-            - attributes:
-                contributed-by: che-code.eclipse.org
-                discoverable: false
-                urlRewriteSupported: false
-              exposure: public
-              name: code-redirect-3
-              protocol: http
-              targetPort: 13133
-          env:
-            - name: CHE_DASHBOARD_URL
-              value: 'https://devspaces.apps.cluster-4p862.4p862.sandbox1538.opentlc.com'
-            - name: CHE_PLUGIN_REGISTRY_URL
-              value: 'https://devspaces.apps.cluster-4p862.4p862.sandbox1538.opentlc.com/plugin-registry/v3'
-            - name: CHE_PLUGIN_REGISTRY_INTERNAL_URL
-              value: 'http://plugin-registry.user2-dev.svc:8080/v3'
-            - name: OPENVSX_REGISTRY_URL
-              value: 'https://open-vsx.org'
-          image: 'registry.redhat.io/devspaces/udi-rhel8@sha256:b0dfd9e15d878785bea5cb33a82a014abbd08c839917e72a8cd629c84bf47f1e'
-          memoryLimit: 4Gi
-          memoryRequest: 1.34G
-          sourceMapping: /projects
-          volumeMounts:
-            - name: checode
-              path: /checode
-        name: tools
-    commands:
-      - exec:
-          commandLine: |
-            curl -Ls https://sh.jbang.dev | bash -s - app setup && 
-            /home/user/.jbang/bin/jbang trust add -o --fresh --quiet https://github.com/apache/camel/blob/HEAD/dsl/camel-jbang/camel-jbang-main/dist/CamelJBang.java
-          component: tools
-        id: install
-    events:
-      postStart:
-        - install
+kind: Template
+apiVersion: template.openshift.io/v1
+objects: 
+- kind: DevWorkspace
+  apiVersion: workspace.devfile.io/v1alpha2
+  metadata:
+    name: camelk-ws
+    namespace: ${NAMESPACE_PARAM}
+  spec:
+    routingClass: che
+    started: true
+    contributions:
+      - name: ide
+        uri: ${DEVSPACES_URL}/plugin-registry/v3/plugins/che-incubator/che-code/latest/devfile.yaml
+    template:
+      projects:
+        - name: camelk-ws-devspaces
+          git:
+            remotes:
+              origin: https://github.com/team-ohc-jp-place/camelk-ws-devspaces
+      components:
+        - name: tools
+          container:
+            image: quay.io/devfile/universal-developer-image:ubi8-f5ffca8
+            #image: registry.redhat.io/devspaces/udi-rhel8@sha256:b0dfd9e15d878785bea5cb33a82a014abbd08c839917e72a8cd629c84bf47f1e
+            memoryRequest: 2Gi
+            memoryLimit: 6Gi
+            cpuLimit: 2000m
+            cpuRequest: 1000m
+      commands:
+        - id: install
+          exec:
+            component: tools
+            commandLine: |
+              curl -Ls https://sh.jbang.dev | bash -s - app setup && 
+              /home/user/.jbang/bin/jbang trust add -o --fresh --quiet https://github.com/apache/camel/blob/HEAD/dsl/camel-jbang/camel-jbang-main/dist/CamelJBang.java
+      events:
+        postStart:
+          - install
+parameters: 
+- name: DEVSPACES_URL
+  displayName: OpenShift DevSpaces URL
+  description: DEVSPACES_URL
+  required: true
+- name: NAMESPACE_PARAM
+  displayName: OpenShift DevSpaces Namespace
+  description: OpenShift DevSpaces Namespace
+  required: true

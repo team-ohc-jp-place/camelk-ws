@@ -1,0 +1,36 @@
+kind: DevWorkspace
+apiVersion: workspace.devfile.io/v1alpha2
+metadata:
+  name: camelk-ws
+  namespace: user1-devspaces
+spec:
+  routingClass: che
+  started: true
+  contributions:
+    - name: ide
+      uri: https://devspaces.apps.cluster-q6zlc.dynamic.opentlc.com/plugin-registry/v3/plugins/che-incubator/che-code/latest/devfile.yaml
+  template:
+    projects:
+      - name: camelk-ws-devspaces
+        git:
+          remotes:
+            origin: https://github.com/team-ohc-jp-place/camelk-ws-devspaces
+    components:
+      - name: tools
+        container:
+          image: quay.io/devfile/universal-developer-image:ubi8-f5ffca8
+          #image: registry.redhat.io/devspaces/udi-rhel8@sha256:b0dfd9e15d878785bea5cb33a82a014abbd08c839917e72a8cd629c84bf47f1e
+          #memoryRequest: 1Gi
+          #memoryLimit: 3Gi
+          #cpuLimit: 1000m
+          #cpuRequest: 500m
+    commands:
+      - id: install
+        exec:
+          component: tools
+          commandLine: |
+            curl -Ls https://sh.jbang.dev | bash -s - app setup && 
+            /home/user/.jbang/bin/jbang trust add -o --fresh --quiet https://github.com/apache/camel/blob/HEAD/dsl/camel-jbang/camel-jbang-main/dist/CamelJBang.java
+    events:
+      postStart:
+        - install

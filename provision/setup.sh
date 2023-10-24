@@ -144,6 +144,7 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
 
   # config for user
   export PRJ_NAME=user${m}-dev
+  export DEVSPACES_NAME=user${m}-devspaces
   export OPENSHIFT_USER=user${m}
 
   oc project $PRJ_NAME
@@ -243,7 +244,7 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
       -p POSTGRESQL_USER=demo \
       -p POSTGRESQL_PASSWORD=demo \
       -p POSTGRESQL_DATABASE=sampledb \
-       | oc create -f -
+      | oc create -f -
 
   oc rollout status -w dc/postgresql-replica -n $PRJ_NAME
   
@@ -252,6 +253,12 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
 
   oc process -n $PRJ_NAME -f ./openshift/09_debezium/01_dbz-connect.yaml --param=PJ_NAME=$PRJ_NAME | oc apply -f -
   oc process -n $PRJ_NAME -f ./openshift/09_debezium/02_postgresql-connector.yaml --param=PJ_NAME=$PRJ_NAME | oc apply -f -
+
+  # DevSpaces Create WorkSpace
+  oc process -n $DEVSPACES_NAME -f ./openshift/02_devspaces/02_create_workspace.yaml \
+      -p DEVSPACES_URL=$DEVSPACES_URL \
+      -p NAMESPACE_PARAM=$DEVSPACES_NAME \
+      | oc create -f -
 
   # Label
   oc label dc/postgresql app.openshift.io/runtime=postgresql --overwrite -n $PRJ_NAME
