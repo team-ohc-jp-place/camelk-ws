@@ -77,19 +77,13 @@ OpenShift Web Console にログイン後、左のメニュから `Developer` パ
 ![karavan]({% image_path 09-devspaces-006.png %}){:width="600px"}
 
 OpenShift DevSpaces の Dashboard が表示されます。
-まだワークスペースは作成されておりません。
-今回は、あらかじめ設定を用意したワークスペースをインポートしていきます。
-`Import from Git` のテキスト欄に、`{{ DEVSPACES_REPO }}` と入力して、`Create & Open` をクリックします。
 
-![](images/09-devspaces-007.png)
-![karavan]({% image_path 09-devspaces-007.png %}){:width="800px"}
+今回のハンズオン環境を含むワークスペースが作成されていると思いますので、右側の `Open` をクリックしてワークスペースを開いてください。
 
-ワークスペースの作成が始まりますので、完了までしばらく待ちます。
+![](images/09-devspaces-019.png)
+![karavan]({% image_path 09-devspaces-019.png %}){:width="800px"}
 
-![](images/09-devspaces-008.png)
-![karavan]({% image_path 09-devspaces-008.png %}){:width="800px"}
-
-ワークスペースの作成が完了すると、自動で以下のような画面にジャンプします。
+以下のような画面にジャンプします。
 `Trust the authors of all files in the parent folder 'projects'` にチェックを入れて、
 `Yes, I trust the authors` をクリックします。その後、`Mark Done` をクリックしてください。
 （エディタの外観を変えたい方は、設定を変更してみてください）
