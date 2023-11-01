@@ -151,14 +151,6 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
 
   sleep 10
 
-  #oc apply -n $PRJ_NAME -f ./openshift/04_postgresql/scc-anyuid.yaml
-  oc adm policy add-role-to-user view $OPENSHIFT_USER -n $PRJ_NAME
-  oc adm policy add-role-to-user edit $OPENSHIFT_USER -n $PRJ_NAME
-  oc adm policy add-role-to-user view $OPENSHIFT_USER -n devspaces
-  oc create sa camelk-user -n $PRJ_NAME
-  oc adm policy add-scc-to-user anyuid -z camelk-user
-  oc adm policy add-scc-to-user anyuid -z camelk-user -n $PRJ_NAME
-
   # Kafka (各user)
   ## kafka-cluster
   echo "Waiting for preparing amq-streams"
@@ -172,6 +164,28 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
     echo waiting...
     sleep 5
   done
+
+done
+
+
+for m in $(eval echo "{1..$USER_COUNT}"); do
+
+  # config for user
+  export PRJ_NAME=user${m}-dev
+  export DEVSPACES_NAME=user${m}-devspaces
+  export OPENSHIFT_USER=user${m}
+
+  oc project $PRJ_NAME
+
+  sleep 10
+
+  #oc apply -n $PRJ_NAME -f ./openshift/04_postgresql/scc-anyuid.yaml
+  oc adm policy add-role-to-user view $OPENSHIFT_USER -n $PRJ_NAME
+  oc adm policy add-role-to-user edit $OPENSHIFT_USER -n $PRJ_NAME
+  oc adm policy add-role-to-user view $OPENSHIFT_USER -n devspaces
+  oc create sa camelk-user -n $PRJ_NAME
+  oc adm policy add-scc-to-user anyuid -z camelk-user
+  oc adm policy add-scc-to-user anyuid -z camelk-user -n $PRJ_NAME
 
   # Waiting for deploying kafka-cluster
   echo "Waiting for deploying kafka-cluster"
