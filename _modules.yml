@@ -12,17 +12,17 @@ modules:
     name: File コンポーネント
   data-formats:
     name: Data Formats パターン
-  split-eip:
-    name: Split パターン
-  direct-component:
-    name: Direct コンポーネント
-  recipientlist-eip:
-    name: Recipient List パターン
+#  split-eip:
+#    name: Split パターン
+#  direct-component:
+#    name: Direct コンポーネント
+#  recipientlist-eip:
+#    name: Recipient List パターン
 #削除  kafka:
 #削除    name: Kafka との連携
   postgresql-sink:
     name: PostgreSQL との連携
   db-sync:
     name: Camel/Kafka/Debezium を使ったDBの同期
-  rest-api-service:
-    name: REST API サービスの実装
+#  rest-api-service:
+#    name: REST API サービスの実装
