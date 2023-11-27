@@ -85,6 +85,7 @@ Hello World の文字列が、約1秒間隔に5回表示されることを確認
 確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
 また、作成した `timer.camel.yaml` を `temp` フォルダに移動をしておいてください。 
 
+<!-->
 ---
 
 ### 3. OpenShift へのデプロイ
@@ -96,6 +97,7 @@ Hello World の文字列が、約1秒間隔に5回表示されることを確認
 
 ![](images/01-timer-011.png)
 ![karavan]({% image_path 01-timer-011.png %}){:width="1200px"}
+<!-->
 
 ---
 
