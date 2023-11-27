@@ -47,27 +47,14 @@ PostgreSQL にアクセスするための情報は以下の通りです。
 |  3  |  lemon  |
 
 実際に確認をしてみましょう。
-OpenShift DevSpaces の Terminal を開き、postgresql の pod にログインし、postgreSQLのコマンドを実行してみてください。
+OpenShift DevSpaces の Terminal を開き、下記のコマンドを実行してみてください。
 
-~~~
-oc exec -it dc/postgresql -n {{ USER_ID }}-dev -- /bin/bash
-psql sampledb
-~~~
+* データベース: sampledb
+* テーブル: products
+* レコード内容確認コマンド: `oc rsh -n {{ USER_ID }}-dev dc/postgresql psql -U demo -d sampledb -c "SELECT * FROM products;"`
 
 ![](images/08-postgresql-000.png)
 ![karavan]({% image_path 08-postgresql-000.png %}){:width="600px"}
-
-postgreSQL にログインしたら、`\d` と入力すると、テーブルの一覧が表示されます。
-
-![](images/08-postgresql-001.png)
-![karavan]({% image_path 08-postgresql-001.png %}){:width="400px"}
-
-`products` テーブル の 中身を確認してみましょう。`select * from products;` と入力してください。
-
-![](images/08-postgresql-002.png)
-![karavan]({% image_path 08-postgresql-002.png %}){:width="400px"}
-
-確認ができたら、`\q` で PostgreSQL を終了し、`exit` を入力して Pod へのアクセスを終了します。
 
 ---
 
@@ -204,14 +191,9 @@ Set Body で設定した情報が追加されて、取得してきたデータ�
 Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
 
 実際に、PostgreSQL にアクセスして確認をしてみましょう。
-OpenShift DevSpaces の Terminal を開き、postgresql の pod にログインし、postgreSQLのコマンドを実行してみてください。
+OpenShift DevSpaces の Terminal を開き、下記のコマンドを実行して下さい。
 
-~~~
-oc exec -it dc/postgresql -n {{ USER_ID }}-dev -- /bin/bash
-psql sampledb
-~~~
-
-products テーブル の 中身を確認してみましょう。`select * from products;` と入力してください。
+* レコード内容確認コマンド: `oc rsh -n {{ USER_ID }}-dev dc/postgresql psql -U demo -d sampledb -c "SELECT * FROM products;"`
 
 ![](images/08-postgresql-013.png)
 ![karavan]({% image_path 08-postgresql-013.png %}){:width="400px"}
