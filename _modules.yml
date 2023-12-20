@@ -26,3 +26,5 @@ modules:
     name: Camel/Kafka/Debezium を使ったDBの同期
 #  rest-api-service:
 #    name: REST API サービスの実装
+  error-handling:
+    name: エラー処理の実装

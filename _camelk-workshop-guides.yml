@@ -30,4 +30,4 @@ modules:
   - postgresql-sink
   - db-sync
 #  - rest-api-service
-  
+  - error-handling

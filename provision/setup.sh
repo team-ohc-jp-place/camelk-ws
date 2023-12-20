@@ -120,7 +120,7 @@ oc new-app --name=get-a-username -n infra \
 	-e LAB_ADMIN_PASS=redhatadmin! \
 	-e LAB_MODULE_URLS="https://etherpad-gpte-etherpad.$HOSTNAME_SUFFIX/p/Camel_K_Workshop;Etherpad,http://guides-infra.$HOSTNAME_SUFFIX/workshop/camel-k;Workshop Guides Page" \
 
-oc expose svc/get-a-username -n infra
+oc create route edge --service=get-a-username -n infra
 
 # Guide Provision
   oc -n infra new-app quay.io/jamesfalkner/workshopper --name=guides \
@@ -138,7 +138,7 @@ oc expose svc/get-a-username -n infra
       -e WORKSHOPS_URLS="https://raw.githubusercontent.com/team-ohc-jp-place/camelk-ws/devspaces_v1/_camelk-workshop-guides.yml" \
       -e LOG_TO_STDOUT=true
 
-oc -n infra expose svc/guides
+oc create route edge --service=guides -n infra
 
 for m in $(eval echo "{1..$USER_COUNT}"); do
 

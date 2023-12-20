@@ -42,7 +42,7 @@ spec:
     defaultNamespace:
       autoProvision: true
       template: <username>-devspaces
-    secondsOfInactivityBeforeIdling: 1800
+    secondsOfInactivityBeforeIdling: -1
     storage:
       pvcStrategy: per-user
   gitServices:
