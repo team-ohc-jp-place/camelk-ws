@@ -21,13 +21,13 @@ modules:
   activate:
   - camel-k-intro
   - workshop-environment
-#  - timer-component
+# - timer-component
   - file-component
   - data-formats
-#  - split-eip
-#  - direct-component
-#  - recipientlist-eip
+  - split-eip
+  - direct-component
+  - recipientlist-eip
   - postgresql-sink
   - db-sync
-#  - rest-api-service
+  - rest-api-service
 #  - error-handling
