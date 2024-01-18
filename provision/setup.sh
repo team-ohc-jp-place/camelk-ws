@@ -124,16 +124,16 @@ oc create route edge --service=get-a-username -n infra
 
 # Guide Provision
   oc -n infra new-app quay.io/jamesfalkner/workshopper --name=guides \
+      -e ROUTE_SUBDOMAIN=$HOSTNAME_SUFFIX \
       -e MASTER_URL=$MASTER_URL \
       -e CONSOLE_URL=$CONSOLE_URL \
-      -e DEVSPACES_URL=$DEVSPACES_URL \
-      -e DEVSPACES_REPO="https://github.com/team-ohc-jp-place/camelk-ws-devspaces.git" \
-      -e ROUTE_SUBDOMAIN=$HOSTNAME_SUFFIX \
       -e CAMEL_VERSION="3.20.x" \
       -e CAMELK_VERSION="1.11.x" \
       -e KAMELETS_VERSION="0.9.x" \
-      -e API_BUCKET="{{api.bucket}}" \
+      -e DEVSPACES_URL=$DEVSPACES_URL \
+      -e DEVSPACES_REPO="https://github.com/team-ohc-jp-place/camelk-ws-devspaces.git" \
       -e OPENSHIFT_PASSWORD=$OPENSHIFT_PASSWORD \
+      -e API_BUCKET="{{api.bucket}}" \
       -e CONTENT_URL_PREFIX="https://raw.githubusercontent.com/team-ohc-jp-place/camelk-ws/devspaces_v1" \
       -e WORKSHOPS_URLS="https://raw.githubusercontent.com/team-ohc-jp-place/camelk-ws/devspaces_v1/_camelk-workshop-guides.yml" \
       -e LOG_TO_STDOUT=true
