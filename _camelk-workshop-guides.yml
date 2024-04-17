@@ -5,7 +5,6 @@ content:
   url: https://raw.githubusercontent.com/team-ohc-jp-place/camelk-ws.git/kaoto_v2
 
 vars:
-  vars:
   ROUTE_SUBDOMAIN:
   MASTER_URL:
   CONSOLE_URL:

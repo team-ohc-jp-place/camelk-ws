@@ -1,4 +1,7 @@
 = Camel K について
+:experimental:
+:tip-caption: :bulb:
+:imagesdir: images
 
 == Camel K 概要
 
@@ -9,8 +12,7 @@ Red Hat Integration - Camel K は、OpenShift のクラウドでネイティブ�
 * コミュニティーベースのプロジェクト
 * Apache Camelのサブプロジェクトとして、2018/8/31にスタート
 
-image::images/00-intro-001.png[width="800px"]
-image::images/00-intro-001.png[width="800px"]
+image::00-intro-001.png[pic, 800]
 
 == Camel K の特徴
 
@@ -23,8 +25,8 @@ image::images/00-intro-001.png[width="800px"]
 
 == Camel K のプラットフォームでできること
 
-image::images/00-intro-002.png[width="800px"]
-image::images/00-intro-003.png[width="800px"]
+image::00-intro-002.png[pic, 800]
+image::00-intro-003.png[pic, 800]
 
 === 参考リンク
 
