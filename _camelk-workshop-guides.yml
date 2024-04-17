@@ -19,7 +19,7 @@ vars:
 modules:
   activate:
   - camel-k-intro
-# - workshop-environment
+  - workshop-environment
 # - timer-component
 # - file-component
 # - data-formats

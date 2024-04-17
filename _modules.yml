@@ -4,8 +4,8 @@ config:
 modules:
   camel-k-intro:
     name: Camel Kについて
-# workshop-environment:
-#   name: 利用環境について
+  workshop-environment:
+    name: 利用環境について
 #  timer-component:
 #    name: Timer コンポーネント
 # file-component:
