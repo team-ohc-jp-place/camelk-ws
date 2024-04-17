@@ -1,9 +1,9 @@
 = 利用環境について
 :experimental:
 :tip-caption: :bulb:
-:imagesdir: images
+:imagesdir: images/workshop-environment
 
-== ユーザー名の設定
+=== ユーザー名の設定
 
 画面上部のボックスを見てください。ユーザー名はすでに設定されていますか？もしそうなら、このように表示されます：
 
@@ -17,18 +17,22 @@ image::setuser.png[pic, 700]
 これでこのワークショップガイドのリンクやコマンドがあなたのユーザー名でカスタマイズされます。
 間違ってユーザー名を入力してしまった場合は、緑色のリサイクルアイコンをクリックしてリセットしてください。
 
-== 利用環境 について
+---
 
-このワークショップでは、簡単な Camel K インテグレーションを作成し、動作を確認すると共に、Karavan Designer を使用した 実装のイメージを把握していただきます。
+=== OpenShift Devspaces について
 
 本ワークショップの開発環境は、オープンソースの link:https://www.eclipse.org/che/[Eclipse Che] プロジェクトに基づいた、OpenShift Container Platform で動作するWebベースの統合開発環境(IDE)である、link:https://developers.redhat.com/products/openshift-dev-spaces/overview[Red Hat OpenShift DevSpaces] を使用します。
 
-* OpenShift DevSpaces の特徴
-** あらかじめ定義された設定でワークスペースを作成するため、オンボーディングを高速にできるとともに、個々の開発者の開発環境を統一できます。
-** Gitからクローンされるソースコードは、ブラウザからアクセスするワークスペース上で管理されるため、ローカル環境への複製が不要です。
-** Visual Studio Code 拡張機能と互換性があり、VSCodeユーザーでも利用しやすいです。
+* OpenShift DevSpaces の特徴とメリット
+** **Web IDE**: ブラウザ上で動作するためソフトウェアのインストールが不要でインターネットで接続されていればどこからでも開発が可能
+** **高い拡張性**: オンラインのOpen VSX レジストリーからプラグインがインストール可能で、開発言語に応じた拡張が可能
+** **標準化**: DevFileと開発用コンテナイメージによって、開発環境を標準化することが可能
+** **開発の一貫性**: 開発中環境から商用環境まで、アプリケーションが同じOS、同じコンテナイメージで動作することで、環境に依存したトラブルを軽減
+** **セキュリティ向上**: アプリケーションコードを含むデータがオンライン上で保存されるため、ストレージの故障リスクや盗難リスクが激減
 
 image::09-devspaces-001.png[pic, 1200]
+
+////
 
 ワークショップを開始する前の事前準備として、OpenShift DevSpaces のワークスペースを作成しておきます。
 こちらのリンクから、link:{{ CONSOLE_URL }}[OpenShift Web Console] にアクセスをしてください。
@@ -56,18 +60,25 @@ image::09-devspaces-003.png[width="1200px"]
 あらかじめ、KafkaやPostgreSQLといったリソースが用意されています。
 ワークショップの中で、これらのデータソースを用いた連携をCamel Kで作成していきます。
 
+////
+
+---
+
 === OpenShift DevSpacesの準備
 
 こちらのリンクから、link:{{ DEVSPACES_URL }}[OpenShift DevSpaces Dashboard] にログインします。
-`Topology` ビューの OpenShift DevSpaces インスタンスの Route からもアクセスすることができます。Project名は `devspaces` を選択してください。
-
-image::09-devspaces-004.png[width="1200px"]
 
 初回にアクセスすると、以下のような画面が表示されますので、`Log In with OpenShift` をクリックします。
 
 image::09-devspaces-005.png[width="600px"]
 
-`Username` と `Password` は、先ほどの OpenShift の 認証情報を入力してください。
+OpenShift Devspaces にアクセスするための情報は以下の通りです。
+
+* *Username*: {{ USER_ID }}
+* *Password*: {{ OPENSHIFT_PASSWORD }}
+
+image::09-devspaces-002.png[pic, 800]
+
 ログインに成功すると、以下のような画面が表示されますので、`Allow selected permissions` をクリックしてください。
 
 image::09-devspaces-006.png[width="600px"]
@@ -85,6 +96,7 @@ image::09-devspaces-019.png[width="800px"]
 
 image::09-devspaces-009.png[width="1200px"]
 
+////
 === Karavan Designer のインストール
 
 link:https://github.com/apache/camel-karavan[Karavan] は、Apache Camel 用の開発ツールキットです。ランタイムおよびパッケージとの統合や、イメージのビルド、kubernetesへのデプロイが可能な他、Camel K の Yaml DSL をグラフィカルに作成することができます。
@@ -111,6 +123,9 @@ Version は `3.20.3` を選択しておいてください。
 image::09-devspaces-018.png[width="800px"]
 
 -->
+////
+
+---
 
 === JBang によるインテグレーション実施のテスト
 
@@ -151,3 +166,28 @@ image::09-devspaces-015.png[width="1200px"]
 先ほどと同じように、１秒間に１回、**hello** の文字列が出力されているのを確認してください。
 
 image::09-devspaces-016.png[width="1200px"]
+
+
+[.console-input]
+[source,yaml]
+----
+apiVersion: binding.operators.coreos.com/v1alpha1
+kind: ServiceBinding
+metadata:
+  name: kafka-servicebinding
+  namespace: globex-%USERID%
+spec:
+  application:
+    group: apps
+    labelSelector:
+      matchLabels:
+        service-binding/type: kafka
+    resource: deployments
+    version: v1
+  bindAsFiles: true
+  services:
+    - group: ''
+      kind: Secret
+      name: kafka-client-secret
+      version: v1
+----
