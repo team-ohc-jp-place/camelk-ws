@@ -1,18 +1,18 @@
 = 利用環境について
 :experimental:
 :tip-caption: :bulb:
-:imagesdir: images/workshop-environment
+:imagesdir: images
 
 === ユーザー名の設定
 
 画面上部のボックスを見てください。ユーザー名はすでに設定されていますか？もしそうなら、このように表示されます：
 
-image::alreadyset.png[pic, 700]
+image::workshop-environment/alreadyset.png[pic, 700]
 
 ユーザー名が正しく設定されていれば、次に進むことができます。
 そうでない場合は、上のボックスに割り当てられたユーザーIDを次のように入力してください：
 
-image::setuser.png[pic, 700]
+image::workshop-environment/setuser.png[pic, 700]
 
 これでこのワークショップガイドのリンクやコマンドがあなたのユーザー名でカスタマイズされます。
 間違ってユーザー名を入力してしまった場合は、緑色のリサイクルアイコンをクリックしてリセットしてください。
@@ -30,7 +30,7 @@ image::setuser.png[pic, 700]
 ** **開発の一貫性**: 開発中環境から商用環境まで、アプリケーションが同じOS、同じコンテナイメージで動作することで、環境に依存したトラブルを軽減
 ** **セキュリティ向上**: アプリケーションコードを含むデータがオンライン上で保存されるため、ストレージの故障リスクや盗難リスクが激減
 
-image::09-devspaces-001.png[pic, 1200]
+image::workshop-environment/09-devspaces-001.png[pic, 1200]
 
 ////
 
@@ -41,11 +41,11 @@ OpenShift Web Console にアクセスするための情報は以下の通りで�
 * *Username*: {{ USER_ID }}
 * *Password*: {{ OPENSHIFT_PASSWORD }}
 
-image::09-devspaces-002.png[width="800px"]
+image::workshop-environment/09-devspaces-002.png[width="800px"]
 
 OpenShift Web Console にログイン後、左のメニューから `Developer` パースペクティブを選択し、その下のメニューから `Topology` ビューを開きます。Project名は `{{ USER_ID }}-dev` を選択してください。
 
-image::09-devspaces-003.png[width="1200px"]
+image::workshop-environment/09-devspaces-003.png[width="1200px"]
 
 === リソースについて
 
@@ -70,57 +70,57 @@ image::09-devspaces-003.png[width="1200px"]
 
 初回にアクセスすると、以下のような画面が表示されますので、`Log In with OpenShift` をクリックします。
 
-image::09-devspaces-005.png[width="600px"]
+image::workshop-environment/09-devspaces-005.png[width="600px"]
 
 OpenShift Devspaces にアクセスするための情報は以下の通りです。
 
 * *Username*: {{ USER_ID }}
 * *Password*: {{ OPENSHIFT_PASSWORD }}
 
-image::09-devspaces-002.png[pic, 800]
+image::workshop-environment/09-devspaces-002.png[pic, 800]
 
 ログインに成功すると、以下のような画面が表示されますので、`Allow selected permissions` をクリックしてください。
 
-image::09-devspaces-006.png[width="600px"]
+image::workshop-environment/09-devspaces-006.png[width="600px"]
 
 OpenShift DevSpaces の Dashboard が表示されます。
 
 今回のハンズオン環境を含むワークスペースが作成されていると思いますので、右側の `Open` をクリックしてワークスペースを開いてください。
 
-image::09-devspaces-019.png[width="800px"]
+image::workshop-environment/09-devspaces-019.png[width="800px"]
 
 以下のような画面にジャンプします。
 `Trust the authors of all files in the parent folder 'projects'` にチェックを入れて、
 `Yes, I trust the authors` をクリックします。その後、`Mark Done` をクリックしてください。
 （エディタの外観を変えたい方は、設定を変更してみてください）
 
-image::09-devspaces-009.png[width="1200px"]
+image::workshop-environment/09-devspaces-009.png[width="1200px"]
 
 ////
 === Karavan Designer のインストール
 
 link:https://github.com/apache/camel-karavan[Karavan] は、Apache Camel 用の開発ツールキットです。ランタイムおよびパッケージとの統合や、イメージのビルド、kubernetesへのデプロイが可能な他、Camel K の Yaml DSL をグラフィカルに作成することができます。
 
-image::we-karavan-vscode.png[width="1200px"]
+image::workshop-environment/we-karavan-vscode.png[width="1200px"]
 
 OpenShift DevSpaces 左のエクスプローラーの、`extention` フォルダの中に、`camel-karavan.karavan-3.xx.x.vsix` というファイルがあるので、右クリックをして、メニューから `Install Extension VSIX` を選択して実行してください。
 
-image::09-devspaces-010.png[width="1200px"]
+image::workshop-environment/09-devspaces-010.png[width="1200px"]
 
 インストールが完了すると、左端のメニューにCamelのアイコンが表示されます。
 エクスプローラ上で右クリックをして、karavan のメニューが表示される様になればOKです。
 
-image::09-devspaces-011.png[width="1200px"]
+image::workshop-environment/09-devspaces-011.png[width="1200px"]
 
 <!-- 続いて、Karavan の設定を確認します。
 拡張機能の Karavan の歯車のアイコンをクリックし、 Extention Settings を選択してください。
 
-image::09-devspaces-017.png[width="800px"]
+image::workshop-environment/09-devspaces-017.png[width="800px"]
 
 Remote のタブを選択し、`Camel: Version` を確認します。
 Version は `3.20.3` を選択しておいてください。
 
-image::09-devspaces-018.png[width="800px"]
+image::workshop-environment/09-devspaces-018.png[width="800px"]
 
 -->
 ////
@@ -137,12 +137,12 @@ link:https://www.jbang.dev/[JBang] は、Javaをスクリプトのように実�
 
 エクスプローラ上で右クリックをして、`Open in Integrated terminal` を選択してください。
 
-image::09-devspaces-012.png[width="300px"]
+image::workshop-environment/09-devspaces-012.png[width="300px"]
 
 ターミナルが表示されますので、`jbang camel@apache/camel run example.camel.yaml` と入力をして実行してみてください。
 ターミナルに以下のようなログが表示されればOKです。
 
-image::09-devspaces-013.png[width="1200px"]
+image::workshop-environment/09-devspaces-013.png[width="1200px"]
 
 ログを確認したら、`Ctrl+C` などで実行を終了してください。
 
@@ -156,38 +156,13 @@ link:https://camel.apache.org/camel-k/{{ CAMELK_VERSION }}/cli/cli.html[CAMEL K 
 
 ターミナルに以下のログが表示されて、OpenShiftに `example` のインテグレーションがデプロイされます。
 
-image::09-devspaces-014.png[width="600px"]
+image::workshop-environment/09-devspaces-014.png[width="600px"]
 
 OpenShift Web Console の link:{{ CONSOLE_URL }}/topology/ns/{{ USER_ID }}-dev[Topology view] にアクセスして確認します。
 新しく、`example` の Pod が起動していますので、 `view logs` をクリックします。
 
-image::09-devspaces-015.png[width="1200px"]
+image::workshop-environment/09-devspaces-015.png[width="1200px"]
 
 先ほどと同じように、１秒間に１回、**hello** の文字列が出力されているのを確認してください。
 
-image::09-devspaces-016.png[width="1200px"]
-
-
-[.console-input]
-[source,yaml]
-----
-apiVersion: binding.operators.coreos.com/v1alpha1
-kind: ServiceBinding
-metadata:
-  name: kafka-servicebinding
-  namespace: globex-%USERID%
-spec:
-  application:
-    group: apps
-    labelSelector:
-      matchLabels:
-        service-binding/type: kafka
-    resource: deployments
-    version: v1
-  bindAsFiles: true
-  services:
-    - group: ''
-      kind: Secret
-      name: kafka-client-secret
-      version: v1
-----
+image::workshop-environment/09-devspaces-016.png[width="1200px"]
