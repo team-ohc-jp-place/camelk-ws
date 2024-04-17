@@ -3,7 +3,7 @@
 ---
 
 環境構築に OpenShift CLI （ocコマンド）が必要です。
-Client Version: 4.13.0 で確認済み。
+Client Version: 4.15.0 で確認済み。
 
 ### デプロイ方法
 
@@ -49,3 +49,5 @@ sh ./setup.sh <user-count>
 * 2023/5/9: 
   * Camel/Kafka/Debezium を使ったDBの同期 のページを追加
   * REST API サービスの実装 のページを追加
+* 2024/4/17:
+  * 開発ツールをKaravanからKaotoに変更
