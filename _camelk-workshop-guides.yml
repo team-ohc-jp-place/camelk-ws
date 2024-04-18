@@ -20,6 +20,8 @@ modules:
   activate:
   - camel-k-intro
   - workshop-environment
+  - camel-jbang
+  - deploying-to-openshift
 # - timer-component
 # - file-component
 # - data-formats

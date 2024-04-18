@@ -1,0 +1,5 @@
+= 補足2: OpenShiftへのデプロイ
+:experimental:
+:tip-caption: :bulb:
+:imagesdir: images
+
