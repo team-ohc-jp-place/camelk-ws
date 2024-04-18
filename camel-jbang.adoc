@@ -1,5 +1,25 @@
-= 補足1: Camel Jbang について
+= Appendix 1 - Camel Jbang について
 :experimental:
 :tip-caption: :bulb:
 :imagesdir: images
 
+---
+
+== JBang によるインテグレーション実施のテスト
+
+link:https://www.jbang.dev/[JBang] は、Javaをスクリプトのように実行できるツールです。日本での知名度はまだまだ低いですが、Quarkusのエンジニアが開発していることもあり。モダンなJava開発環境との連携が充実しています。
+
+今回のワークショップでは、karavan Designer で作成した Camel K インテグレーションを、JBang を通して実行し、動作を確認していきます。
+
+ワークスペースに、１秒間に１回、コンソールに **hello** と出力をするサンプル用のファイル（example.camel.yaml）があります。
+
+エクスプローラ上で右クリックをして、`Open in Integrated terminal` を選択してください。
+
+image::workshop-environment/09-devspaces-012.png[pic, 300]
+
+ターミナルが表示されますので、`jbang camel@apache/camel run example.camel.yaml` と入力をして実行してみてください。
+ターミナルに以下のようなログが表示されればOKです。
+
+image::workshop-environment/09-devspaces-013.png[pic, 1200]
+
+ログを確認したら、`Ctrl+C` などで実行を終了してください。

@@ -1,5 +1,27 @@
-= 補足2: OpenShiftへのデプロイ
+= Appendix 2 - OpenShiftへのデプロイ
 :experimental:
 :tip-caption: :bulb:
 :imagesdir: images
 
+---
+
+== Camel K CLI (Kamel)　による OpenShift　へのデプロイ
+
+link:https://camel.apache.org/camel-k/{{ CAMELK_VERSION }}/cli/cli.html[CAMEL K CLI (Kamel)] は、Kubernetes クラスタ上でインテグレーションを実行するためのエントリポイントです。
+
+先ほどのサンプルを、OpenShiftへデプロイしてみます。
+
+`kamel run example.camel.yaml -n {{ USER_ID }}-dev` とターミナルに入力してみてください。
+
+ターミナルに以下のログが表示されて、OpenShiftに `example` のインテグレーションがデプロイされます。
+
+image::workshop-environment/09-devspaces-014.png[pic, 600]
+
+OpenShift Web Console の link:{{ CONSOLE_URL }}/topology/ns/{{ USER_ID }}-dev[Topology view] にアクセスして確認します。
+新しく、`example` の Pod が起動していますので、 `view logs` をクリックします。
+
+image::workshop-environment/09-devspaces-015.png[pic, 1200]
+
+先ほどと同じように、１秒間に１回、**hello** の文字列が出力されているのを確認してください。
+
+image::workshop-environment/09-devspaces-016.png[pic, 1200]

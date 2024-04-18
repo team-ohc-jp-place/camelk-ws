@@ -1,9 +1,9 @@
-= 利用環境について
+= ワークショップ環境について
 :experimental:
 :tip-caption: :bulb:
 :imagesdir: images
 
-=== ユーザー名の設定
+== ユーザー名の設定
 
 画面上部のボックスを見てください。ユーザー名はすでに設定されていますか？もしそうなら、このように表示されます：
 
@@ -19,7 +19,7 @@ image::workshop-environment/setuser.png[pic, 700]
 
 ---
 
-=== OpenShift Devspaces について
+== OpenShift Devspaces について
 
 本ワークショップの開発環境は、オープンソースの link:https://www.eclipse.org/che/[Eclipse Che] プロジェクトに基づいた、OpenShift Container Platform で動作するWebベースの統合開発環境(IDE)である、link:https://developers.redhat.com/products/openshift-dev-spaces/overview[Red Hat OpenShift DevSpaces] を使用します。
 
@@ -64,7 +64,7 @@ image::workshop-environment/09-devspaces-003.png[width="1200px"]
 
 ---
 
-=== OpenShift DevSpacesの準備
+=== OpenShift DevSpaces へのログイン
 
 こちらのリンクから、link:{{ DEVSPACES_URL }}[OpenShift DevSpaces Dashboard] にログインします。
 
@@ -125,44 +125,3 @@ image::workshop-environment/09-devspaces-018.png[width="800px"]
 -->
 ////
 
----
-
-=== JBang によるインテグレーション実施のテスト
-
-link:https://www.jbang.dev/[JBang] は、Javaをスクリプトのように実行できるツールです。日本での知名度はまだまだ低いですが、Quarkusのエンジニアが開発していることもあり。モダンなJava開発環境との連携が充実しています。
-
-今回のワークショップでは、karavan Designer で作成した Camel K インテグレーションを、JBang を通して実行し、動作を確認していきます。
-
-ワークスペースに、１秒間に１回、コンソールに **hello** と出力をするサンプル用のファイル（example.camel.yaml）があります。
-
-エクスプローラ上で右クリックをして、`Open in Integrated terminal` を選択してください。
-
-image::workshop-environment/09-devspaces-012.png[width="300px"]
-
-ターミナルが表示されますので、`jbang camel@apache/camel run example.camel.yaml` と入力をして実行してみてください。
-ターミナルに以下のようなログが表示されればOKです。
-
-image::workshop-environment/09-devspaces-013.png[width="1200px"]
-
-ログを確認したら、`Ctrl+C` などで実行を終了してください。
-
-==== Camel K CLI (Kamel)　による OpenShift　へのデプロイ
-
-link:https://camel.apache.org/camel-k/{{ CAMELK_VERSION }}/cli/cli.html[CAMEL K CLI (Kamel)] は、Kubernetes クラスタ上でインテグレーションを実行するためのエントリポイントです。
-
-先ほどのサンプルを、OpenShiftへデプロイしてみます。
-
-`kamel run example.camel.yaml -n {{ USER_ID }}-dev` とターミナルに入力してみてください。
-
-ターミナルに以下のログが表示されて、OpenShiftに `example` のインテグレーションがデプロイされます。
-
-image::workshop-environment/09-devspaces-014.png[width="600px"]
-
-OpenShift Web Console の link:{{ CONSOLE_URL }}/topology/ns/{{ USER_ID }}-dev[Topology view] にアクセスして確認します。
-新しく、`example` の Pod が起動していますので、 `view logs` をクリックします。
-
-image::workshop-environment/09-devspaces-015.png[width="1200px"]
-
-先ほどと同じように、１秒間に１回、**hello** の文字列が出力されているのを確認してください。
-
-image::workshop-environment/09-devspaces-016.png[width="1200px"]

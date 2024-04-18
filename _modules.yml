@@ -7,9 +7,9 @@ modules:
   workshop-environment:
     name: ワークショップ環境について
   camel-jbang:
-    name: 補足1：Camel Jbangについて
+    name: Appendix 1:Camel Jbangについて
   deploying-to-openshift:
-    name: 補足2：OpenShiftへのデプロイ
+    name: Appendix 2:OpenShiftへのデプロイ
 #  timer-component:
 #    name: Timer コンポーネント
 # file-component:
