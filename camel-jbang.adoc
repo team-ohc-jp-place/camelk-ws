@@ -1,4 +1,4 @@
-= Appendix 1 - Camel Jbang について
+= Appendix 1 - Camel JBang について
 :experimental:
 :tip-caption: :bulb:
 :imagesdir: images

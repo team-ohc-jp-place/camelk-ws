@@ -9,7 +9,7 @@ modules:
   kaoto-tutorial:
     name: Kaotoを使ったCamelの開発
   camel-jbang:
-    name: Appendix 1 - Camel Jbangについて
+    name: Appendix 1 - Camel JBangについて
   deploying-to-openshift:
     name: Appendix 2 - OpenShiftへのデプロイ
 #  timer-component:
