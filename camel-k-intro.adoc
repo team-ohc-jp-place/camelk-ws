@@ -15,7 +15,7 @@ link:https://github.com/apache/camel-k[Camel K] は Apache Camel オープンソ
 * コミュニティーベースのプロジェクト
 * Apache Camelのサブプロジェクトとして、2018/8/31にスタート
 
-image::00-intro-001.png[pic, 800]
+image::camel-k-intro/00-intro-001.png[pic, 800]
 
 == Camel K の特徴
 
@@ -28,8 +28,8 @@ image::00-intro-001.png[pic, 800]
 
 == Camel K のプラットフォームでできること
 
-image::00-intro-002.png[pic, 800]
-image::00-intro-003.png[pic, 800]
+image::camel-k-intro/00-intro-002.png[pic, 800]
+image::camel-k-intro/00-intro-003.png[pic, 800]
 
 === 参考リンク
 

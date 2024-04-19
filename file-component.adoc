@@ -1,0 +1,131 @@
+= File コンポーネント
+:experimental:
+:tip-caption: :bulb:
+:imagesdir: images
+
+== 目的
+
+link:https://camel.apache.org/components/{{ CAMEL_VERSION }}/file-component.html[File コンポーネント] を使用して、ファイルを他の Camel コンポーネントで処理したり、他のコンポーネントからのメッセージをファイルに出力する方法について理解します。
+
+== ファイルの取得・出力を行う
+
+OpenShift DevSpaces 左のエクスプローラー上で、右クリックをして、メニューから `New File...` を選択し、`file.yaml` と入力して `Enter` を押してください。
+今度は作成したファイルを選択して右クリックし、`Open with Kaoto Graphical Editor for Camel` からKaotoのグラフィカルエディターを開きます。
+
+まだ Route の定義がないので、新しくRouteを作成します。
+`+ New` をクリックしてください。
+
+image::file-component/02-file-001.png[] 
+
+`timer` と `log` が配置された Route が作成されます。
+今回は `File` コンポーネントを使いますので、`timer` と入れ替えます。
+`timer` シンボルの メニューをクリックし、`Replace` を選択します。
+
+image::file-component/02-file-002.png[] 
+
+コンポーネントのカタログが開きます。
+
+`Type: Components` の中から `File` を探して選択をしてください。
+左上のテキストボックスに `File` と入力をすると、絞り込みができます。
+
+image::file-component/02-file-003.png[] 
+
+Source の `timer` が `file` と入れ替わりました。
+
+`file` シンボルをクリックすると、右側にプロパティが表示されますので、確認してください。
+
+Parameters が色々ありますが、`Directory Name` で指定したフォルダにファイルが格納されると、そのファイルをCamelが取得します。
+今回は、他のパラメータはデフォルトのままで構いません。
+
+* *Directory Name*: data/input
+
+image::file-component/02-file-004.png[] 
+
+次に、`log` で出力するメッセージを修正します。
+`log` シンボルをクリックすると、右側にプロパティが表示されますので、確認してください。
+`Message` に `template message` と入力されていますので、これを `${body}` に変更してください。
+これで、ファイルで受信したメッセージの本文をログに出力するようになります。
+
+image::file-component/02-file-005.png[] 
+
+続いて、ファイルを出力して格納する処理を作成します。
+`log` シンボルのメニューをクリックして、`Append` を選択します。
+再びコンポーネントのカタログが開きますので、先ほどと同じように `Type: Components` の中から `File` を探して選択をしてください。
+左上のテキストボックスに `File` と入力をすると、絞り込みができます。
+
+image::file-component/02-file-006.png[] 
+
+
+`log` シンボルに続いて、`file` コンボーネントが配置されました。
+
+`file` シンボルをクリックすると、右側にプロパティが表示されますので、確認してください。
+
+今度は、ファイルの出力先指定します。
+`Directory Name` に以下のフォルダパスを設定してください。
+
+* *Directory Name*: data/output
+
+image::file-component/02-file-007.png[] 
+
+次に、取得したファイルの本文に、追記をする処理を追加をしてみます。
+
+もう一度 `log` シンボルのメニューをクリックして、`Append` を選択します。
+コンポーネントのカタログの、`Type: Processor` の中から `Set Body` を探して選択をしてください。
+左上のテキストボックスに `Set Body` と入力をすると、絞り込みができます。
+
+image::file-component/02-file-008.png[] 
+
+これで、`log` と `file` の間に、`setBody` が追加されました。
+
+`Set Body` のシンボルをクリックすると、右側にプロパティが表示されますので、
+Expression に、以下の内容を設定してください。
+
+ * *Language*: simple
+ * *Expression*: ${body} : It's ${date-with-timezone:now:JST:HH:mm:ss} now.
+
+[TIP]
+====
+Apache Camel の Simple は、Apache Camel ルーティングと統合フレームワーク内で使用される式言語です。
+この言語は、動的なルーティングロジックを表現するために設計されています。
+Simple は、非常に読みやすく、理解しやすい構文を持っているため、多くの開発者にとってアクセスしやすい言語です。
+参考: link:https://camel.apache.org/components/{{ CAMEL_VERSION }}/languages/simple-language.html[simple]
+====
+
+image::file-component/02-file-009.png[]
+image::file-component/02-file-010.png[]
+
+それでは、実際に動かしてみます。
+OpenShift DevSpaces のターミナルで、以下のコマンドを実行してください。
+
+[source, bash]
+----
+camel run file.yaml
+----
+
+Camelが起動したら、テスト用のファイルを受信先のフォルダに格納して動かしてみます。
+
+image::file-component/02-file-011.png[] 
+
+テスト用のテキストファイルは、`file` フォルダに用意されている、`test_01.txt` というファイルを使用します。
+
+ファイルの中身は、
+
+----
+Hello World!
+----
+
+というテキストが格納されています。
+
+`file` フォルダに `test_01.txt` をコピーし、`data/input` フォルダにペーストします。
+
+image::file-component/02-file-012.png[] 
+
+ファイルが所定のフォルダに格納されると、インテグレーションが実行されて、コンソールに Log が表示され、`data/output` にファイルが格納されます。
+（格納したファイルは、デフォルトの設定では `data/input` 配下に `.camel` フォルダが作成され、そちらに移動します）
+
+ファイルが作成されたら、`data/input/.camel`、`data/output` の両フォルダのファイルの中身を確認してください。
+`data/output` に格納されたファイルには、現在時刻が `Set Body` で追記されて出力されています。
+
+image::file-component/02-file-013.png[]
+
+確認後、`Ctrl+C` などでCamelの実行を終了してください。
