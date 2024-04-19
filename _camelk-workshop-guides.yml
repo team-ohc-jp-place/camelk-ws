@@ -22,10 +22,10 @@ modules:
   - workshop-environment
   - kaoto-tutorial
   - file-component
+  - data-formats
   - camel-jbang
   - deploying-to-openshift
 # - timer-component
-# - data-formats
 #  - split-eip
 #  - direct-component
 #  - recipientlist-eip

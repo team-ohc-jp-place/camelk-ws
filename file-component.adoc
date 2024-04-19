@@ -5,7 +5,7 @@
 
 == 目的
 
-link:https://camel.apache.org/components/{{ CAMEL_VERSION }}/file-component.html[File コンポーネント]{:target="_blank"} を使用して、ファイルを他の Camel コンポーネントで処理したり、他のコンポーネントからのメッセージをファイルに出力する方法について理解します。
+link:https://camel.apache.org/components/{{ CAMEL_VERSION }}/file-component.html[File コンポーネント] を使用して、ファイルを他の Camel コンポーネントで処理したり、他のコンポーネントからのメッセージをファイルに出力する方法について理解します。
 
 == ファイルの取得・出力を行う
 
@@ -50,6 +50,7 @@ image::file-component/02-file-005.png[]
 
 続いて、ファイルを出力して格納する処理を作成します。
 `log` シンボルのメニューをクリックして、`Append` を選択します。
+
 再びコンポーネントのカタログが開きますので、先ほどと同じように `Type: Components` の中から `File` を探して選択をしてください。
 左上のテキストボックスに `File` と入力をすると、絞り込みができます。
 
@@ -70,6 +71,7 @@ image::file-component/02-file-007.png[]
 次に、取得したファイルの本文に、追記をする処理を追加をしてみます。
 
 もう一度 `log` シンボルのメニューをクリックして、`Append` を選択します。
+
 コンポーネントのカタログの、`Type: Processor` の中から `Set Body` を探して選択をしてください。
 左上のテキストボックスに `Set Body` と入力をすると、絞り込みができます。
 
