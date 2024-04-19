@@ -57,7 +57,7 @@ image::data-formats/dataformats-002.png[]
 image::data-formats/dataformats-003.png[] 
 
 では、取得するファイルの中身を変換していきます。
-まず、オブジェクトに変換するために、`Unmarshal` をRouteに配置します。
+まず、オブジェクトに変換するために、`unmarshal` をRouteに配置します。
 
 `log` シンボルのメニューをクリックして、`Append` を選択します。
 
@@ -68,7 +68,7 @@ image::data-formats/dataformats-004.png[]
 
 image::data-formats/dataformats-005.png[] 
 
-`Unmarshal` のシンボルが `log` に続いて配置されます。
+`unmarshal` のシンボルが `log` に続いて配置されます。
 
 Parameters は、以下のように設定をしてください。
 他の項目は、デフォルトのままで構いません。
@@ -82,7 +82,7 @@ image::data-formats/dataformats-007.png[]
 
 続いてデータ変換後の Body を 確認するための `log` を追加します。
 
-`Unmarshal` シンボルのメニューをクリックして、`Append` を選択します。
+`unmarshal` シンボルのメニューをクリックして、`Append` を選択します。
 
 image::data-formats/dataformats-008.png[] 
 
@@ -90,7 +90,7 @@ image::data-formats/dataformats-008.png[]
 
 image::data-formats/dataformats-009.png[] 
 
-Unmarshalで変換した内容を表示するには、`log` プロパティ の `Message` に `${body}` と入力をしてください。
+`unmarshal` で変換した内容を表示するには、`log` プロパティ の `Message` に `${body}` と入力をしてください。
 
 image::data-formats/dataformats-010.png[] 
 
@@ -110,150 +110,68 @@ Camelが起動したら、テスト用のCSVファイルを受信先のフォル
 
 image::data-formats/dataformats-012.png[] 
 
-ファイルが所定のフォルダに格納されると、インテグレーションが実行されて、コンソールに ファイルの本文と、`Unmarshal` で変換した後の Log が表示され、`data/output` にファイルが格納されます。（格納したファイルは、デフォルトの設定では `data/input` 配下に `.camel` フォルダが作成され、そちらに移動します）
+ファイルが所定のフォルダに格納されると、インテグレーションが実行されて、コンソールに ファイルの本文と、`unmarshal` で変換した後の Log が表示されます。
+（格納したファイルは、デフォルトの設定では `data/input` 配下に `.camel` フォルダが作成され、そちらに移動します）
 
 CSV Data Format で Unmarshal したデータは、JavaのList型になります。
 
-image::data-formats/dataformats-0013.png[] 
+image::data-formats/dataformats-013.png[] 
 
 Log の確認ができたら、`Ctrl+C`、もしくはターミナル右上のゴミ箱のアイコンをクリックして、Camel を終了してください。
 
-////
+== Marshal でJSON形式のテキストに変換する
 
-### 2. 
+先ほど作成した `dataformat.yaml` に、JSON形式のテキストに変換する処理を追加してみます。
 
-OpenShift DevSpaces 左のエクスプローラー上で、右クリックをして、メニューから `Karavan: Create Integration` を選択し、`dataformats` と入力して Enter を押してください。`dataformats.camel.yaml` という名前のファイルが作成されて、Karavan Designer のGUIが開きます。
+Kaoto のグラフィカルエディターにて、２つ目の `log` シンボルのメニューをクリックして、`Append` を選択します。
 
-まず、CSVファイルを取得する処理を作成します。
-上部の `Create route` をクリックして、Route を作成しましょう。
+image::data-formats/dataformats-014.png[]
 
-`components` タブから `File` を探して選択をしてください。
-右上のテキストボックスに `File` と入力をすると、絞り込みができます。
+コンポーネントのカタログが開きますので、`Type: Processor` の中から `Marshal` を探して選択をします。
+左上のテキストボックスに `Marshal` と入力をすると、絞り込みができます。
 
-![](images/03-dataformat-001.png)
-![karavan]({% image_path 03-dataformat-001.png %}){:width="800px"}
+image::data-formats/dataformats-015.png[]
 
-Route の source として、File コンポーネントが配置されます。
-Route の File シンボルをクリックすると、右側にプロパティが表示されますので、確認してください。
-
-Parameters は、以下を入力してください。
-
-* **Directory Name**: data/input
-
-> 前章の [Fileコンポーネント]({{ HOSTNAME_SUFFIX }}/workshop/camel-k/lab/file-component){:target="_blank"} で `data/input` フォルダを作成していない場合は、ワークスペースのルートフォルダ直下に、`data` フォルダを作成し、さらにdata フォルダの配下に、`input` フォルダを作成してください。
-
-![](images/03-dataformat-002.png)
-![karavan]({% image_path 03-dataformat-002.png %}){:width="1200px"}
-
-
-テスト用のテキストファイルは、`file` フォルダに `test_02_dataformats.csv` というファイルが用意されていますので、それを使用しましょう。
-
-ファイルの中身は、
-
-<pre>
-  id,name
-  1,apple
-  2,orange
-  3,lemon
-</pre>
-
-というテキストが格納されています。
-
-![](images/03-dataformat-003.png)
-![karavan]({% image_path 03-dataformat-003.png %}){:width="600px"}
-
-では、取得するファイルの中身を変換していきます。
-まず、オブジェクトに変換するために、`Unmarshal` を使用します。
-
-Route にマウスカーソルを持っていくと、File シンボルの下に小さな＋ボタンが現れますので、それをクリックし、`Transformation` のタブから `Unmarshal` を探して選択をしてください。
-
-![](images/03-dataformat-004.png)
-![karavan]({% image_path 03-dataformat-004.png %}){:width="800px"}
-
-`Unmarshal` のシンボルが File に続いて配置されます。
+`marshal` のシンボルが `log` に続いて配置されます。
 
 Parameters は、以下のように設定をしてください。
 他の項目は、デフォルトのままで構いません。
 
-* **Data Format**: csv
-* **Delimiter**: , (カンマ)
-* **Use Maps**: True
+* **Data Format**: json
 
-![](images/03-dataformat-005.png)
-![karavan]({% image_path 03-dataformat-005.png %}){:width="1200px"}
-![](images/03-dataformat-006.png)
-![karavan]({% image_path 03-dataformat-006.png %}){:width="1200px"}
+image::data-formats/dataformats-016.png[]
 
-データ変換後の Body を 確認するための `Log` を追加します。
-Unmarshal シンボルの下の＋ボタンをクリックし、`Routing` のタブから `Log` を探して選択をしてください。
+続いてデータ変換後の Body を 確認するための `log` を追加します。
 
-![](images/03-dataformat-007.png)
-![karavan]({% image_path 03-dataformat-007.png %}){:width="800px"}
+`marshal` シンボルのメニューをクリックして、`Append` を選択します。
 
-Unmarshalで変換した内容を表示するには、Log プロパティ の `Message` に `${body}` と入力をしてください。
+image::data-formats/dataformats-017.png[] 
+
+コンポーネントのカタログが開きますので、`Type: Processor` の中から `Log` を探して選択をします。
+
+image::data-formats/dataformats-009.png[] 
+
+`marshal` で変換した内容を表示するため、`log` プロパティ の `Message` に `${body}` と入力をします。
+
+image::data-formats/dataformats-018.png[] 
 
 それでは、実際に動かしてみます。
-右上の ロケットのアイコン のボタンを押してください。
+OpenShift DevSpaces のターミナルで、以下のコマンドを実行してください。
 
-ターミナルが開き、作成したインテグレーションが JBang を通して実行されます。
-特にエラーなく実行されたら、左のエクスプローラー上で、`file/test_02.csv` を右クリックして、`Copy` し、`data/input` フォルダの中に `Paste` して、ファイルを指定のフォルダに格納してください。
+[source, bash]
+----
+camel run dataformats.yaml
+----
 
-![](images/03-dataformat-008.png)
-![karavan]({% image_path 03-dataformat-008.png %}){:width="1200px"}
+Camelが起動したら、先ほどと同様に、`file` フォルダにある `test_02_dataformats.txt` をコピーし、`data/input` フォルダにペーストします。
 
-ファイルが所定のフォルダに格納されると、インテグレーションが実行されて、コンソールに Unmarshal で変換をした後の Log が表示されます。
-（インプットのファイルは、`data/input` 配下に `.camel` フォルダが作成され、そちらに移動します）
+image::data-formats/dataformats-012.png[] 
 
-CSV Data Format で Unmarshal したデータは、JavaのList型になります。
-
-![](images/03-dataformat-009.png)
-![karavan]({% image_path 03-dataformat-009.png %}){:width="1200px"}
-
-Log の確認ができたら、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
-
----
-
-### 3. Marshal でJSON形式のテキストに変換する
-
-先ほど作成した `dataformat.camel.yaml` に、JSON形式のテキストに変換する処理を追加します。
-
-Log シンボルにマウスカーソルを持っていくと、左上に小さく `→` ボタンが表示されますので、クリックします。
-
-![](images/03-dataformat-010.png)
-![karavan]({% image_path 03-dataformat-010.png %}){:width="600px"}
-
-続いて、`Transformation` タブから `Marshal` を探して選択をしてください。
-右上のテキストボックスに `Marshal` と入力をすると、絞り込みができます。
-
-![](images/03-dataformat-011.png)
-![karavan]({% image_path 03-dataformat-011.png %}){:width="800px"}
-
-これで、`Unmarshal` と `Log` の間に、`Marshal` が追加されました。
-
-`Marshal` のシンボルをクリックすると、右側にプロパティが表示されますので、
-Parameters 項目に、以下の内容を設定してください。
-他の項目は、デフォルトのままで構いません。
-
-* **Data Format**: json
-* **Library**: jackson
-
-![](images/03-dataformat-012.png)
-![karavan]({% image_path 03-dataformat-012.png %}){:width="1200px"}
-
-それでは、もう一度実行をします。
-右上の ロケットのアイコン のボタンを押してください。
-
-ターミナルが開き、作成したインテグレーションが JBang を通して実行されます。
-特にエラーなく実行されたら、もう一度、 左のエクスプローラー上で、`file/test_02.csv` を右クリックして、`Copy` し、`data/input` フォルダの中に `Paste` して、ファイルを指定のフォルダに格納してください。
-
-ファイルが所定のフォルダに格納されると、インテグレーションが実行されて、コンソールに Marshal で変換をした後の Log が表示されます。
-（インプットのファイルは、`data/input` 配下に `.camel` フォルダが作成され、そちらに移動します）
+ファイルが所定のフォルダに格納されると、インテグレーションが実行されて、コンソールに ファイルの本文と、`unmarshal` でオブジェクトに変換したBody、
+`marshal` でJSONに変換したBody、の Log が表示されます。（格納したファイルは、デフォルトの設定では `data/input` 配下に `.camel` フォルダが作成され、そちらに移動します）
 
 JSON Data Format で Marshal したデータは、JSON形式のテキストになります。
 
-![](images/03-dataformat-013.png)
-![karavan]({% image_path 03-dataformat-013.png %}){:width="1200px"}
+image::data-formats/dataformats-019.png[] 
 
 Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
-また、作成した `dataformats.camel.yaml` を `temp` フォルダに移動をしておいてください。 
- ////
