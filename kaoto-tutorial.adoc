@@ -1,0 +1,116 @@
+= Kaotoを使ったCamelの開発
+:experimental:
+:tip-caption: :bulb:
+:imagesdir: images
+
+---
+
+== Kaoto について
+
+[Kaoto](https://kaoto.io/){:target="_blank"} (**Ka**mel **O**rchestration **To**ol)は、Apache Camelをベースとしたインテグレーションを作成・編集するための、ローコード・ノーコードの設計ツールです。
+このツールは、拡張可能で柔軟性があり、さまざまなユースケースに適応できるように設計されています。
+
+ユーザー インターフェイスには、ソースコードエディターと、ドラッグ アンド ドロップのグラフィカルエディターがあります。
+いずれかに変更が加えられると、もう一方も保存時に自動的に更新されます。
+このようにして、ユーザーはノーコードまたはローコードの両方で作業することを選択できます。
+
+image::kaoto-tutorial/low-code-kaoto.gif[pic, 800]
+
+Kaotoは、グラフィカルデザイナーで使用するCamelのコンポーネントの豊富なカタログを提供しています。
+ユーザーはこのカタログの中から使いたいコンポーネントを選んでグラフィカルエディターに配置し、Camelの開発を行うことができます。
+
+image::kaoto-tutorial/catalog.gif[pic, 800]
+
+== Kaoto を使ってみる
+
+Kaoto は、このワークショップ環境では既にインストール済ですが、VSCodeの拡張機能から導入することができます。
+
+* [Kaoto - VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-kaoto){:target="_blank"} 
+
+OpenShift DevSpaces の ターミナルを開き、以下のコードを実行します。
+
+[source, code]
+----
+camel init sample.yaml
+----
+
+image:kaoto-tutorial/kaoto-tutorial_001.png[pic, 1200] 
+
+Camel JBang の機能で、Yaml DSL 形式のサンプルルートが現在のディレクトリに作成されます。
+
+image::kaoto-tutorial/kaoto-tutorial_002.png[pic, 1200] 
+
+このサンプルルートは、以下のような動作を定義しています。
+
+*1.* Timerコンポーネントの使用:
+
+`from` 句により、`timer:yaml` という URI を使用して Camel の Timer コンポーネントが設定されています。
+これは、定期的にイベントを発生させることができます。
+
+`parameters` セクションで `period: "1000"` が設定されており、これはタイマーが毎秒（1000ミリ秒）ごとにメッセージを生成することを意味します。
+
+*2.* 処理ステップの定義:
+
+`steps` セクションでは、メッセージの生成とログへの出力が定義されています。
+
+`setBody:` このステップでは、メッセージの本文を設定しています。ここでは `"Hello Camel from ${routeId}"` という文字列を使用しており、`${routeId}` はこのルートのIDに動的に置き換えられます。これにより、どのルートが実行されているかを識別することができます。
+
+`log:` 最後のステップでは、設定したメッセージ本文をログに出力しています。`${body}` は現在のメッセージ本文を参照しており、これにより先に `setBody` ステップで設定された文字列がログに記録されます。
+
+Kaoto のグラフィカルエディターを開く場合は、エクスプローラのCamelルートを含むファイルを選択して右クリックし、ポップアップメニューの中から `Open with Kaoto Graphical Editor for Camel` を実行します。
+
+image::kaoto-tutorial/kaoto-tutorial_003.png[pic, 1200] 
+
+Kaoto のグラフィカルエディターが開きます。
+Timerコンポーネントをトリガーとしたフローが表示されます。
+
+image:kaoto-tutorial/kaoto-tutorial_004.png[pic, 800] 
+
+`timer`, `setBody`, `log` のコンポーネントが配置されています。
+各コンポーネントのシンボルをクリックすると、右側にプロパティパネルが開きます。
+それぞれどのようなパラメータが設定されているか確認をしてみてください。
+
+image:kaoto-tutorial/kaoto-tutorial_005.png[pic, 800] 
+
+それでは、このサンプルを実行してみましょう。
+OpenShift DevSpaces のターミナルで、以下のコマンドを実行します。
+
+[source, code]
+----
+camel run sample.yaml --dev
+----
+
+[TIP]
+====
+アプリケーションを実行する際に `--dev` オプションを付けると、Devモードでアプリケーションが起動します。
+この `--dev` モードは、以下のような特徴があります：
+
+.ライブリロード：
+** ソースコードが変更されたときにアプリケーションが自動的に再起動します。これにより、コードの変更が直ちに反映され、開発プロセスがスムーズになります。
+
+.デバッグ容易：
+** Devモードでは、詳細なログ出力やデバッグ情報が提供され、デバッグが容易になります。
+
+.パフォーマンス最適化されていない：
+** `--dev`　モードは開発用に最適化されており、ライブリロードなどの機能が追加のリソースを消費するため、本番環境での実行時にはパフォーマンスが低下する可能性があります。
+====
+
+Camelが起動し、ルートで定義したように1秒に1回、`Hello Camel from ${routeId}` の文字列が、表示されます。
+
+image:kaoto-tutorial/kaoto-tutorial_006.png[] 
+
+ではCamelの起動中に、ライブリロードの機能を使用してルートの定義を変更してみましょう。
+
+`setBody` のシンボルをクリックして、`Expression` のエンピツのマークをクリックします。
+
+image:kaoto-tutorial/kaoto-tutorial_007.png[] 
+
+Expression の入力フォームが開きますので、`Hello Kaoto from ${routeId}` に変更をして、`Apply` をクリックしてください。
+
+image:kaoto-tutorial/kaoto-tutorial_008.png[] 
+
+ライブリロードの機能で、起動中のCamelが変更した内容を反映して変わったことを確認してください。
+
+image:kaoto-tutorial/kaoto-tutorial_009.png[] 
+
+確認後、`Ctrl+C` などでCamelの実行を終了してください。

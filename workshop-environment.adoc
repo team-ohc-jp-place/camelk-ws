@@ -17,8 +17,6 @@ image::workshop-environment/setuser.png[pic, 700]
 これでこのワークショップガイドのリンクやコマンドがあなたのユーザー名でカスタマイズされます。
 間違ってユーザー名を入力してしまった場合は、緑色のリサイクルアイコンをクリックしてリセットしてください。
 
----
-
 == OpenShift Devspaces について
 
 本ワークショップの開発環境は、オープンソースの link:https://www.eclipse.org/che/[Eclipse Che] プロジェクトに基づいた、OpenShift Container Platform で動作するWebベースの統合開発環境(IDE)である、link:https://developers.redhat.com/products/openshift-dev-spaces/overview[Red Hat OpenShift DevSpaces] を使用します。
@@ -81,47 +79,27 @@ image::workshop-environment/09-devspaces-002.png[pic, 800]
 
 ログインに成功すると、以下のような画面が表示されますので、`Allow selected permissions` をクリックしてください。
 
-image::workshop-environment/09-devspaces-006.png[width="600px"]
+image::workshop-environment/09-devspaces-006.png[pic, 600]
 
 OpenShift DevSpaces の Dashboard が表示されます。
 
 今回のハンズオン環境を含むワークスペースが作成されていると思いますので、右側の `Open` をクリックしてワークスペースを開いてください。
 
-image::workshop-environment/09-devspaces-019.png[width="800px"]
+image::workshop-environment/09-devspaces-019.png[pic, 800]
 
 以下のような画面にジャンプします。
-`Trust the authors of all files in the parent folder 'projects'` にチェックを入れて、
 `Yes, I trust the authors` をクリックします。その後、`Mark Done` をクリックしてください。
 （エディタの外観を変えたい方は、設定を変更してみてください）
 
-image::workshop-environment/09-devspaces-009.png[width="1200px"]
+image::workshop-environment/09-devspaces-020.png[pic, 400]
+image::workshop-environment/09-devspaces-021.png[pic, 400]
 
-////
-=== Karavan Designer のインストール
+OpenShift DevSpacesのワークスペースのエクスプローラ上で右クリックをすると、ポップアップメニューが開きます。
 
-link:https://github.com/apache/camel-karavan[Karavan] は、Apache Camel 用の開発ツールキットです。ランタイムおよびパッケージとの統合や、イメージのビルド、kubernetesへのデプロイが可能な他、Camel K の Yaml DSL をグラフィカルに作成することができます。
+image::workshop-environment/09-devspaces-022.png[pic, 1200]
 
-image::workshop-environment/we-karavan-vscode.png[width="1200px"]
+`Open in Integrated Terminal` から、開発環境のターミナルを開くことができます。
 
-OpenShift DevSpaces 左のエクスプローラーの、`extention` フォルダの中に、`camel-karavan.karavan-3.xx.x.vsix` というファイルがあるので、右クリックをして、メニューから `Install Extension VSIX` を選択して実行してください。
+image::workshop-environment/09-devspaces-023.png[pic, 1200]
 
-image::workshop-environment/09-devspaces-010.png[width="1200px"]
-
-インストールが完了すると、左端のメニューにCamelのアイコンが表示されます。
-エクスプローラ上で右クリックをして、karavan のメニューが表示される様になればOKです。
-
-image::workshop-environment/09-devspaces-011.png[width="1200px"]
-
-<!-- 続いて、Karavan の設定を確認します。
-拡張機能の Karavan の歯車のアイコンをクリックし、 Extention Settings を選択してください。
-
-image::workshop-environment/09-devspaces-017.png[width="800px"]
-
-Remote のタブを選択し、`Camel: Version` を確認します。
-Version は `3.20.3` を選択しておいてください。
-
-image::workshop-environment/09-devspaces-018.png[width="800px"]
-
--->
-////
 

@@ -20,6 +20,7 @@ modules:
   activate:
   - camel-k-intro
   - workshop-environment
+  - kaoto-tutorial
   - camel-jbang
   - deploying-to-openshift
 # - timer-component
