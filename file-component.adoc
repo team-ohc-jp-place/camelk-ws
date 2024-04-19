@@ -108,7 +108,7 @@ Camelが起動したら、テスト用のファイルを受信先のフォルダ
 
 image::file-component/02-file-011.png[] 
 
-テスト用のテキストファイルは、`file` フォルダに用意されている、`test_01.txt` というファイルを使用します。
+テスト用のテキストファイルは、`file` フォルダに用意されている、`test_01_file.txt` というファイルを使用します。
 
 ファイルの中身は、
 
@@ -118,7 +118,7 @@ Hello World!
 
 というテキストが格納されています。
 
-`file` フォルダに `test_01.txt` をコピーし、`data/input` フォルダにペーストします。
+`file` フォルダにある `test_01_file.txt` をコピーし、`data/input` フォルダにペーストします。
 
 image::file-component/02-file-012.png[] 
 
@@ -130,4 +130,4 @@ image::file-component/02-file-012.png[]
 
 image::file-component/02-file-013.png[]
 
-確認後、`Ctrl+C` などでCamelの実行を終了してください。
+確認後、`Ctrl+C`、もしくはターミナル右上のゴミ箱のアイコンをクリックして、Camel を終了してください。

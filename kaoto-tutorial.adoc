@@ -110,4 +110,4 @@ image:kaoto-tutorial/kaoto-tutorial_008.png[]
 
 image:kaoto-tutorial/kaoto-tutorial_009.png[] 
 
-確認後、`Ctrl+C` などでCamelの実行を終了してください。
+確認後、`Ctrl+C`、もしくはターミナル右上のゴミ箱のアイコンをクリックして、Camel を終了してください。
