@@ -5,7 +5,7 @@
 
 == 目的
 
-link:https://camel.apache.org/components/{{ CAMEL_VERSION }}/file-component.html[File コンポーネント] を使用して、ファイルを他の Camel コンポーネントで処理したり、他のコンポーネントからのメッセージをファイルに出力する方法について理解します。
+link:https://camel.apache.org/components/{{ CAMEL_VERSION }}/file-component.html[File コンポーネント]{:target="_blank"} を使用して、ファイルを他の Camel コンポーネントで処理したり、他のコンポーネントからのメッセージをファイルに出力する方法について理解します。
 
 == ファイルの取得・出力を行う
 
