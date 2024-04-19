@@ -21,10 +21,10 @@ modules:
   - camel-k-intro
   - workshop-environment
   - kaoto-tutorial
+  - file-component
   - camel-jbang
   - deploying-to-openshift
 # - timer-component
-# - file-component
 # - data-formats
 #  - split-eip
 #  - direct-component
