@@ -10,7 +10,7 @@ Kamelet の **PostgreSQL Sink** を使用して、Camel K と PostgreSQL との�
 
 * link:https://camel.apache.org/camel-kamelets/{{ KAMELETS_VERSION }}/postgresql-sink.html[PostgreSQL Sink]
 
-image::postgresql/08-postgresql-014.png[width="800px"]
+image::postgresql/postgresql-001.png[width="800px"]
 
 [TIP]
 ====
@@ -26,13 +26,13 @@ Camel K の link:https://camel.apache.org/camel-k/2.3.x/kamelets/kamelets.html[K
 ** PostgreSQL のテーブルからデータを取得
 
 //あとでKaotoのルートに差し替え
-image::postgresql/08-postgresql-016.png[width="1200px"]
+image::postgresql/postgresql-002.png[] 
 
 == PostgreSQL Sink を使用してテーブルからデータを取得する
 
 PostgreSQL は、OpenShift上に用意されているものを使うことができます。
 
-image::postgresql/08-postgresql-015.png[width="800px"]
+image::postgresql/postgresql-003.png[width="800px"]
 
 PostgreSQL にアクセスするための情報は以下の通りです。
 
@@ -58,7 +58,7 @@ OpenShift DevSpaces の Terminal を開き、下記のコマンドを実行し�
 * テーブル: products
 * レコード内容確認コマンド: `oc rsh -n {{ USER_ID }}-dev dc/postgresql psql -U demo -d sampledb -c "SELECT * FROM products;"`
 
-image::postgresql/08-postgresql-000.png[width="600px"]
+image::postgresql/postgresql-004.png[width="600px"]
 
 それでは、まず Camel で PostgreSQLのデータベースからレコードを取得する処理を作成します。
 
@@ -79,8 +79,7 @@ Parameters は、以下のように設定をします。
 * *Timer Name*: 任意の名称
 * *Repeat Count*: 1
 
-image:2024-04-21T01-54-22-739Z.png[] 
-//image::postgresql/08-postgresql-003.png[width="1200px"]
+image:postgresql/postgresql-005.png[] 
 
 `log` は、データベースから取得したレコードを表示するため、Bodyを出力してください。
 
@@ -88,18 +87,18 @@ Parameters は、以下のように設定をします。
 
 * *Message*: `${body}`
 
-image::2024-04-21T05-38-29-579Z.png[] 
+image::postgresql/postgresql-006.png[] 
 
 次に、PosgreSQL にアクセスするための Sink を追加します。 
 `timer` シンボルの メニューをクリックし、`Insert Step` を選択します。
 
-image::2024-04-21T01-19-14-715Z.png[] 
+image::postgresql/postgresql-007.png[] 
 
 コンポーネントのカタログが開きます。
 `Type: Kamelets` の中から `PostgreSQL Sink` を探して選択をしてください。
 左上のテキストボックスに `PostgreSQL Sink` と入力をすると、絞り込みができます。
 
-image::2024-04-21T01-20-56-085Z.png[] 
+image::postgresql/postgresql-008.png[] 
 
 `postgresql-sink` のシンボルが `timer` に続いて配置されます。
 
@@ -109,8 +108,7 @@ Parameters は、以下のように設定をします。
 
 * *Query*: `select * from products`
 
-image::2024-04-21T02-04-56-148Z.png[] 
-//image::postgresql/08-postgresql-005.png[width="1200px"]
+image::postgresql/postgresql-009.png[] 
 
 その他の Parameters(PostgreSQL の認証情報) は、`application.properties` に記述しておきます。
 OpenShift DevSpaces 左のエクスプローラー上で `application.properties` を開き、以下の設定をコピーして貼り付けてください。
@@ -125,13 +123,13 @@ camel.kamelet.postgresql-sink.username=demo
 camel.kamelet.postgresql-sink.databaseName=sampledb
 ----
 
-image::2024-04-21T02-01-45-785Z.png[] 
+image::postgresql/postgresql-010.png[] 
 
 PostgreSQL Sink は、JSON形式のデータを Body として想定をしているため、JSON形式に変換するための Marshal が必要になります。 
 
 `postgresql-sink` シンボルの メニューをクリックし、`Prepend` を選択します。
 
-image::2024-04-21T02-09-52-619Z.png[] 
+image::postgresql/postgresql-011.png[] 
 
 コンポーネントのカタログが開きますので、`Type: Processor` の中から `Marshal` を探して選択をします。
 左上のテキストボックスに `Marshal` と入力をすると、絞り込みができます。
@@ -145,7 +143,7 @@ Parameters は、以下のように設定をしてください。
 
 * **Data Format**: json
 
-image::2024-04-21T02-17-26-114Z.png[] 
+image::postgresql/postgresql-012.png[] 
 
 それでは、実際に動かしてみます。
 OpenShift DevSpaces のターミナルで、以下のコマンドを実行してください。
@@ -162,7 +160,7 @@ camel run postgresql.yaml --properties=application.properties
 
 ターミナルが開き、作成したインテグレーションが JBang を通して実行されます。 特にエラーなく実行されたら、ターミナルに以下の Log が表示されているはずです。
 
-image::2024-04-21T02-20-52-513Z.png[] 
+image::postgresql/postgresql-013.png[] 
 
 Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
 
@@ -175,12 +173,12 @@ Kaoto のグラフィカルエディターで、先ほど作成をした `postgr
 
 `postgresql-sink` シンボルの メニューをクリックし、`Prepend` を選択します。
 
-image::2024-04-21T05-53-51-885Z.png[] 
+image::postgresql/postgresql-014.png[] 
 
 コンポーネントのカタログが開きますので、`Type: Processor` の中から `Set Body` を探して選択をします。
 左上のテキストボックスに `Set Body` と入力をすると、絞り込みができます。
 
-image::2024-04-21T05-54-19-328Z.png[]
+image::postgresql/postgresql-015.png[]
 
 これで、`timer` と `marshal` の間に、`setBody` が追加されます。
 
@@ -190,19 +188,19 @@ image::2024-04-21T05-54-19-328Z.png[]
 * *Language*: `simple`
 * *Expression*: `{"id":4, "name":"melon"}`
 
-image::2024-04-21T05-59-17-860Z.png[] 
+image::postgresql/postgresql-016.png[] 
 
 次に、`setBody` で設定した内容を PostgreSQL の `products` テーブルに追加してみましょう。 
 
 `setBody` シンボルの メニューをクリックし、`Append` を選択します。
 
-image::2024-04-21T06-02-10-802Z.png[] 
+image::postgresql/postgresql-017.png[] 
 
 コンポーネントのカタログが開きます。
 `Type: Kamelets` の中から `PostgreSQL Sink` を探して選択をしてください。
 左上のテキストボックスに `PostgreSQL Sink` と入力をすると、絞り込みができます。
 
-image::2024-04-21T01-20-56-085Z.png[] 
+image::postgresql/postgresql-008.png[] 
 
 `postgresql-sink` のシンボルが `setBody` に続いて配置されます。
 
@@ -212,7 +210,7 @@ Parameters は、以下のように設定をします。
 
 * *Query*: `insert into products (id, name) values (:#id, :#name)`
 
-image::2024-04-21T06-16-54-434Z.png[] 
+image::postgresql/postgresql-018.png[] 
 
 それでは、実際に動かしてみます。
 OpenShift DevSpaces のターミナルで、以下のコマンドを実行してください。
@@ -224,7 +222,7 @@ camel run postgresql.yaml --properties=application.properties
 
 `setBody` で設定した情報が追加されて、取得してきたデータにも反映されています。 
 
-image::2024-04-21T06-18-30-112Z.png[] 
+image::postgresql/postgresql-019.png[] 
 
 Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
 
@@ -232,7 +230,7 @@ Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱の�
 
 * レコード内容確認コマンド: `oc rsh -n {{ USER_ID }}-dev dc/postgresql psql -U demo -d sampledb -c "SELECT * FROM products;"`
 
-image::2024-04-21T06-19-24-621Z.png[] 
+image::postgresql/postgresql-020.png[] 
 
 == 参考リンク
 
