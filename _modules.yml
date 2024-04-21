@@ -12,12 +12,14 @@ modules:
     name: File コンポーネント
   data-formats:
     name: Data Formats パターン
+  postgresql-sink:
+    name: PostgreSQL との連携
   camel-jbang:
     name: Appendix 1 - Camel JBangについて
   deploying-to-openshift:
     name: Appendix 2 - OpenShiftへのデプロイ
-#  timer-component:
-#    name: Timer コンポーネント
+#削除  timer-component:
+#削除    name: Timer コンポーネント
 #  split-eip:
 #    name: Split パターン
 #  direct-component:

@@ -1,0 +1,206 @@
+= PostgresSQL との連携
+:experimental:
+:tip-caption: :bulb:
+:imagesdir: images
+:stylesheet: custom-styles.css
+
+== 目的
+
+Kamelet の **PostgreSQL Sink** を使用して、Camel K と PostgreSQL との連携の方法について理解していただきます。
+
+* link:https://camel.apache.org/camel-kamelets/{{ KAMELETS_VERSION }}/postgresql-sink.html[PostgreSQL Sink]
+
+image::postgresql/08-postgresql-014.png[width="800px"]
+
+[TIP]
+====
+Camel K の link:https://camel.apache.org/camel-k/2.3.x/kamelets/kamelets.html[Kamelets] (**Kamel** route snipp**ets**) は、Apache Camelのエコシステムの一部として開発された、再利用可能なエンタープライズインテグレーションパターンのコレクションです。Kameletsを使用することで、開発者はルートを簡単に作成し、拡張可能で再利用可能な方法でコンポーネントを組み合わせることができます。
+====
+
+=== このセクションで作成する内容
+
+* 以下のコンポーネントは既に用意されています
+** PostgreSQL
+* 実装する Camelルート
+** PostgreSQL のテーブルへデータを追加
+** PostgreSQL のテーブルからデータを取得
+
+//あとでKaotoのルートに差し替え
+image::postgresql/08-postgresql-016.png[width="1200px"]
+
+== PostgreSQL Sink を使用してテーブルからデータを取得する
+
+PostgreSQL は、OpenShift上に用意されているものを使うことができます。
+
+image::postgresql/08-postgresql-015.png[width="800px"]
+
+PostgreSQL にアクセスするための情報は以下の通りです。
+
+* *Server Name*: postgresql.{{ USER_ID }}-dev.svc.cluster.local （cluster内からのみアクセス可能）
+* *Server Port*: 5432
+* *User Name*: demo
+* *Password*: demo
+* *Database Name*: sampledb
+
+また、データベースには `products` というテーブルが用意されており、以下のデータが格納されています。
+
+[cols="2*",options="header",role="custom-table"]
+|===
+| id (integer) | name (varchar)
+| 1 | apple
+| 2 | orange
+| 3 | lemon
+|===
+
+OpenShift DevSpaces の Terminal を開き、下記のコマンドを実行してみてください。
+
+* データベース: sampledb
+* テーブル: products
+* レコード内容確認コマンド: `oc rsh -n {{ USER_ID }}-dev dc/postgresql psql -U demo -d sampledb -c "SELECT * FROM products;"`
+
+image::postgresql/08-postgresql-000.png[width="600px"]
+
+OpenShift DevSpaces 左のエクスプローラー上で、右クリックをして、メニューから `New File...` を選択し、`postgresql.yaml` と入力して `Enter` を押してください。
+作成したファイルを選択して右クリックし、`Open with Kaoto Graphical Editor for Camel` からKaotoのグラフィカルエディターを開きます。
+
+まだ Route の定義がないので、新しくRouteを作成します。
+`+ New` をクリックしてください。
+
+image::file-component/02-file-001.png[] 
+
+`timer` と `log` が配置された Route が作成されます。
+
+`timer` シンボルをクリックすると、右側にプロパティが表示されますので、確認してください。
+
+Parameters は、以下のように設定をします。
+
+* *Timer Name*: 任意の名称
+* *Repeat Count*: 1
+
+image:2024-04-21T01-54-22-739Z.png[] 
+//image::postgresql/08-postgresql-003.png[width="1200px"]
+
+次に、PosgreSQL にアクセスするための Sink を追加します。 
+`timer` シンボルの メニューをクリックし、`Insert Step` を選択します。
+
+image::2024-04-21T01-19-14-715Z.png[] 
+
+コンポーネントのカタログが開きます。
+`Type: Kamelets` の中から `PostgreSQL Sink` を探して選択をしてください。
+左上のテキストボックスに `PostgreSQL Sink` と入力をすると、絞り込みができます。
+
+image::2024-04-21T01-20-56-085Z.png[] 
+
+`postgresql-sink` のシンボルが `timer` に続いて配置されます。
+
+`postgresql-sink` シンボルをクリックすると、右側にプロパティが表示されます。
+
+Parameters は、以下のように設定をします。
+
+* *Query*: `select * from products`
+
+image::2024-04-21T02-04-56-148Z.png[] 
+//image::postgresql/08-postgresql-005.png[width="1200px"]
+
+その他の Parameters(PostgreSQL の認証情報) は、`application.properties` に記述しておきます。
+OpenShift DevSpaces 左のエクスプローラー上で `application.properties` を開き、以下の設定をコピーして貼り付けてください。
+
+[source, code]
+----
+# PostgreSQL authentication
+camel.kamelet.postgresql-sink.serverName=postgresql.{{ USER_ID }}.svc.cluster.local
+camel.kamelet.postgresql-sink.serverPort=5432
+camel.kamelet.postgresql-sink.password=demo
+camel.kamelet.postgresql-sink.username=demo
+camel.kamelet.postgresql-sink.databaseName=sampledb
+----
+
+image::2024-04-21T02-01-45-785Z.png[] 
+
+PostgreSQL Sink は、JSON形式のデータを Body として想定をしているため、JSON形式に変換するための Marshal が必要になります。 
+
+`postgresql-sink` シンボルの メニューをクリックし、`Prepend` を選択します。
+
+image::2024-04-21T02-09-52-619Z.png[] 
+
+コンポーネントのカタログが開きますので、`Type: Processor` の中から `Marshal` を探して選択をします。
+左上のテキストボックスに `Marshal` と入力をすると、絞り込みができます。
+
+image::data-formats/dataformats-015.png[]
+
+`marshal` のシンボルが `timer` と `postgresql-sink` の間に配置されます。
+
+Parameters は、以下のように設定をしてください。
+他の項目は、デフォルトのままで構いません。
+
+* **Data Format**: json
+
+image::2024-04-21T02-17-26-114Z.png[] 
+
+それでは、実際に動かしてみます。
+OpenShift DevSpaces のターミナルで、以下のコマンドを実行してください。
+
+[source, bash]
+----
+camel run postgresql.yaml --properties=application.properties
+----
+
+ターミナルが開き、作成したインテグレーションが JBang を通して実行されます。 特にエラーなく実行されたら、ターミナルに以下の Log が表示されているはずです。
+
+image::2024-04-21T02-20-52-513Z.png[] 
+
+Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
+
+== PostgreSQL Sink を使用してテーブルにデータを追加する
+
+先ほどは PosgreSQL Sink でデータを取得しましたが、今度はテーブルにレコードの追加を行う処理を作っていきます。 Karavan Designer で、先ほど作成をした `postgresql.camel.yaml` を開いてください。
+
+まず、Set Body でテーブルに追加する内容を設定します。
+
+Marshal シンボルにマウスカーソルを持っていくと、左上に小さく `→` ボタンが表示されますので、クリックして、`Transformation` タブから `Set Body` を探して選択をしてください。 右上のテキストボックスに `Set Body` と入力をすると、絞り込みができます。
+
+image::postgresql/08-postgresql-009.png[width="800px"]
+
+これで、`Timer` と `Marshal` の間に、`Set Body` が追加されます。
+
+`Set Body` のシンボルをクリックすると、右側にプロパティが表示されますので、 Parameters 項目に、以下の内容を設定してください。 他の項目は、デフォルトのままで構いません。
+
+* *Language*: `simple`
+* *Expression*: `{"id":4, "name":"melon"}`
+
+image::postgresql/08-postgresql-010.png[width="800px"]
+
+次に、Set Body で設定した内容を PostgreSQL の `products` テーブルに追加してみましょう。 Marshal シンボルにマウスカーソルを持っていくと、左上に小さく `→` ボタンが表示されますので、クリックして、`Kamelets` のタブから `PostgreSQL Sink` を探して選択をしてください。 右上のテキストボックスに `PostgreSQL Sink` と入力をすると、絞り込みができます。
+
+`PostgreSQL` のシンボルが Set Body に続いて配置されます。
+
+PostgreSQL のシンボルをクリックすると、右側にプロパティが表示されますので、 Parameters 項目に、以下の内容を設定してください。
+
+* *Server Name*: `postgresql.{{ USER_ID }}-dev.svc.cluster.local`
+* *Server Port*: `5432`
+* *Username*: `demo`
+* *Password*: `demo`
+* *Query*: `insert into products (id, name) values (:#id, :#name)`
+* *Database Name*: `sampledb`
+
+image::postgresql/08-postgresql-011.png[width="1200px"]
+
+それでは、実際に動かしてみます。 右上の ロケットのアイコン のボタンを押してください。
+
+ターミナルが開き、作成したインテグレーションが JBang を通して実行されます。 特にエラーなく実行されたら、ターミナルに以下の Log が表示されているはずです。
+
+image::postgresql/08-postgresql-012.png[width="1200px"]
+
+Set Body で設定した情報が追加されて、取得してきたデータにも反映されています。 Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
+
+実際に、PostgreSQL にアクセスして確認をしてみましょう。 OpenShift DevSpaces の Terminal を開き、下記のコマンドを実行してください。
+
+* レコード内容確認コマンド: `oc rsh -n {{ USER_ID }}-dev dc/postgresql psql -U demo -d sampledb -c "SELECT * FROM products;"`
+
+image::postgresql/08-postgresql-013.png[width="400px"]
+
+確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。 また、作成した `postgresql.camel.yaml` を `temp` フォルダに移動をしておいてください。 
+
+== 参考リンク
+
+* link:https://access.redhat.com/documentation/ja-jp/red_hat_integration/2022.q4/html/kamelets_reference/postgres-sql-sink[Red Hat Integration - Kamelets リファレンス,window="_blank"]

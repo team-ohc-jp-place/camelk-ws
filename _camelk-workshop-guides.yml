@@ -23,13 +23,13 @@ modules:
   - kaoto-tutorial
   - file-component
   - data-formats
+  - postgresql-sink
   - camel-jbang
   - deploying-to-openshift
 # - timer-component
 #  - split-eip
 #  - direct-component
 #  - recipientlist-eip
-# - postgresql-sink
 # - db-sync
 #  - rest-api-service
 #  - error-handling
