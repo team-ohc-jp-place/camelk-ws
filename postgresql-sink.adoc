@@ -20,7 +20,7 @@ Camel K の link:https://camel.apache.org/camel-k/2.3.x/kamelets/kamelets.html[K
 === このセクションで作成する内容
 
 * 以下のコンポーネントは既に用意されています
-** PostgreSQL
+** PostgreSQL（データベース）
 * 実装する Camelルート
 ** PostgreSQL のテーブルへデータを追加
 ** PostgreSQL のテーブルからデータを取得
@@ -60,6 +60,8 @@ OpenShift DevSpaces の Terminal を開き、下記のコマンドを実行し�
 
 image::postgresql/08-postgresql-000.png[width="600px"]
 
+それでは、まず Camel で PostgreSQLのデータベースからレコードを取得する処理を作成します。
+
 OpenShift DevSpaces 左のエクスプローラー上で、右クリックをして、メニューから `New File...` を選択し、`postgresql.yaml` と入力して `Enter` を押してください。
 作成したファイルを選択して右クリックし、`Open with Kaoto Graphical Editor for Camel` からKaotoのグラフィカルエディターを開きます。
 
@@ -79,6 +81,14 @@ Parameters は、以下のように設定をします。
 
 image:2024-04-21T01-54-22-739Z.png[] 
 //image::postgresql/08-postgresql-003.png[width="1200px"]
+
+`log` は、データベースから取得したレコードを表示するため、Bodyを出力してください。
+
+Parameters は、以下のように設定をします。
+
+* *Message*: `${body}`
+
+image::2024-04-21T05-38-29-579Z.png[] 
 
 次に、PosgreSQL にアクセスするための Sink を追加します。 
 `timer` シンボルの メニューをクリックし、`Insert Step` を選択します。
@@ -145,6 +155,11 @@ OpenShift DevSpaces のターミナルで、以下のコマンドを実行して
 camel run postgresql.yaml --properties=application.properties
 ----
 
+[TIP]
+====
+--properties=<propertiesFiles> で、プロパティファイルを指定します。複数ある場合はカンマ(,)で区切ります。
+====
+
 ターミナルが開き、作成したインテグレーションが JBang を通して実行されます。 特にエラーなく実行されたら、ターミナルに以下の Log が表示されているはずです。
 
 image::2024-04-21T02-20-52-513Z.png[] 
@@ -153,53 +168,71 @@ Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱の�
 
 == PostgreSQL Sink を使用してテーブルにデータを追加する
 
-先ほどは PosgreSQL Sink でデータを取得しましたが、今度はテーブルにレコードの追加を行う処理を作っていきます。 Karavan Designer で、先ほど作成をした `postgresql.camel.yaml` を開いてください。
+先ほどは PosgreSQL Sink でデータを取得しましたが、今度はテーブルにレコードの追加を行う処理を作っていきます。 
+Kaoto のグラフィカルエディターで、先ほど作成をした `postgresql.yaml` を開いてください。
 
-まず、Set Body でテーブルに追加する内容を設定します。
+まず、テーブルに追加する内容を設定するための `setBody` を追加します。
 
-Marshal シンボルにマウスカーソルを持っていくと、左上に小さく `→` ボタンが表示されますので、クリックして、`Transformation` タブから `Set Body` を探して選択をしてください。 右上のテキストボックスに `Set Body` と入力をすると、絞り込みができます。
+`postgresql-sink` シンボルの メニューをクリックし、`Prepend` を選択します。
 
-image::postgresql/08-postgresql-009.png[width="800px"]
+image::2024-04-21T05-53-51-885Z.png[] 
 
-これで、`Timer` と `Marshal` の間に、`Set Body` が追加されます。
+コンポーネントのカタログが開きますので、`Type: Processor` の中から `Set Body` を探して選択をします。
+左上のテキストボックスに `Set Body` と入力をすると、絞り込みができます。
 
-`Set Body` のシンボルをクリックすると、右側にプロパティが表示されますので、 Parameters 項目に、以下の内容を設定してください。 他の項目は、デフォルトのままで構いません。
+image::2024-04-21T05-54-19-328Z.png[]
+
+これで、`timer` と `marshal` の間に、`setBody` が追加されます。
+
+`setBody` のシンボルをクリックすると、右側にプロパティが表示されますので、 Parameters 項目に、以下の内容を設定してください。 
+他の項目は、デフォルトのままで構いません。
 
 * *Language*: `simple`
 * *Expression*: `{"id":4, "name":"melon"}`
 
-image::postgresql/08-postgresql-010.png[width="800px"]
+image::2024-04-21T05-59-17-860Z.png[] 
 
-次に、Set Body で設定した内容を PostgreSQL の `products` テーブルに追加してみましょう。 Marshal シンボルにマウスカーソルを持っていくと、左上に小さく `→` ボタンが表示されますので、クリックして、`Kamelets` のタブから `PostgreSQL Sink` を探して選択をしてください。 右上のテキストボックスに `PostgreSQL Sink` と入力をすると、絞り込みができます。
+次に、`setBody` で設定した内容を PostgreSQL の `products` テーブルに追加してみましょう。 
 
-`PostgreSQL` のシンボルが Set Body に続いて配置されます。
+`setBody` シンボルの メニューをクリックし、`Append` を選択します。
 
-PostgreSQL のシンボルをクリックすると、右側にプロパティが表示されますので、 Parameters 項目に、以下の内容を設定してください。
+image::2024-04-21T06-02-10-802Z.png[] 
 
-* *Server Name*: `postgresql.{{ USER_ID }}-dev.svc.cluster.local`
-* *Server Port*: `5432`
-* *Username*: `demo`
-* *Password*: `demo`
+コンポーネントのカタログが開きます。
+`Type: Kamelets` の中から `PostgreSQL Sink` を探して選択をしてください。
+左上のテキストボックスに `PostgreSQL Sink` と入力をすると、絞り込みができます。
+
+image::2024-04-21T01-20-56-085Z.png[] 
+
+`postgresql-sink` のシンボルが `setBody` に続いて配置されます。
+
+`postgresql-sink` シンボルをクリックすると、右側にプロパティが表示されます。
+
+Parameters は、以下のように設定をします。
+
 * *Query*: `insert into products (id, name) values (:#id, :#name)`
-* *Database Name*: `sampledb`
 
-image::postgresql/08-postgresql-011.png[width="1200px"]
+image::2024-04-21T06-16-54-434Z.png[] 
 
-それでは、実際に動かしてみます。 右上の ロケットのアイコン のボタンを押してください。
+それでは、実際に動かしてみます。
+OpenShift DevSpaces のターミナルで、以下のコマンドを実行してください。
 
-ターミナルが開き、作成したインテグレーションが JBang を通して実行されます。 特にエラーなく実行されたら、ターミナルに以下の Log が表示されているはずです。
+[source, bash]
+----
+camel run postgresql.yaml --properties=application.properties
+----
 
-image::postgresql/08-postgresql-012.png[width="1200px"]
+`setBody` で設定した情報が追加されて、取得してきたデータにも反映されています。 
 
-Set Body で設定した情報が追加されて、取得してきたデータにも反映されています。 Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
+image::2024-04-21T06-18-30-112Z.png[] 
+
+Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
 
 実際に、PostgreSQL にアクセスして確認をしてみましょう。 OpenShift DevSpaces の Terminal を開き、下記のコマンドを実行してください。
 
 * レコード内容確認コマンド: `oc rsh -n {{ USER_ID }}-dev dc/postgresql psql -U demo -d sampledb -c "SELECT * FROM products;"`
 
-image::postgresql/08-postgresql-013.png[width="400px"]
-
-確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。 また、作成した `postgresql.camel.yaml` を `temp` フォルダに移動をしておいてください。 
+image::2024-04-21T06-19-24-621Z.png[] 
 
 == 参考リンク
 
