@@ -5,7 +5,7 @@
 
 == 目的
 
-link:https://camel.apache.org/components/{{ CAMEL_VERSION }}/file-component.html[File コンポーネント] を使用して、ファイルを他の Camel コンポーネントで処理したり、他のコンポーネントからのメッセージをファイルに出力する方法について理解します。
+link:https://camel.apache.org/components/{{ CAMEL_VERSION }}/file-component.html[File コンポーネント,window="_blank"] を使用して、ファイルを他の Camel コンポーネントで処理したり、他のコンポーネントからのメッセージをファイルに出力する方法について理解します。
 
 == ファイルの取得・出力を行う
 
@@ -90,7 +90,7 @@ Expression に、以下の内容を設定してください。
 Apache Camel の Simple は、Apache Camel ルーティングと統合フレームワーク内で使用される式言語です。
 この言語は、動的なルーティングロジックを表現するために設計されています。
 Simple は、非常に読みやすく、理解しやすい構文を持っているため、多くの開発者にとってアクセスしやすい言語です。
-参考: link:https://camel.apache.org/components/{{ CAMEL_VERSION }}/languages/simple-language.html[simple]
+参考: link:https://camel.apache.org/components/{{ CAMEL_VERSION }}/languages/simple-language.html[simple,window="_blank"]
 ====
 
 image::file-component/02-file-009.png[]

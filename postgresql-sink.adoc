@@ -8,13 +8,13 @@
 
 Kamelet の **PostgreSQL Sink** を使用して、Camel K と PostgreSQL との連携の方法について理解していただきます。
 
-* link:https://camel.apache.org/camel-kamelets/{{ KAMELETS_VERSION }}/postgresql-sink.html[PostgreSQL Sink]
+* link:https://camel.apache.org/camel-kamelets/{{ KAMELETS_VERSION }}/postgresql-sink.html[PostgreSQL Sink,window="_blank"]
 
 image::postgresql/postgresql-001.png[width="800px"]
 
 [TIP]
 ====
-Camel K の link:https://camel.apache.org/camel-k/2.3.x/kamelets/kamelets.html[Kamelets] (**Kamel** route snipp**ets**) は、Apache Camelのエコシステムの一部として開発された、再利用可能なエンタープライズインテグレーションパターンのコレクションです。Kameletsを使用することで、開発者はルートを簡単に作成し、拡張可能で再利用可能な方法でコンポーネントを組み合わせることができます。
+Camel K の link:https://camel.apache.org/camel-k/2.3.x/kamelets/kamelets.html[Kamelets,window="_blank"] (**Kamel** route snipp**ets**) は、Apache Camelのエコシステムの一部として開発された、再利用可能なエンタープライズインテグレーションパターンのコレクションです。Kameletsを使用することで、開発者はルートを簡単に作成し、拡張可能で再利用可能な方法でコンポーネントを組み合わせることができます。
 ====
 
 === このセクションで作成する内容

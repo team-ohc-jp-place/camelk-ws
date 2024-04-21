@@ -5,15 +5,15 @@
 
 == 目的
 
-link:https://camel.apache.org/components/{{ CAMEL_VERSION }}/eips/marshal-eip.html[Marshal] と 
-link:https://camel.apache.org/components/{{ CAMEL_VERSION }}/eips/unmarshal-eip.html[Unmarshal] を使用して、Camel におけるデータ形式変換の方法を理解する事を目的とします。
+link:https://camel.apache.org/components/{{ CAMEL_VERSION }}/eips/marshal-eip.html[Marshal, window="_blank"] と 
+link:https://camel.apache.org/components/{{ CAMEL_VERSION }}/eips/unmarshal-eip.html[Unmarshal, window="_blank"] を使用して、Camel におけるデータ形式変換の方法を理解する事を目的とします。
 
 * **Marshal** - Message の Body の Javaオブジェクトをバイナリやテキスト形式に変換します。
 * **Unmarshal** - Message の Body の バイナリやテキスト形式のデータをJavaオブジェクトに変換します。
 
 image::data-formats/MessageTranslator.gif[] 
 
-Apache Camel が提供する Data Format については、link:https://camel.apache.org/components/{{ CAMEL_VERSION }}/dataformats/index.html[こちら] を参照してください。
+Apache Camel が提供する Data Format については、link:https://camel.apache.org/components/{{ CAMEL_VERSION }}/dataformats/index.html[こちら, window="_blank"] を参照してください。
 
 == CSVファイルを Unmarshal でJavaオブジェクトに変換する
 

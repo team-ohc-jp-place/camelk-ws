@@ -10,7 +10,7 @@
 image::workshop-environment/alreadyset.png[pic, 700]
 
 ユーザー名が正しく設定されていれば、次に進むことができます。
-そうでない場合は、上のボックスに割り当てられたユーザーIDを次のように入力してください：
+そうでない場合は、上のボックスに割り当てられたユーザーIDを次のように入力してください
 
 image::workshop-environment/setuser.png[pic, 700]
 
@@ -19,7 +19,7 @@ image::workshop-environment/setuser.png[pic, 700]
 
 == OpenShift Devspaces について
 
-本ワークショップの開発環境は、オープンソースの link:https://www.eclipse.org/che/[Eclipse Che] プロジェクトに基づいた、OpenShift Container Platform で動作するWebベースの統合開発環境(IDE)である、link:https://developers.redhat.com/products/openshift-dev-spaces/overview[Red Hat OpenShift DevSpaces] を使用します。
+本ワークショップの開発環境は、オープンソースの link:https://www.eclipse.org/che/[Eclipse Che,window="_blank"] プロジェクトに基づいた、OpenShift Container Platform で動作するWebベースの統合開発環境(IDE)である、link:https://developers.redhat.com/products/openshift-dev-spaces/overview[Red Hat OpenShift DevSpaces,window="_blank"] を使用します。
 
 * OpenShift DevSpaces の特徴とメリット
 ** **Web IDE**: ブラウザ上で動作するためソフトウェアのインストールが不要でインターネットで接続されていればどこからでも開発が可能
