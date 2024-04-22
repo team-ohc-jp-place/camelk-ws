@@ -15,20 +15,20 @@ OpenShift DevSpaces 左のエクスプローラー上で、右クリックをし
 まだ Route の定義がないので、新しくRouteを作成します。
 `+ New` をクリックしてください。
 
-image::file-component/02-file-001.png[] 
+image::file-component/02-file-001.png[pic, 600]
 
 `timer` と `log` が配置された Route が作成されます。
 今回は `File` コンポーネントを使いますので、`timer` と入れ替えます。
 `timer` シンボルの メニューをクリックし、`Replace` を選択します。
 
-image::file-component/02-file-002.png[] 
+image::file-component/02-file-002.png[pic, 600]
 
 コンポーネントのカタログが開きます。
 
 `Type: Components` の中から `File` を探して選択をしてください。
 左上のテキストボックスに `File` と入力をすると、絞り込みができます。
 
-image::file-component/02-file-003.png[] 
+image::file-component/02-file-003.png[pic, 600]
 
 Source の `timer` が `file` と入れ替わりました。
 
@@ -39,14 +39,14 @@ Parameters が色々ありますが、`Directory Name` で指定したフォル�
 
 * *Directory Name*: data/input
 
-image::file-component/02-file-004.png[] 
+image::file-component/02-file-004.png[pic, 800]
 
 次に、`log` で出力するメッセージを修正します。
 `log` シンボルをクリックすると、右側にプロパティが表示されますので、確認してください。
 `Message` に `template message` と入力されていますので、これを `${body}` に変更してください。
 これで、ファイルで受信したメッセージの本文をログに出力するようになります。
 
-image::file-component/02-file-005.png[] 
+image::file-component/02-file-005.png[pic, 800]
 
 続いて、ファイルを出力して格納する処理を作成します。
 `log` シンボルのメニューをクリックして、`Append` を選択します。
@@ -54,7 +54,7 @@ image::file-component/02-file-005.png[]
 再びコンポーネントのカタログが開きますので、先ほどと同じように `Type: Components` の中から `File` を探して選択をしてください。
 左上のテキストボックスに `File` と入力をすると、絞り込みができます。
 
-image::file-component/02-file-006.png[] 
+image::file-component/02-file-006.png[pic, 800]
 
 
 `log` シンボルに続いて、`file` コンボーネントが配置されました。
@@ -66,7 +66,7 @@ image::file-component/02-file-006.png[]
 
 * *Directory Name*: data/output
 
-image::file-component/02-file-007.png[] 
+image::file-component/02-file-007.png[pic, 800]
 
 次に、取得したファイルの本文に、追記をする処理を追加をしてみます。
 
@@ -75,7 +75,7 @@ image::file-component/02-file-007.png[]
 コンポーネントのカタログの、`Type: Processor` の中から `Set Body` を探して選択をしてください。
 左上のテキストボックスに `Set Body` と入力をすると、絞り込みができます。
 
-image::file-component/02-file-008.png[] 
+image::file-component/02-file-008.png[pic, 600]
 
 これで、`log` と `file` の間に、`setBody` が追加されました。
 
@@ -93,8 +93,8 @@ Simple は、非常に読みやすく、理解しやすい構文を持ってい�
 参考: link:https://camel.apache.org/components/{{ CAMEL_VERSION }}/languages/simple-language.html[simple,window="_blank"]
 ====
 
-image::file-component/02-file-009.png[]
-image::file-component/02-file-010.png[]
+image::file-component/02-file-009.png[pic, 800]
+image::file-component/02-file-010.png[pic, 800]
 
 それでは、実際に動かしてみます。
 OpenShift DevSpaces のターミナルで、以下のコマンドを実行してください。
@@ -106,7 +106,7 @@ camel run file.yaml
 
 Camelが起動したら、テスト用のファイルを受信先のフォルダに格納して動かしてみます。
 
-image::file-component/02-file-011.png[] 
+image::file-component/02-file-011.png[pic, 800]
 
 テスト用のテキストファイルは、`file` フォルダに用意されている、`test_01_file.txt` というファイルを使用します。
 
@@ -120,7 +120,7 @@ Hello World!
 
 `file` フォルダにある `test_01_file.txt` をコピーし、`data/input` フォルダにペーストします。
 
-image::file-component/02-file-012.png[] 
+image::file-component/02-file-012.png[pic, 300]
 
 ファイルが所定のフォルダに格納されると、インテグレーションが実行されて、コンソールに Log が表示され、`data/output` にファイルが格納されます。
 （格納したファイルは、デフォルトの設定では `data/input` 配下に `.camel` フォルダが作成され、そちらに移動します）
@@ -128,6 +128,6 @@ image::file-component/02-file-012.png[]
 ファイルが作成されたら、`data/input/.camel`、`data/output` の両フォルダのファイルの中身を確認してください。
 `data/output` に格納されたファイルには、現在時刻が `Set Body` で追記されて出力されています。
 
-image::file-component/02-file-013.png[]
+image::file-component/02-file-013.png[pic, 1200]
 
 確認後、`Ctrl+C`、もしくはターミナル右上のゴミ箱のアイコンをクリックして、Camel を終了してください。

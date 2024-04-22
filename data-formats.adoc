@@ -11,7 +11,7 @@ link:https://camel.apache.org/components/{{ CAMEL_VERSION }}/eips/unmarshal-eip.
 * **Marshal** - Message の Body の Javaオブジェクトをバイナリやテキスト形式に変換します。
 * **Unmarshal** - Message の Body の バイナリやテキスト形式のデータをJavaオブジェクトに変換します。
 
-image::data-formats/MessageTranslator.gif[] 
+image::data-formats/MessageTranslator.gif[pic, 400]
 
 Apache Camel が提供する Data Format については、link:https://camel.apache.org/components/{{ CAMEL_VERSION }}/dataformats/index.html[こちら, window="_blank"] を参照してください。
 
@@ -31,13 +31,13 @@ OpenShift DevSpaces 左のエクスプローラー上で、右クリックをし
             message: ${body}
 ----
 
-image::data-formats/dataformats-001.png[] 
+image::data-formats/dataformats-001.png[pic, 800]
 
 次に、作成した `dataformats.yaml` を選択して右クリックし、`Open with Kaoto Graphical Editor for Camel` からKaotoのグラフィカルエディターを開きます。
 
 `file` と `log` が配置されているRouteが開きます。
 
-image::data-formats/dataformats-002.png[] 
+image::data-formats/dataformats-002.png[pic, 600]
 
 `file` の `Directory Name` は、先ほどのモジュールと同様に、`data/input` が設定されています。
 
@@ -54,19 +54,19 @@ image::data-formats/dataformats-002.png[]
 
 というテキストが格納されています。
 
-image::data-formats/dataformats-003.png[] 
+image::data-formats/dataformats-003.png[pic, 800]
 
 では、取得するファイルの中身を変換していきます。
 まず、オブジェクトに変換するために、`unmarshal` をRouteに配置します。
 
 `log` シンボルのメニューをクリックして、`Append` を選択します。
 
-image::data-formats/dataformats-004.png[] 
+image::data-formats/dataformats-004.png[pic, 600]
 
 コンポーネントのカタログが開きますので、先ほどと同じように `Type: Processor` の中から `Unmarshal` を探して選択をしてください。
 左上のテキストボックスに `Unmarshal` と入力をすると、絞り込みができます。
 
-image::data-formats/dataformats-005.png[] 
+image::data-formats/dataformats-005.png[pic, 600]
 
 `unmarshal` のシンボルが `log` に続いて配置されます。
 
@@ -77,22 +77,22 @@ Parameters は、以下のように設定をしてください。
 * **Delimiter**: , (カンマ)
 * **Use Maps**: True
 
-image::data-formats/dataformats-006.png[] 
-image::data-formats/dataformats-007.png[] 
+image::data-formats/dataformats-006.png[pic, 800]
+image::data-formats/dataformats-007.png[pic, 800]
 
 続いてデータ変換後の Body を 確認するための `log` を追加します。
 
 `unmarshal` シンボルのメニューをクリックして、`Append` を選択します。
 
-image::data-formats/dataformats-008.png[] 
+image::data-formats/dataformats-008.png[pic, 600]
 
 コンポーネントのカタログが開きますので、`Type: Processor` の中から `Log` を探して選択をしてください。
 
-image::data-formats/dataformats-009.png[] 
+image::data-formats/dataformats-009.png[pic, 600]
 
 `unmarshal` で変換した内容を表示するには、`log` プロパティ の `Message` に `${body}` と入力をしてください。
 
-image::data-formats/dataformats-010.png[] 
+image::data-formats/dataformats-010.png[pic, 800]
 
 それでは、実際に動かしてみます。
 OpenShift DevSpaces のターミナルで、以下のコマンドを実行してください。
@@ -102,20 +102,20 @@ OpenShift DevSpaces のターミナルで、以下のコマンドを実行して
 camel run dataformats.yaml
 ----
 
-image::data-formats/dataformats-011.png[] 
+image::data-formats/dataformats-011.png[pic, 800]
 
 Camelが起動したら、テスト用のCSVファイルを受信先のフォルダに格納して動かしてみます。
 
 `file` フォルダにある `test_02_dataformats.txt` をコピーし、`data/input` フォルダにペーストします。
 
-image::data-formats/dataformats-012.png[] 
+image::data-formats/dataformats-012.png[pic, 300]
 
 ファイルが所定のフォルダに格納されると、インテグレーションが実行されて、コンソールに ファイルの本文と、`unmarshal` で変換した後の Log が表示されます。
 （格納したファイルは、デフォルトの設定では `data/input` 配下に `.camel` フォルダが作成され、そちらに移動します）
 
 CSV Data Format で Unmarshal したデータは、JavaのList型になります。
 
-image::data-formats/dataformats-013.png[] 
+image::data-formats/dataformats-013.png[pic, 800]
 
 Log の確認ができたら、`Ctrl+C`、もしくはターミナル右上のゴミ箱のアイコンをクリックして、Camel を終了してください。
 
@@ -125,12 +125,12 @@ Log の確認ができたら、`Ctrl+C`、もしくはターミナル右上の�
 
 Kaoto のグラフィカルエディターにて、２つ目の `log` シンボルのメニューをクリックして、`Append` を選択します。
 
-image::data-formats/dataformats-014.png[]
+image::data-formats/dataformats-014.png[pic, 600]
 
 コンポーネントのカタログが開きますので、`Type: Processor` の中から `Marshal` を探して選択をします。
 左上のテキストボックスに `Marshal` と入力をすると、絞り込みができます。
 
-image::data-formats/dataformats-015.png[]
+image::data-formats/dataformats-015.png[pic, 600]
 
 `marshal` のシンボルが `log` に続いて配置されます。
 
@@ -139,21 +139,21 @@ Parameters は、以下のように設定をしてください。
 
 * **Data Format**: json
 
-image::data-formats/dataformats-016.png[]
+image::data-formats/dataformats-016.png[pic, 800]
 
 続いてデータ変換後の Body を 確認するための `log` を追加します。
 
 `marshal` シンボルのメニューをクリックして、`Append` を選択します。
 
-image::data-formats/dataformats-017.png[] 
+image::data-formats/dataformats-017.png[pic, 600]
 
 コンポーネントのカタログが開きますので、`Type: Processor` の中から `Log` を探して選択をします。
 
-image::data-formats/dataformats-009.png[] 
+image::data-formats/dataformats-009.png[pic, 600]
 
 `marshal` で変換した内容を表示するため、`log` プロパティ の `Message` に `${body}` と入力をします。
 
-image::data-formats/dataformats-018.png[] 
+image::data-formats/dataformats-018.png[pic, 800]
 
 それでは、実際に動かしてみます。
 OpenShift DevSpaces のターミナルで、以下のコマンドを実行してください。
@@ -165,13 +165,13 @@ camel run dataformats.yaml
 
 Camelが起動したら、先ほどと同様に、`file` フォルダにある `test_02_dataformats.txt` をコピーし、`data/input` フォルダにペーストします。
 
-image::data-formats/dataformats-012.png[] 
+image::data-formats/dataformats-012.png[pic, 300]
 
 ファイルが所定のフォルダに格納されると、インテグレーションが実行されて、コンソールに ファイルの本文と、`unmarshal` でオブジェクトに変換したBody、
 `marshal` でJSONに変換したBody、の Log が表示されます。（格納したファイルは、デフォルトの設定では `data/input` 配下に `.camel` フォルダが作成され、そちらに移動します）
 
 JSON Data Format で Marshal したデータは、JSON形式のテキストになります。
 
-image::data-formats/dataformats-019.png[] 
+image::data-formats/dataformats-019.png[pic, 800]
 
 Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。

@@ -2,7 +2,6 @@
 :experimental:
 :tip-caption: :bulb:
 :imagesdir: images
-:stylesheet: custom-styles.css
 
 == 目的
 
@@ -10,7 +9,7 @@ Kamelet の **PostgreSQL Sink** を使用して、Camel K と PostgreSQL との�
 
 * link:https://camel.apache.org/camel-kamelets/{{ KAMELETS_VERSION }}/postgresql-sink.html[PostgreSQL Sink,window="_blank"]
 
-image::postgresql/postgresql-001.png[width="800px"]
+image::postgresql/postgresql-001.png[pic, 600]
 
 [TIP]
 ====
@@ -24,22 +23,23 @@ Camel K の link:https://camel.apache.org/camel-k/2.3.x/kamelets/kamelets.html[K
 * 実装する Camelルート
 ** PostgreSQL のテーブルへデータを追加
 ** PostgreSQL のテーブルからデータを取得
+//**
 
-image::postgresql/postgresql-002.png[] 
+image::postgresql/postgresql-002.png[pic, 800]
 
 == PostgreSQL Sink を使用してテーブルからデータを取得する
 
 PostgreSQL は、OpenShift上に用意されているものを使うことができます。
 
-image::postgresql/postgresql-003.png[width="800px"]
+image::postgresql/postgresql-003.png[pic, 600]
 
 PostgreSQL にアクセスするための情報は以下の通りです。
 
-* *Server Name*: postgresql.{{ USER_ID }}-dev.svc.cluster.local （cluster内からのみアクセス可能）
-* *Server Port*: 5432
-* *User Name*: demo
-* *Password*: demo
-* *Database Name*: sampledb
+* **Server Name**: postgresql.{{ USER_ID }}-dev.svc.cluster.local （cluster内からのみアクセス可能）
+* **Server Port**: 5432
+* **User Name**: demo
+* **Password**: demo
+* **Database Name**: sampledb
 
 また、データベースには `products` というテーブルが用意されており、以下のデータが格納されています。
 
@@ -57,7 +57,7 @@ OpenShift DevSpaces の Terminal を開き、下記のコマンドを実行し�
 * テーブル: products
 * レコード内容確認コマンド: `oc rsh -n {{ USER_ID }}-dev dc/postgresql psql -U demo -d sampledb -c "SELECT * FROM products;"`
 
-image::postgresql/postgresql-004.png[width="600px"]
+image::postgresql/postgresql-004.png[pic, 800]
 
 それでは、まず Camel で PostgreSQLのデータベースからレコードを取得する処理を作成します。
 
@@ -67,7 +67,7 @@ OpenShift DevSpaces 左のエクスプローラー上で、右クリックをし
 まだ Route の定義がないので、新しくRouteを作成します。
 `+ New` をクリックしてください。
 
-image::file-component/02-file-001.png[] 
+image::file-component/02-file-001.png[pic, 800]
 
 `timer` と `log` が配置された Route が作成されます。
 
@@ -78,7 +78,7 @@ Parameters は、以下のように設定をします。
 * *Timer Name*: 任意の名称
 * *Repeat Count*: 1
 
-image:postgresql/postgresql-005.png[] 
+image:postgresql/postgresql-005.png[pic, 800]
 
 `log` は、データベースから取得したレコードを表示するため、Bodyを出力してください。
 
@@ -86,18 +86,18 @@ Parameters は、以下のように設定をします。
 
 * *Message*: `${body}`
 
-image::postgresql/postgresql-006.png[] 
+image::postgresql/postgresql-006.png[pic, 800]
 
 次に、PosgreSQL にアクセスするための Sink を追加します。 
 `timer` シンボルの メニューをクリックし、`Insert Step` を選択します。
 
-image::postgresql/postgresql-007.png[] 
+image::postgresql/postgresql-007.png[pic, 600]
 
 コンポーネントのカタログが開きます。
 `Type: Kamelets` の中から `PostgreSQL Sink` を探して選択をしてください。
 左上のテキストボックスに `PostgreSQL Sink` と入力をすると、絞り込みができます。
 
-image::postgresql/postgresql-008.png[] 
+image::postgresql/postgresql-008.png[pic, 600]
 
 `postgresql-sink` のシンボルが `timer` に続いて配置されます。
 
@@ -107,7 +107,7 @@ Parameters は、以下のように設定をします。
 
 * *Query*: `select * from products`
 
-image::postgresql/postgresql-009.png[] 
+image::postgresql/postgresql-009.png[pic, 800]
 
 その他の Parameters(PostgreSQL の認証情報) は、`application.properties` に記述しておきます。
 OpenShift DevSpaces 左のエクスプローラー上で `application.properties` を開き、以下の設定をコピーして貼り付けてください。
@@ -122,18 +122,18 @@ camel.kamelet.postgresql-sink.username=demo
 camel.kamelet.postgresql-sink.databaseName=sampledb
 ----
 
-image::postgresql/postgresql-010.png[] 
+image::postgresql/postgresql-010.png[pic, 800]
 
 PostgreSQL Sink は、JSON形式のデータを Body として想定をしているため、JSON形式に変換するための Marshal が必要になります。 
 
 `postgresql-sink` シンボルの メニューをクリックし、`Prepend` を選択します。
 
-image::postgresql/postgresql-011.png[] 
+image::postgresql/postgresql-011.png[pic, 600]
 
 コンポーネントのカタログが開きますので、`Type: Processor` の中から `Marshal` を探して選択をします。
 左上のテキストボックスに `Marshal` と入力をすると、絞り込みができます。
 
-image::data-formats/dataformats-015.png[]
+image::data-formats/dataformats-015.png[pic, 600]
 
 `marshal` のシンボルが `timer` と `postgresql-sink` の間に配置されます。
 
@@ -142,7 +142,7 @@ Parameters は、以下のように設定をしてください。
 
 * **Data Format**: json
 
-image::postgresql/postgresql-012.png[] 
+image::postgresql/postgresql-012.png[pic, 800]
 
 それでは、実際に動かしてみます。
 OpenShift DevSpaces のターミナルで、以下のコマンドを実行してください。
@@ -159,7 +159,7 @@ camel run postgresql.yaml --properties=application.properties
 
 ターミナルが開き、作成したインテグレーションが JBang を通して実行されます。 特にエラーなく実行されたら、ターミナルに以下の Log が表示されているはずです。
 
-image::postgresql/postgresql-013.png[] 
+image::postgresql/postgresql-013.png[pic, 800]
 
 Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
 
@@ -172,12 +172,12 @@ Kaoto のグラフィカルエディターで、先ほど作成をした `postgr
 
 `postgresql-sink` シンボルの メニューをクリックし、`Prepend` を選択します。
 
-image::postgresql/postgresql-014.png[] 
+image::postgresql/postgresql-014.png[pic, 600]
 
 コンポーネントのカタログが開きますので、`Type: Processor` の中から `Set Body` を探して選択をします。
 左上のテキストボックスに `Set Body` と入力をすると、絞り込みができます。
 
-image::postgresql/postgresql-015.png[]
+image::postgresql/postgresql-015.png[pic, 600]
 
 これで、`timer` と `marshal` の間に、`setBody` が追加されます。
 
@@ -187,19 +187,19 @@ image::postgresql/postgresql-015.png[]
 * *Language*: `simple`
 * *Expression*: `{"id":4, "name":"melon"}`
 
-image::postgresql/postgresql-016.png[] 
+image::postgresql/postgresql-016.png[pic, 600]
 
 次に、`setBody` で設定した内容を PostgreSQL の `products` テーブルに追加してみましょう。 
 
 `setBody` シンボルの メニューをクリックし、`Append` を選択します。
 
-image::postgresql/postgresql-017.png[] 
+image::postgresql/postgresql-017.png[pic, 600]
 
 コンポーネントのカタログが開きます。
 `Type: Kamelets` の中から `PostgreSQL Sink` を探して選択をしてください。
 左上のテキストボックスに `PostgreSQL Sink` と入力をすると、絞り込みができます。
 
-image::postgresql/postgresql-008.png[] 
+image::postgresql/postgresql-008.png[pic, 600]
 
 `postgresql-sink` のシンボルが `setBody` に続いて配置されます。
 
@@ -209,7 +209,7 @@ Parameters は、以下のように設定をします。
 
 * *Query*: `insert into products (id, name) values (:#id, :#name)`
 
-image::postgresql/postgresql-018.png[] 
+image::postgresql/postgresql-018.png[pic, 800]
 
 それでは、実際に動かしてみます。
 OpenShift DevSpaces のターミナルで、以下のコマンドを実行してください。
@@ -221,7 +221,7 @@ camel run postgresql.yaml --properties=application.properties
 
 `setBody` で設定した情報が追加されて、取得してきたデータにも反映されています。 
 
-image::postgresql/postgresql-019.png[] 
+image::postgresql/postgresql-019.png[pic, 800]
 
 Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
 
@@ -229,7 +229,7 @@ Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱の�
 
 * レコード内容確認コマンド: `oc rsh -n {{ USER_ID }}-dev dc/postgresql psql -U demo -d sampledb -c "SELECT * FROM products;"`
 
-image::postgresql/postgresql-020.png[] 
+image::postgresql/postgresql-020.png[pic, 800]
 
 == 参考リンク
 
