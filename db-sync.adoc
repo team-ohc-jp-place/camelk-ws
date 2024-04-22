@@ -40,7 +40,7 @@ link:http://kafdrop-{{ USER_ID }}-dev.{{ ROUTE_SUBDOMAIN }}[Kafdrop] という�
 
 こちらのリンクから、link:http://kafdrop-{{ USER_ID }}-dev.{{ ROUTE_SUBDOMAIN }}/topic/debezium.public.products/messages?partition=0&offset=0&count=100&keyFormat=DEFAULT&format=DEFAULT[debezium.public.products] の内容を確認できます。アクセスして確認してみてください。
 
-image::dbsync/11-dbsync-005.png[width="1200px"]
+image::dbsync/dbsync-004.png[pic,1200]
 
 トピックにはメッセージが4件入っていると思います。
 一番下のメッセージが、前章の最後に追加したレコードの内容に対応しています。
@@ -104,50 +104,75 @@ image::dbsync/11-dbsync-005.png[width="1200px"]
 ----
 
 `fields` にトピックの中の項目の属性情報があり、`payload` の中に実際の値が格納されています。
-項目名の先頭に `__` がある項目は、変更イベントのメタデータです。
+項目名の先頭に __ がある項目は、変更イベントのメタデータです。
 
-* **__op**: イベントが生成される原因となった操作
-  * c: CREATE
-  * r: READ
-  * u: UPDATE
-  * d: DELETE
-* **__table**: 変更イベントが発生したテーブル名
-* **__lsn**: Log Sequence Number
-* **__source_ts_ms**: イベントのタイムスタンプ
-* **__deleted**: 削除されたレコードかどうかを識別
+* __op: イベントが生成される原因となった操作
+** c: CREATE 
+** r: READ
+** u: UPDATE
+** d: DELETE
+* __table: 変更イベントが発生したテーブル名
+* __lsn: Log Sequence Number
+* __source_ts_ms: イベントのタイムスタンプ
+* __deleted: 削除されたレコードかどうかを識別
 
 それでは、Kafka からメッセージを受信する処理を作成していきます。
 
-OpenShift DevSpaces 左のエクスプローラー上で、右クリックをして、メニューから `Karavan: Create Integration` を選択し、`dbsync` と入力して Enter を押してください。`dbsync.camel.yaml` という名前のファイルが作成されて、Karavan Designer のGUIが開きます。
+OpenShift DevSpaces 左のエクスプローラー上で、右クリックをして、メニューから `New File...` を選択し、`postgresql.yaml` と入力して `Enter` を押してください。
+作成したファイルを選択して右クリックし、`Open with Kaoto Graphical Editor for Camel` から Kaoto のグラフィカルエディターを開きます。
 
-続いて、Karavan Designer のGUIが開いたら、上部の `Create route` をクリックして、Route を作成しましょう。
+まだ Route の定義がないので、新しく Route を作成します。
+`+ New` をクリックしてください。
 
-`Kamelets` タブから `Kafka Source` を探して選択をしてください。
-右上のテキストボックスに `Kafka Source` と入力をすると、絞り込みができます。
+image::file-component/02-file-001.png[pic, 800]
 
-image::dbsync/07-kafka-005.png[width="800px"]
+`timer` と `log` が配置された Route が作成されます。
 
-Route の source として、Kafka Source コンポーネントが配置されます。
-Kafka Source シンボルをクリックすると、右側にプロパティが表示されますので、確認してください。
+今回は `kafka-source` コンポーネントを使いますので、`timer` と入れ替えます。
+`timer` シンボルの メニューをクリックし、`Replace` を選択します。
+
+image::file-component/02-file-002.png[pic, 600]
+
+コンポーネントのカタログが開きます。
+
+`Type: Kamelets` の中から `Kafka Source` を探して選択をしてください。
+左上のテキストボックスに `Kafka Sourc` と入力をすると、絞り込みができます。
+
+image::dbsync/dbsync-005.png[pic, 600] 
+
+Route の source として、`kafka-source` コンポーネントが配置されます。
+`kafka-source` シンボルをクリックすると、右側にプロパティが表示されますので、確認してください。
 
 Parameters は、以下を入力してください。
 
 * **Topic Names**: debezium.public.products
-* **Bootstrap Servers**: kafka-cluster-kafka-bootstrap.{{ USER_ID }}-dev.svc:9092
-* **Security Protocol**: PLAINTEXT
-* **Username**: demo
-* **Password**: demo
 * **Auto Offset Reset**: earliest
-  * `latest`: 新しいメッセージから受信 （未指定の場合 latest になります）
-  * `earliest`: 最初のメッセージに遡って受信
+** `latest`: 新しいメッセージから受信 （未指定の場合 latest になります）
+** `earliest`: 最初のメッセージに遡って受信
 
-続いて、受信した Kafka メッセージを確認するための Log を出力しておきます。
+image::dbsync/dbsync-006.png[pic, 800] 
+image::dbsync/dbsync-007.png[pic, 800]
 
-`Kafka Source` シンボルの下に小さな＋ボタンが現れますので、それをクリックし、`Routing` のタブから `Log` を探して選択をしてください。
+その他の Parameters(kafka の認証情報) は、`application.properties` に記述しておきます。
+OpenShift DevSpaces 左のエクスプローラー上で `application.properties` を開き、以下の設定をコピーして貼り付けてください。
 
-Log の Messege は、`${body}` と入力をしておきます。
+[source, code]
+----
+# Kafka authentication
+camel.kamelet.kafka-source.bootstrapServers=kafka-cluster-kafka-bootstrap.{{ USER_ID }}-dev.svc:9092
+camel.kamelet.kafka-source.securityProtocol=PLAINTEXT
+camel.kamelet.kafka-source.password=demo
+camel.kamelet.kafka-source.user=demo
+----
 
-image::dbsync/11-dbsync-006.png[width="1200px"]
+ image:dbsync/dbsync-008.png[pic, 1200] 
+
+次に、`log` で出力するメッセージを修正します。
+`log` シンボルをクリックすると、右側にプロパティが表示されますので、確認してください。
+`Message` に `template message` と入力されていますので、これを `${body}` に変更してください。
+これで、ファイルで受信したメッセージの本文をログに出力するようになります。
+
+image::dbsync/dbsync-009.png[pic, 800] 
 
 それでは、実際に動かしてみます。
 右上の ロケットのアイコン のボタンを押してください。

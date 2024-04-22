@@ -62,9 +62,9 @@ image::postgresql/postgresql-004.png[pic, 800]
 それでは、まず Camel で PostgreSQLのデータベースからレコードを取得する処理を作成します。
 
 OpenShift DevSpaces 左のエクスプローラー上で、右クリックをして、メニューから `New File...` を選択し、`postgresql.yaml` と入力して `Enter` を押してください。
-作成したファイルを選択して右クリックし、`Open with Kaoto Graphical Editor for Camel` からKaotoのグラフィカルエディターを開きます。
+作成したファイルを選択して右クリックし、`Open with Kaoto Graphical Editor for Camel` から Kaoto のグラフィカルエディターを開きます。
 
-まだ Route の定義がないので、新しくRouteを作成します。
+まだ Route の定義がないので、新しく Route を作成します。
 `+ New` をクリックしてください。
 
 image::file-component/02-file-001.png[pic, 800]
