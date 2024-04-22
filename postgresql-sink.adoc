@@ -25,7 +25,6 @@ Camel K の link:https://camel.apache.org/camel-k/2.3.x/kamelets/kamelets.html[K
 ** PostgreSQL のテーブルへデータを追加
 ** PostgreSQL のテーブルからデータを取得
 
-//あとでKaotoのルートに差し替え
 image::postgresql/postgresql-002.png[] 
 
 == PostgreSQL Sink を使用してテーブルからデータを取得する

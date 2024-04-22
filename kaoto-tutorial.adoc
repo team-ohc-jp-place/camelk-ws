@@ -7,7 +7,7 @@
 
 == Kaoto について
 
-link:https://kaoto.io/[Kaoto] (**Ka**mel **O**rchestration **To**ol)は、Apache Camelをベースとしたインテグレーションを作成・編集するための、ローコード・ノーコードの設計ツールです。
+link:https://kaoto.io/[Kaoto,window="_blank"] (**Ka**mel **O**rchestration **To**ol)は、Apache Camelをベースとしたインテグレーションを作成・編集するための、ローコード・ノーコードの設計ツールです。
 このツールは、拡張可能で柔軟性があり、さまざまなユースケースに適応できるように設計されています。
 
 ユーザー インターフェイスには、ソースコードエディターと、ドラッグ アンド ドロップのグラフィカルエディターがあります。
@@ -25,7 +25,7 @@ image::kaoto-tutorial/catalog.gif[pic, 800]
 
 Kaoto は、このワークショップ環境では既にインストール済ですが、VSCodeの拡張機能から導入することができます。
 
-* link:https://marketplace.visualstudio.com/items?itemName=redhat.vscode-kaoto[Kaoto - VSCode Marketplace]
+* link:https://marketplace.visualstudio.com/items?itemName=redhat.vscode-kaoto[Kaoto - VSCode Marketplace,window="_blank"]
 
 OpenShift DevSpaces の ターミナルを開き、以下のコードを実行します。
 
