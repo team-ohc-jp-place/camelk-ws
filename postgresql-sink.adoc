@@ -124,6 +124,12 @@ camel.kamelet.postgresql-sink.databaseName=sampledb
 
 image::postgresql/postgresql-010.png[pic, 800]
 
+[TIP]
+====
+`postgresql-sink` のシンボルに **!** のマークが表示されているかもしれませんが、必須入力のパラメータを省略しているためです。
+今回は `application.properties` から設定を行いますのでそのままでOKです。
+====
+
 PostgreSQL Sink は、JSON形式のデータを Body として想定をしているため、JSON形式に変換するための Marshal が必要になります。 
 
 `postgresql-sink` シンボルの メニューをクリックし、`Prepend` を選択します。

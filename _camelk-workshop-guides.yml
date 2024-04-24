@@ -24,12 +24,12 @@ modules:
   - file-component
   - data-formats
   - postgresql-sink
-  - camel-jbang
-  - deploying-to-openshift
+  - db-sync
+#  - camel-jbang
+#  - deploying-to-openshift
 # - timer-component
 #  - split-eip
 #  - direct-component
 #  - recipientlist-eip
-# - db-sync
 #  - rest-api-service
 #  - error-handling
