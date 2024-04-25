@@ -285,6 +285,7 @@ Message は、以下を入力してください。
 
 * **Message**: UPDATE: ${body}
 
+
 image::dbsync/dbsync-020.png[pic, 800] 
 
 続いて、`log` の下に、`postgresql-sink` を配置します。
@@ -305,6 +306,7 @@ image::postgresql/postgresql-008.png[pic, 600]
 Parameters は、以下のように設定をします。
 
 * *Query*: `UPDATE products SET name=:#name where id=:#id`
+* *serverName*: `postgresql-replica.user12-dev.svc.cluster.local`
 
 image::dbsync/dbsync-022.png[pic, 800]
 
@@ -373,6 +375,7 @@ image::dbsync/dbsync-025.png[pic, 800]
 `postgresql-sink`
 
 * **Query**: `DELETE from products where id=:#id`
+* *serverName*: `postgresql-replica.user12-dev.svc.cluster.local`
 
 image::dbsync/dbsync-026.png[pic, 800] 
 
@@ -400,6 +403,7 @@ UPDATEとDELETEと同様にして、`marshall` と `postgresql-sink` を追加�
 `postgresql-sink`
 
 * **Query**: `INSERT INTO products (id, name) VALUES (:#id, :#name)`
+* *serverName*: `postgresql-replica.user12-dev.svc.cluster.local`
 
 最後に、`choice` シンボルの前にある `log` シンボルを削除しておきましょう。
 
