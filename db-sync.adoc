@@ -117,7 +117,7 @@ image::dbsync/dbsync-004.png[pic,1200]
 
 それでは、Kafka からメッセージを受信する処理を作成していきます。
 
-OpenShift DevSpaces 左のエクスプローラー上で、右クリックをして、メニューから `New File...` を選択し、`postgresql.yaml` と入力して `Enter` を押してください。
+OpenShift DevSpaces 左のエクスプローラー上で、右クリックをして、メニューから `New File...` を選択し、`dbsync.yaml` と入力して `Enter` を押してください。
 作成したファイルを選択して右クリックし、`Open with Kaoto Graphical Editor for Camel` から Kaoto のグラフィカルエディターを開きます。
 
 まだ Route の定義がないので、新しく Route を作成します。
