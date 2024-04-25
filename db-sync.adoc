@@ -29,17 +29,15 @@ image::dbsync/dbsync-002.png[pic, 800]
 ** DB更新の内容を抽出
 ** CREATE/DELETE/UPDATE で処理を分岐して、同期先の PostgreSQL を操作
 
-//Kaotoのルートに差し替え
-
 image::dbsync/dbsync-003.png[pic, 800]
 
 == 2. Debezium からのログを受信する
 
-前章の link:{{ HOSTNAME_SUFFIX }}/workshop/camel-k/lab/postgresql-sink[PostgresSQL との連携] で 使用したデータベースは、`Debezium` にて変更ログをキャプチャし、イベントに変換して `Kafka` に送信するようになっています。
+前章の link:{{ HOSTNAME_SUFFIX }}/workshop/camel-k/lab/postgresql-sink[PostgresSQL との連携,window="_blank"] で 使用したデータベースは、`Debezium` にて変更ログをキャプチャし、イベントに変換して `Kafka` に送信するようになっています。
 
-link:http://kafdrop-{{ USER_ID }}-dev.{{ ROUTE_SUBDOMAIN }}[Kafdrop] というツールで、Kafka トピックに送信されたメッセージの内容を確認することができます。
+link:http://kafdrop-{{ USER_ID }}-dev.{{ ROUTE_SUBDOMAIN }}[Kafdrop,window="_blank"] というツールで、Kafka トピックに送信されたメッセージの内容を確認することができます。
 
-こちらのリンクから、link:http://kafdrop-{{ USER_ID }}-dev.{{ ROUTE_SUBDOMAIN }}/topic/debezium.public.products/messages?partition=0&offset=0&count=100&keyFormat=DEFAULT&format=DEFAULT[debezium.public.products] の内容を確認できます。アクセスして確認してみてください。
+こちらのリンクから、link:http://kafdrop-{{ USER_ID }}-dev.{{ ROUTE_SUBDOMAIN }}/topic/debezium.public.products/messages?partition=0&offset=0&count=100&keyFormat=DEFAULT&format=DEFAULT[debezium.public.products,window="_blank"] の内容を確認できます。アクセスして確認してみてください。
 
 image::dbsync/dbsync-004.png[pic,1200]
 
