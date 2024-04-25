@@ -316,7 +316,7 @@ OpenShift DevSpaces 左のエクスプローラー上で `application.properties
 [source, code]
 ----
 # PostgreSQL authentication
-camel.kamelet.postgresql-sink.serverName=postgresql.{{ USER_ID }}.svc.cluster.local
+camel.kamelet.postgresql-sink.serverName=postgresql.{{ USER_ID }}-dev.svc.cluster.local
 camel.kamelet.postgresql-sink.serverPort=5432
 camel.kamelet.postgresql-sink.password=demo
 camel.kamelet.postgresql-sink.username=demo
