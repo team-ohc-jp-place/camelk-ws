@@ -330,7 +330,7 @@ camel.kamelet.postgresql-sink.databaseName=sampledb
 続いて、`postgresql-sink` に入力するデータをJSON形式に変換するための `marshal` を追加します。
 `postgresql-sink` シンボルの メニューをクリックし、`Prepend` を選択します。
 
-image::dbsync/dbsync-023.png[] 
+image::dbsync/dbsync-023.png[pic, 800] 
 
 コンポーネントのカタログが開きますので、`Type: Processor` の中から `Marshal` を探して選択をします。
 左上のテキストボックスに `Marshal` と入力をすると、絞り込みができます。

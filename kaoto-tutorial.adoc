@@ -94,20 +94,20 @@ camel run sample.yaml --dev
 
 Camelが起動し、ルートで定義したように1秒に1回、`Hello Camel from ${routeId}` の文字列が、表示されます。
 
-image:kaoto-tutorial/kaoto-tutorial_006.png[] 
+image:kaoto-tutorial/kaoto-tutorial_006.png[pic, 800] 
 
 ではCamelの起動中に、ライブリロードの機能を使用してルートの定義を変更してみましょう。
 
 `setBody` のシンボルをクリックして、`Expression` のエンピツのマークをクリックします。
 
-image:kaoto-tutorial/kaoto-tutorial_007.png[] 
+image:kaoto-tutorial/kaoto-tutorial_007.png[pic, 800] 
 
 Expression の入力フォームが開きますので、`Hello Kaoto from ${routeId}` に変更をして、`Apply` をクリックしてください。
 
-image:kaoto-tutorial/kaoto-tutorial_008.png[] 
+image:kaoto-tutorial/kaoto-tutorial_008.png[pic, 800] 
 
 ライブリロードの機能で、起動中のCamelが変更した内容を反映して変わったことを確認してください。
 
-image:kaoto-tutorial/kaoto-tutorial_009.png[] 
+image:kaoto-tutorial/kaoto-tutorial_009.png[pic, 800] 
 
 確認後、`Ctrl+C`、もしくはターミナル右上のゴミ箱のアイコンをクリックして、Camel を終了してください。
