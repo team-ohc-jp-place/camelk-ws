@@ -305,6 +305,7 @@ image::postgresql/postgresql-008.png[pic, 600]
 
 Parameters は、以下のように設定をします。
 
+* *Server Name*: `postgresql-replica.{{ USER_ID }}-dev.svc.cluster.local`
 * *Query*: `UPDATE products SET name=:#name where id=:#id`
 
 image::dbsync/dbsync-022.png[pic, 800]
@@ -315,7 +316,6 @@ OpenShift DevSpaces 左のエクスプローラー上で `application.properties
 [source, code]
 ----
 # PostgreSQL authentication
-camel.kamelet.postgresql-sink.serverName=postgresql-replica.{{ USER_ID }}-dev.svc.cluster.local
 camel.kamelet.postgresql-sink.serverPort=5432
 camel.kamelet.postgresql-sink.password=demo
 camel.kamelet.postgresql-sink.username=demo

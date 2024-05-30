@@ -105,7 +105,7 @@ image::postgresql/postgresql-008.png[pic, 600]
 
 Parameters は、以下のように設定をします。
 
-* *ServerName*: `postgresql.{{ USER_ID }}-dev.svc.cluster.local`
+* *Server Name*: `postgresql.{{ USER_ID }}-dev.svc.cluster.local`
 * *Query*: `select * from products`
 
 image::postgresql/postgresql-009.png[pic, 800]
@@ -213,6 +213,7 @@ image::postgresql/postgresql-008.png[pic, 600]
 
 Parameters は、以下のように設定をします。
 
+* *Server Name*: `postgresql.{{ USER_ID }}-dev.svc.cluster.local`
 * *Query*: `insert into products (id, name) values (:#id, :#name)`
 
 image::postgresql/postgresql-018.png[pic, 800]
