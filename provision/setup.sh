@@ -134,8 +134,8 @@ oc create route edge --service=get-a-username -n infra
       -e DEVSPACES_REPO="https://github.com/team-ohc-jp-place/camelk-ws-devspaces.git" \
       -e OPENSHIFT_PASSWORD=$OPENSHIFT_PASSWORD \
       -e API_BUCKET="{{api.bucket}}" \
-      -e CONTENT_URL_PREFIX="https://raw.githubusercontent.com/team-ohc-jp-place/camelk-ws/devspaces_v1" \
-      -e WORKSHOPS_URLS="https://raw.githubusercontent.com/team-ohc-jp-place/camelk-ws/devspaces_v1/_camelk-workshop-guides.yml" \
+      -e CONTENT_URL_PREFIX="https://raw.githubusercontent.com/team-ohc-jp-place/camelk-ws/kaoto_v2" \
+      -e WORKSHOPS_URLS="https://raw.githubusercontent.com/team-ohc-jp-place/camelk-ws/kaoto_v2/_camelk-workshop-guides.yml" \
       -e LOG_TO_STDOUT=true
 
 oc create route edge --service=guides -n infra
