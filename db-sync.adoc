@@ -322,10 +322,6 @@ camel.kamelet.postgresql-sink.username=demo
 camel.kamelet.postgresql-sink.databaseName=sampledb
 ----
 
-[TIP]
-====
-今回は、`同期先` の PostgreSQL にアクセスをしますので、`camel.kamelet.postgresql-sink.serverName` が変更になっていることに注意してください。
-====
 
 続いて、`postgresql-sink` に入力するデータをJSON形式に変換するための `marshal` を追加します。
 `postgresql-sink` シンボルの メニューをクリックし、`Prepend` を選択します。
@@ -350,7 +346,7 @@ image::dbsync/dbsync-024.png[pic, 800]
 
 === 4.2 DELETE処理を作成する
 
-`choice` シンボルの メニューをクリックし、`Insert special step` を選択し、カタログから `When` を追加してください。
+`choice` シンボルの メニューをクリックし、`Add branch` を選択し、カタログから `When` を追加してください。
 
 image::dbsync/dbsync-025.png[pic, 800] 
 
