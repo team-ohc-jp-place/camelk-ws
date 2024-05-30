@@ -369,6 +369,7 @@ image::dbsync/dbsync-025.png[pic, 800]
 
 `postgresql-sink`
 
+* *Server Name*: `postgresql-replica.{{ USER_ID }}-dev.svc.cluster.local`
 * **Query**: `DELETE from products where id=:#id`
 
 image::dbsync/dbsync-026.png[pic, 800] 
@@ -396,6 +397,7 @@ UPDATEとDELETEと同様にして、`marshall` と `postgresql-sink` を追加�
 
 `postgresql-sink`
 
+* *Server Name*: `postgresql-replica.{{ USER_ID }}-dev.svc.cluster.local`
 * **Query**: `INSERT INTO products (id, name) VALUES (:#id, :#name)`
 
 最後に、`choice` シンボルの前にある `log` シンボルを削除しておきましょう。
