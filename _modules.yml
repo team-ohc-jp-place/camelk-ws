@@ -2,8 +2,8 @@ config:
     renderer: asciidoc
 
 modules:
-  camel-k-intro:
-    name: Camel Kについて
+  camel-intro:
+    name: Red Hat build of Apache Camel について
   workshop-environment:
     name: ワークショップ環境について
   kaoto-tutorial:

@@ -1,5 +1,5 @@
-id: "camel-k"
-name: "Camel-K Workshop Guides"
+id: "camel"
+name: "Red Hat build of Apache Camel Workshop Guides"
 
 content:
   url: https://raw.githubusercontent.com/team-ohc-jp-place/camelk-ws.git/kaoto_v2
@@ -18,7 +18,7 @@ vars:
 
 modules:
   activate:
-  - camel-k-intro
+  - camel-intro
   - workshop-environment
   - kaoto-tutorial
   - file-component

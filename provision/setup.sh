@@ -140,6 +140,17 @@ oc create route edge --service=get-a-username -n infra
 
 oc create route edge --service=guides -n infra
 
+# SFTP server Deploy
+oc new-project sftp
+sleep 5
+oc create serviceaccount sftp-serviceaccount
+oc create role privileged-scc --verb=use --resource-name=privileged --resource=securitycontextconstraints
+oc create -f ./openshift/12_sftp/01_rolebinding.yaml
+oc create configmap sftp-etc-sftp --from-file=./openshift/12_sftp/users.conf
+oc create -f ./openshift/12_sftp/02_sftp-deploy.yaml
+
+
+
 for m in $(eval echo "{1..$USER_COUNT}"); do
 
   # config for user
