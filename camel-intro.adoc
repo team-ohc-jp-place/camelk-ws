@@ -1,38 +1,37 @@
-= Camel K について
+= Red Hat build of Apache Camel について
 :experimental:
 :tip-caption: :bulb:
 :imagesdir: images
 
-== Camel K 概要
+== Red Hat build of Apache Camel 概要
 
-Red Hat Integration - Camel K は、OpenShift のクラウドでネイティブで実行される Apache Camel K からビルドされる軽量のインテグレーションフレームワークです。
-Camel K は、サーバーレスおよびマイクロサービスアーキテクチャー向けに特別に設計されています。
-Camel K を使用すると、Camel Domain Specific Language (DSL) で書かれたインテグレーションコードを直接 OpenShift で即座に実行することができます。
-link:https://github.com/apache/camel-k[Camel K,window="_blank"] は Apache Camel オープンソースコミュニティーのサブプロジェクトです。
+Apache Camelというのは分散インテグレーションを実現するための機能を提供するオープンソースのフレームワークです。
+様々なシステムに対応したコネクタを標準で提供しており、データフォーマットの変換やプロトコル変換を行うためのコンポーネントも用意されているので、
+システム連携を簡単に行うことができ、かつ軽量に実行することができるようになります。
 
-* OpenShiftとKubernetes上でインテグレーションをサーバーレスで動作させることが可能なプラットフォーム
-* KubernetesのCRDとオペレータの仕組みをベース
-* コミュニティーベースのプロジェクト
-* Apache Camelのサブプロジェクトとして、2018/8/31にスタート
+image::camel-intro/intro-001.png[pic, 800]
 
-image::camel-k-intro/00-intro-001.png[pic, 800]
+== Apache Camel の主なユースケース
 
-== Camel K の特徴
+image::camel-intro/intro-002.png[pic, 800]
 
-* Kubernetes/OpenShift上で直接インテグレーションを実行
-* ランタイムとしてQuarkusを使用可能
-* Knativeが利用可能な環境ではサーバーレスで実行可能
-* Kubernetesのオペレーターをベース
-* Camelの依存関係は自動的に処理
-* デプロイ前のDockerやS2Iの設定が不要
+== Apache Camel の特徴
 
-== Camel K のプラットフォームでできること
+Apache Camelは、システム連携に必要な様々な機能を連携部品として多数提供しています。
+データフォーマットやプロトコルの変換を行うための部品や、様々なシステムにアクセスするためのコネクターが再利用可能なコンポーネントとして用意されており、さらにシステム連携のデザインパターンであるEnterprise Integration Patternsも連携部品として利用することができます。
+これらの連携部品は300以上あり、それらを組み合わせることで連携フローを簡単に実装することができるようになります。
 
-image::camel-k-intro/00-intro-002.png[pic, 800]
-image::camel-k-intro/00-intro-003.png[pic, 800]
+image::camel-intro/intro-003.png[pic, 800]
+image::camel-intro/intro-004.png[pic, 800]
+
+== Apache Camel の連携の実装方式
+
+Apache CamelはJavaベースで開発されていますが、連携フローを実装する場合には、JavaやXML、あるいはYAMLなどでDSLを使用することができ、Camelベースのアプリケーションを簡潔な表現で実装することができます。
+
+image::camel-intro/intro-005.png[pic, 800]
 
 === 参考リンク
 
-* link:https://access.redhat.com/documentation/en-us/red_hat_build_of_apache_camel_k[Product Documentation for Red Hat build of Apache Camel K,window="_blank"]
-* link:https://camel.apache.org/camel-k/[Apache Camel K,window="_blank"]
+* link:https://docs.redhat.com/ja/documentation/red_hat_build_of_apache_camel/4.4[Product Documentation for Red Hat build of Apache Camel,window="_blank"]
+* link:https://rheb.hatenablog.com/entry/2022/05/27/191550[Apache Camel 超入門：赤帽エンジニアブログ,window="_blank"]
 
