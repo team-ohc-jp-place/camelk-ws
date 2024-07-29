@@ -34,7 +34,7 @@ image::sftp/sftp-001.png[pic, 800]
 
 [cols="4,7",options="header",role="custom-table"]
 |===
-| 内部コマンド | 意味
+| SFTPの内部コマンド | 意味
 | bye | sftpを終了する（exitでも同じ意味になる）
 | cd [パス] | サーバー側のカレントディレクトリを変更する
 | get [ファイル] | サーバー上のファイルをローカルにダウンロードする
@@ -44,7 +44,7 @@ image::sftp/sftp-001.png[pic, 800]
 | ln | シンボリックリンクを作成する
 | lpwd | ローカル側のカレントディレクトリを表示する
 | ls | サーバー側のファイルリストを表示する
-| mkdir ディレクトリ | サーバー側にディレクトリを作成する
+| mkdir [ディレクトリ] | サーバー側にディレクトリを作成する
 | put [ファイル] | ローカルのファイルをサーバーへアップロードする
 | pwd | サーバー側のカレントディレクトリを表示する
 | rename [旧ファイル] [新ファイル] | サーバー側のファイルを新しい名前に変更する
@@ -53,7 +53,7 @@ image::sftp/sftp-001.png[pic, 800]
 
 ====
 
-接続したsftpサーバの公開鍵が、`known_hosts` ファイルに登録されます。
+接続したSFTPサーバの公開鍵が、`known_hosts` ファイルに登録されます。
 ファイルのパスは、`/home/user/.ssh/known_hosts` です。
 
 == SFTPコンポーネントを使ってファイルをSFTPサーバへ格納する
@@ -67,32 +67,39 @@ OpenShift DevSpaces 左のエクスプローラー上で、右クリックをし
 `+ New` をクリックしてください。
 
 //update
-image::file-component/02-file-001.png[pic, 600]
+image::sftp/sftp-002.png[pic, 600]
 
 `timer` と `log` が配置された Route が作成されます。
-今回は `SFTP` コンポーネントを使いますので、`timer` と入れ替えます。
-`timer` シンボルの メニューをクリックし、`Replace` を選択します。
 
-//update
-image::file-component/02-file-002.png[pic, 600]
+`timer` コンポーネントは、デフォルトでは1秒ごとに起動する設定になっています。
+`timer` シンボルをクリックすると、右側にプロパティが表示されます。
+`Reapet Count` は無指定だとプロセス停止まで繰り返しますので、`1` を指定してください。
+
+image::sftp/sftp-003.png[pic, 600]
+
+次に、SFTPサーバに格納するファイルの中身を編集します。
+
+`Setbody` コンポーネントを使いますので、`log` と入れ替えます。
+`log` シンボルの メニューをクリックし、`Replace` を選択します。
+
+image::sftp/sftp-004.png[pic, 600]
 
 コンポーネントのカタログが開きます。
 
-`Type: Components` の中から `File` を探して選択をしてください。
-左上のテキストボックスに `File` と入力をすると、絞り込みができます。
+`Type: Processor` の中から `setBody` を探して選択をしてください。
+左上のテキストボックスに `setBody` と入力をすると、絞り込みができます。
 
-image::file-component/02-file-003.png[pic, 600]
+image::sftp/sftp-005.png[pic, 600]
 
-Source の `timer` が `file` と入れ替わりました。
+`log` が `setBody` と入れ替わりました。
 
-`file` シンボルをクリックすると、右側にプロパティが表示されますので、確認してください。
+`setBody` のシンボルをクリックして、`Expression` のエンピツのマークをクリックします。
 
-Parameters が色々ありますが、`Directory Name` で指定したフォルダにファイルが格納されると、そのファイルをCamelが取得します。
-今回は、他のパラメータはデフォルトのままで構いません。
+image:sftp/sftp-006.png[pic, 800] 
 
-* *Directory Name*: data/input
+Expression の入力フォームが開きますので、`It’s ${date-with-timezone:now:JST:HH:mm:ss} now.` と入力をして、`Apply` をクリックしてください。
 
-image::file-component/02-file-004.png[pic, 800]
+image:sftp/sftp-007.png[pic, 800] 
 
 次に、`log` で出力するメッセージを修正します。
 `log` シンボルをクリックすると、右側にプロパティが表示されますので、確認してください。
