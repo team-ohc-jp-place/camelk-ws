@@ -295,4 +295,4 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
 done
 
 echo "Completed... \n"
-echo "http://guides-infra.$HOSTNAME_SUFFIX/workshop/camel-k"
+echo "http://guides-infra.$HOSTNAME_SUFFIX/workshop/camel"

@@ -1,0 +1,192 @@
+= SFTP コンポーネント
+:experimental:
+:tip-caption: :bulb:
+:imagesdir: images
+
+== 目的
+
+link:https://camel.apache.org/components/{{ CAMEL_VERSION }}/sftp-component.html[SFTP コンポーネント,window="_blank"] は、SFTPプロトコルでリモートファイルシステムにアクセスすることができます。
+SFTPコンポーネントを使用して、ファイル取得し他のシステムに連携したり、他のコンポーネントからのデータをリモートファイルシステムに格納する方法について理解します。
+
+== リモートファイルシステムへアクセスする
+
+SFTPサーバを OpenShift に構築しています。実際にアクセスできるか確認をしてみましょう。
+OpenShift DevSpaces のターミナルで、以下のコマンドを実行します。
+
+[source, bash]
+----
+sftp {{ USER_ID }}@sftp-service.sftp.svc
+----
+
+* 認証情報
+ * ID: {{ USER_ID }}
+ * Password: openshift
+
+image::sftp/sftp-001.png[pic, 800]
+
+初回のアクセス時には、接続を許可するか問われますので、`yes` と入力します。
+次に、Password を確認されますので、`openshift` と入力してください。
+
+ログインに成功すると、コンソールから `ls` コマンドを実行して、`upload` というフォルダがあることを確認してください。
+
+[TIP]
+====
+
+[cols="4,7",options="header",role="custom-table"]
+|===
+| 内部コマンド | 意味
+| bye | sftpを終了する（exitでも同じ意味になる）
+| cd [パス] | サーバー側のカレントディレクトリを変更する
+| get [ファイル] | サーバー上のファイルをローカルにダウンロードする
+| help | ヘルプを表示する（「?」も同じ意味になる）
+| lcd [パス] | ローカル側のカレントディレクトリを変更する
+| lls | ローカル側のファイルリストを表示する
+| ln | シンボリックリンクを作成する
+| lpwd | ローカル側のカレントディレクトリを表示する
+| ls | サーバー側のファイルリストを表示する
+| mkdir ディレクトリ | サーバー側にディレクトリを作成する
+| put [ファイル] | ローカルのファイルをサーバーへアップロードする
+| pwd | サーバー側のカレントディレクトリを表示する
+| rename [旧ファイル] [新ファイル] | サーバー側のファイルを新しい名前に変更する
+| rm [ファイル] | サーバー側のファイルを削除する
+|===
+
+接続したsftpサーバの公開鍵が、`known_hosts` ファイルに登録されます。
+ファイルのパスは、`/home/user/.ssh/known_hosts` です。
+
+====
+
+
+
+ターミナルを開く
+sftp <user>@sftp-service.sftp.svc
+フォルダ確認
+
+
+
+== リモートファイルシステムへ格納する
+
+OpenShift DevSpaces 左のエクスプローラー上で、右クリックをして、メニューから `New File...` を選択し、`sftp-out.yaml` と入力して `Enter` を押してください。
+今度は作成したファイルを選択して右クリックし、`Open with Kaoto Graphical Editor for Camel` からKaotoのグラフィカルエディターを開きます。
+
+まだ Route の定義がないので、新しくRouteを作成します。
+`+ New` をクリックしてください。
+
+//update
+image::file-component/02-file-001.png[pic, 600]
+
+`timer` と `log` が配置された Route が作成されます。
+今回は `SFTP` コンポーネントを使いますので、`timer` と入れ替えます。
+`timer` シンボルの メニューをクリックし、`Replace` を選択します。
+
+//update
+image::file-component/02-file-002.png[pic, 600]
+
+コンポーネントのカタログが開きます。
+
+`Type: Components` の中から `File` を探して選択をしてください。
+左上のテキストボックスに `File` と入力をすると、絞り込みができます。
+
+image::file-component/02-file-003.png[pic, 600]
+
+Source の `timer` が `file` と入れ替わりました。
+
+`file` シンボルをクリックすると、右側にプロパティが表示されますので、確認してください。
+
+Parameters が色々ありますが、`Directory Name` で指定したフォルダにファイルが格納されると、そのファイルをCamelが取得します。
+今回は、他のパラメータはデフォルトのままで構いません。
+
+* *Directory Name*: data/input
+
+image::file-component/02-file-004.png[pic, 800]
+
+次に、`log` で出力するメッセージを修正します。
+`log` シンボルをクリックすると、右側にプロパティが表示されますので、確認してください。
+`Message` に `template message` と入力されていますので、これを `${body}` に変更してください。
+これで、ファイルで受信したメッセージの本文をログに出力するようになります。
+
+image::file-component/02-file-005.png[pic, 800]
+
+続いて、ファイルを出力して格納する処理を作成します。
+`log` シンボルのメニューをクリックして、`Append` を選択します。
+
+再びコンポーネントのカタログが開きますので、先ほどと同じように `Type: Components` の中から `File` を探して選択をしてください。
+左上のテキストボックスに `File` と入力をすると、絞り込みができます。
+
+image::file-component/02-file-006.png[pic, 800]
+
+
+`log` シンボルに続いて、`file` コンボーネントが配置されました。
+
+`file` シンボルをクリックすると、右側にプロパティが表示されますので、確認してください。
+
+今度は、ファイルの出力先指定します。
+`Directory Name` に以下のフォルダパスを設定してください。
+
+* *Directory Name*: data/output
+
+image::file-component/02-file-007.png[pic, 800]
+
+次に、取得したファイルの本文に、追記をする処理を追加をしてみます。
+
+もう一度 `log` シンボルのメニューをクリックして、`Append` を選択します。
+
+コンポーネントのカタログの、`Type: Processor` の中から `Set Body` を探して選択をしてください。
+左上のテキストボックスに `Set Body` と入力をすると、絞り込みができます。
+
+image::file-component/02-file-008.png[pic, 600]
+
+これで、`log` と `file` の間に、`setBody` が追加されました。
+
+`Set Body` のシンボルをクリックすると、右側にプロパティが表示されますので、
+Expression に、以下の内容を設定してください。
+
+ * *Language*: simple
+ * *Expression*: ${body} : It's ${date-with-timezone:now:JST:HH:mm:ss} now.
+
+[TIP]
+====
+Apache Camel の Simple は、Apache Camel ルーティングと統合フレームワーク内で使用される式言語です。
+この言語は、動的なルーティングロジックを表現するために設計されています。
+Simple は、非常に読みやすく、理解しやすい構文を持っているため、多くの開発者にとってアクセスしやすい言語です。
+参考: link:https://camel.apache.org/components/{{ CAMEL_VERSION }}/languages/simple-language.html[simple,window="_blank"]
+====
+
+image::file-component/02-file-009.png[pic, 800]
+image::file-component/02-file-010.png[pic, 800]
+
+それでは、実際に動かしてみます。
+OpenShift DevSpaces のターミナルで、以下のコマンドを実行してください。
+
+[source, bash]
+----
+camel run file.yaml
+----
+
+Camelが起動したら、テスト用のファイルを受信先のフォルダに格納して動かしてみます。
+
+image::file-component/02-file-011.png[pic, 800]
+
+テスト用のテキストファイルは、`file` フォルダに用意されている、`test_01_file.txt` というファイルを使用します。
+
+ファイルの中身は、
+
+----
+Hello World!
+----
+
+というテキストが格納されています。
+
+`file` フォルダにある `test_01_file.txt` をコピーし、`data/input` フォルダにペーストします。
+
+image::file-component/02-file-012.png[pic, 300]
+
+ファイルが所定のフォルダに格納されると、インテグレーションが実行されて、コンソールに Log が表示され、`data/output` にファイルが格納されます。
+（格納したファイルは、デフォルトの設定では `data/input` 配下に `.camel` フォルダが作成され、そちらに移動します）
+
+ファイルが作成されたら、`data/input/.camel`、`data/output` の両フォルダのファイルの中身を確認してください。
+`data/output` に格納されたファイルには、現在時刻が `Set Body` で追記されて出力されています。
+
+image::file-component/02-file-013.png[pic, 1200]
+
+確認後、`Ctrl+C`、もしくはターミナル右上のゴミ箱のアイコンをクリックして、Camel を終了してください。
