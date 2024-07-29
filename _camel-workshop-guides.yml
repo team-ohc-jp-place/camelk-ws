@@ -21,10 +21,11 @@ modules:
   - camel-intro
   - workshop-environment
   - kaoto-tutorial
-  - sftp-component
+  - file-component
   - data-formats
   - postgresql-sink
   - db-sync
+#  - sftp-component
 #  - camel-jbang
 #  - deploying-to-openshift
 # - timer-component
