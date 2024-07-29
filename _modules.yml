@@ -8,8 +8,8 @@ modules:
     name: ワークショップ環境について
   kaoto-tutorial:
     name: Kaotoを使ったCamelの開発
-  file-component:
-    name: File コンポーネント
+  sftp-component:
+    name: SFTPサーバとのファイル連携
   data-formats:
     name: Data Formats パターン
   postgresql-sink:

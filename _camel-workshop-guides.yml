@@ -21,7 +21,7 @@ modules:
   - camel-intro
   - workshop-environment
   - kaoto-tutorial
-  - file-component
+  - sftp-component
   - data-formats
   - postgresql-sink
   - db-sync

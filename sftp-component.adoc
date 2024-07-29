@@ -51,22 +51,16 @@ image::sftp/sftp-001.png[pic, 800]
 | rm [ファイル] | サーバー側のファイルを削除する
 |===
 
+====
+
 接続したsftpサーバの公開鍵が、`known_hosts` ファイルに登録されます。
 ファイルのパスは、`/home/user/.ssh/known_hosts` です。
 
-====
+== SFTPコンポーネントを使ってファイルをSFTPサーバへ格納する
 
+それでは、まず Camel で ファイルをSFTPサーバへ格納する処理を作成してみます。
 
-
-ターミナルを開く
-sftp <user>@sftp-service.sftp.svc
-フォルダ確認
-
-
-
-== リモートファイルシステムへ格納する
-
-OpenShift DevSpaces 左のエクスプローラー上で、右クリックをして、メニューから `New File...` を選択し、`sftp-out.yaml` と入力して `Enter` を押してください。
+OpenShift DevSpaces 左のエクスプローラー上で、右クリックをして、メニューから `New File...` を選択し、`sftp.yaml` と入力して `Enter` を押してください。
 今度は作成したファイルを選択して右クリックし、`Open with Kaoto Graphical Editor for Camel` からKaotoのグラフィカルエディターを開きます。
 
 まだ Route の定義がないので、新しくRouteを作成します。
