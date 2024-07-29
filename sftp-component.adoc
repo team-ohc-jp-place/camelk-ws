@@ -66,7 +66,6 @@ OpenShift DevSpaces 左のエクスプローラー上で、右クリックをし
 まだ Route の定義がないので、新しくRouteを作成します。
 `+ New` をクリックしてください。
 
-//update
 image::sftp/sftp-002.png[pic, 600]
 
 `timer` と `log` が配置された Route が作成されます。
@@ -97,53 +96,7 @@ image::sftp/sftp-005.png[pic, 600]
 
 image:sftp/sftp-006.png[pic, 800] 
 
-Expression の入力フォームが開きますので、`It’s ${date-with-timezone:now:JST:HH:mm:ss} now.` と入力をして、`Apply` をクリックしてください。
-
-image:sftp/sftp-007.png[pic, 800] 
-
-次に、`log` で出力するメッセージを修正します。
-`log` シンボルをクリックすると、右側にプロパティが表示されますので、確認してください。
-`Message` に `template message` と入力されていますので、これを `${body}` に変更してください。
-これで、ファイルで受信したメッセージの本文をログに出力するようになります。
-
-image::file-component/02-file-005.png[pic, 800]
-
-続いて、ファイルを出力して格納する処理を作成します。
-`log` シンボルのメニューをクリックして、`Append` を選択します。
-
-再びコンポーネントのカタログが開きますので、先ほどと同じように `Type: Components` の中から `File` を探して選択をしてください。
-左上のテキストボックスに `File` と入力をすると、絞り込みができます。
-
-image::file-component/02-file-006.png[pic, 800]
-
-
-`log` シンボルに続いて、`file` コンボーネントが配置されました。
-
-`file` シンボルをクリックすると、右側にプロパティが表示されますので、確認してください。
-
-今度は、ファイルの出力先指定します。
-`Directory Name` に以下のフォルダパスを設定してください。
-
-* *Directory Name*: data/output
-
-image::file-component/02-file-007.png[pic, 800]
-
-次に、取得したファイルの本文に、追記をする処理を追加をしてみます。
-
-もう一度 `log` シンボルのメニューをクリックして、`Append` を選択します。
-
-コンポーネントのカタログの、`Type: Processor` の中から `Set Body` を探して選択をしてください。
-左上のテキストボックスに `Set Body` と入力をすると、絞り込みができます。
-
-image::file-component/02-file-008.png[pic, 600]
-
-これで、`log` と `file` の間に、`setBody` が追加されました。
-
-`Set Body` のシンボルをクリックすると、右側にプロパティが表示されますので、
-Expression に、以下の内容を設定してください。
-
- * *Language*: simple
- * *Expression*: ${body} : It's ${date-with-timezone:now:JST:HH:mm:ss} now.
+image:sftp/sftp-007.png[pic, 800]
 
 [TIP]
 ====
@@ -153,41 +106,63 @@ Simple は、非常に読みやすく、理解しやすい構文を持ってい�
 参考: link:https://camel.apache.org/components/{{ CAMEL_VERSION }}/languages/simple-language.html[simple,window="_blank"]
 ====
 
-image::file-component/02-file-009.png[pic, 800]
-image::file-component/02-file-010.png[pic, 800]
+次に、SFTPサーバに格納するファイル名を動的に指定する方法を確認します。
+
+Headerに、`CamelFileName` という項目を保持しておくと、SFTPコンポーネントにその値を設定することができます。
+
+`setBody` シンボルの メニューをクリックし、`Append` を選択します。
+
+image:sftp/sftp-008.png[pic, 800]
+
+`Type: Processor` の中から `setHeader` を探して選択をしてください。
+左上のテキストボックスに `setHeader` と入力をすると、絞り込みができます。
+
+image:sftp/sftp-009.png[pic, 800]
+
+`setheader` のシンボルをクリックして、Parameterに以下の項目を設定します。
+
+* Experssion: ${date-with-timezone:now:JST:yyyyMMddHHmmss}.txt
+* Name: CamelFileName
+
+image:sftp/sftp-010.png[pic, 800]
+
+次に、`sftp` コンポーネントを配置して、SFTPサーバにファイルを格納する処理を実装します。
+`setHeader` シンボルの メニューをクリックし、`Append` を選択します。
+
+image:sftp/sftp-011.png[pic, 800]
+
+`Type: Component` の中から `sftp` を探して選択をしてください。
+左上のテキストボックスに `sftp` と入力をすると、絞り込みができます。
+
+image:sftp/sftp-012.png[pic, 800]
+
+`sftp` シンボルをクリックすると、右側にプロパティが表示されますので、以下のParametersを設定してください。
+
+* Endpoint Properties
+ * Host: sftp-service.sftp.svc
+ * Port: 22
+ * Directory Name: upload
+* Security Properties
+ * Known Hosts File: /home/user/.ssh/known_hosts
+
+image:sftp/sftp-013.png[pic, 800]
 
 それでは、実際に動かしてみます。
 OpenShift DevSpaces のターミナルで、以下のコマンドを実行してください。
 
 [source, bash]
 ----
-camel run file.yaml
+camel run sftp.yaml
 ----
 
-Camelが起動したら、テスト用のファイルを受信先のフォルダに格納して動かしてみます。
+image:sftp/sftp-014.png[pic, 1200]
 
-image::file-component/02-file-011.png[pic, 800]
+Camelが起動したら、実際にSFTPサーバにファイルが格納されているか確認をしてみます。
+SFTPサーバにアクセスをしたターミナルを開き、`upload` フォルダの中身を確認してみてください。
 
-テスト用のテキストファイルは、`file` フォルダに用意されている、`test_01_file.txt` というファイルを使用します。
-
-ファイルの中身は、
-
-----
-Hello World!
-----
-
-というテキストが格納されています。
-
-`file` フォルダにある `test_01_file.txt` をコピーし、`data/input` フォルダにペーストします。
-
-image::file-component/02-file-012.png[pic, 300]
-
-ファイルが所定のフォルダに格納されると、インテグレーションが実行されて、コンソールに Log が表示され、`data/output` にファイルが格納されます。
-（格納したファイルは、デフォルトの設定では `data/input` 配下に `.camel` フォルダが作成され、そちらに移動します）
-
-ファイルが作成されたら、`data/input/.camel`、`data/output` の両フォルダのファイルの中身を確認してください。
-`data/output` に格納されたファイルには、現在時刻が `Set Body` で追記されて出力されています。
-
-image::file-component/02-file-013.png[pic, 1200]
+image:sftp/sftp-015.png[pic, 600]
 
 確認後、`Ctrl+C`、もしくはターミナル右上のゴミ箱のアイコンをクリックして、Camel を終了してください。
+
+== SFTPコンポーネントを使ってSFTPサーバからファイルを受信する
+
