@@ -24,8 +24,8 @@ modules:
     name: Appendix 2 - OpenShiftへのデプロイ
 #削除  timer-component:
 #削除    name: Timer コンポーネント
-#  split-eip:
-#    name: Split パターン
+  split-eip:
+    name: Split パターン
 #  direct-component:
 #    name: Direct コンポーネント
 #  recipientlist-eip:

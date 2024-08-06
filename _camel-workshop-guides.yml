@@ -29,7 +29,7 @@ modules:
   - camel-jbang
   - deploying-to-openshift
 # - timer-component
-#  - split-eip
+  - split-eip
 #  - direct-component
 #  - recipientlist-eip
 #  - rest-api-service
