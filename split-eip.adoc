@@ -1,7 +1,8 @@
-## Split パターン
+== Split パターン
 :experimental:
 :tip-caption: :bulb:
 :imagesdir: images
+
 ---
 
 ### 1. 目的
