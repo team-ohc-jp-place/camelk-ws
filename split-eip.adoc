@@ -8,7 +8,7 @@
 
 [Split](https://camel.apache.org/components/{{ CAMEL_VERSION }}/eips/split-eip.html){:target="_blank"} を使用して、Camel K で Message を分割する方法について理解します。
 
-image::images/split/Sequencer.gif[pic]
+image::split/Sequencer.gif[pic]
 
 ---
 
@@ -24,12 +24,12 @@ image::images/split/Sequencer.gif[pic]
 JSON形式のデータを、分割する処理を追加します。
 Log シンボルにマウスカーソルを持っていくと、左上に小さく `→` ボタンが表示されますので、クリックします。
 
-image::images/split/04-split-001.png[pic,800]
+image::split/04-split-001.png[pic,800]
 
 続いて、`Routing` タブから `Split` を探して選択をしてください。
 右上のテキストボックスに `Split` と入力をすると、絞り込みができます。
 
-image::images/split/04-split-002.png[pic,800]
+image::split/04-split-002.png[pic,800]
 
 `Split` のシンボルをクリックすると、右側にプロパティが表示されますので、
 Parameters 項目に、以下の内容を設定してください。他の項目は、デフォルトのままで構いません。
@@ -37,7 +37,7 @@ Parameters 項目に、以下の内容を設定してください。他の項目
 * **Language**: jsonpath
 * **Expression**: $
 
-image::images/split/04-split-003.png[pic,1200]
+image::split/04-split-003.png[pic,1200]
 
 次に、`Log` 処理を `Split` で分割した直後のステップに移動します。
 
@@ -45,11 +45,11 @@ image::images/split/04-split-003.png[pic,1200]
 
 ポップアップ画面が表示されますので、`Move as target step` を選択してください。
 
-image::images/split/04-split-004.png[pic,1200]
+image::split/04-split-004.png[pic,1200]
 
 これで、`Split` で分割した後のMessageの内容が表示されます。
 
-image::images/split/04-split-005.png[pic,800]
+image::split/04-split-005.png[pic,800]
 
 それでは、実際に動かしてみます。
 右上の ロケットのアイコン のボタンを押してください。
@@ -60,7 +60,7 @@ image::images/split/04-split-005.png[pic,800]
 ターミナルに以下のような Log が表示されます。
 JSON形式のデータが分割されて、分割された処理毎に Log が出力されることが確認できます。
 
-image::images/split/04-split-006.png[pic,1200]
+image::split/04-split-006.png[pic,1200]
 
 Log の確認ができたら、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
 
@@ -70,7 +70,7 @@ Log の確認ができたら、`Ctrl+C` もしくは、ターミナル右上の�
 
 次に、処理を停止した後、`Split` シンボルをクリックし、右側のプロパティから `Parallel Processing` を探してスイッチをオンにします。
 
-image::images/split/04-split-007.png[pic,1200]
+image::split/04-split-007.png[pic,1200]
 
 それでは、もう一度実行をします。
 右上の ロケットのアイコン のボタンを押してください。
@@ -82,7 +82,7 @@ image::images/split/04-split-007.png[pic,1200]
 赤枠で囲った部分を見ると、スレッドIDがそれぞれ異なっていることが確認できます。
 （もし表示順が同じだった場合は、何度かやり直してみてください）
 
-image::images/split/04-split-008.png[pic,1200]
+image::split/04-split-008.png[pic,1200]
 
 Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
 また、作成した `split.camel.yaml` を `temp` フォルダに移動をしておいてください。 
