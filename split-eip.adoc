@@ -1,21 +1,19 @@
-== Split パターン
+= Split パターン
 :experimental:
 :tip-caption: :bulb:
 :imagesdir: images
 
----
+== 1. 目的
 
-### 1. 目的
-
-[Split](https://camel.apache.org/components/{{ CAMEL_VERSION }}/eips/split-eip.html){:target="_blank"} を使用して、Camel K で Message を分割する方法について理解します。
+link:https://camel.apache.org/components/{{ CAMEL_VERSION }}/eips/split-eip.html[Split,window="_blank"]を使用して、Camel で Message を分割する方法について理解します。
 
 image::split/Sequencer.gif[pic]
 
 ---
 
-### 2. Message の分割
+== 2. Message の分割
 
-前章の [DataFormatsパターン]({{ HOSTNAME_SUFFIX }}/workshop/camel-k/lab/data-formats){:target="_blank"} で 作成したインテグレーションを使用します。
+前章の link:{{ HOSTNAME_SUFFIX }}/workshop/camel/lab/data-formats[DataFormatsパターン,window="_blank"]で 作成したインテグレーションを使用します。
 まだ前章を実施していない場合は、先にそちらを実施して下さい。
 
 前章で作成した、インテグレーションファイルをコピーし、`split.camel.yaml` という名前としてください。
@@ -67,7 +65,7 @@ Log の確認ができたら、`Ctrl+C` もしくは、ターミナル右上の�
 
 ---
 
-### 3. Parallel Processing
+== 3. Parallel Processing
 
 次に、処理を停止した後、`Split` シンボルをクリックし、右側のプロパティから `Parallel Processing` を探してスイッチをオンにします。
 
