@@ -3,22 +3,42 @@
 :tip-caption: :bulb:
 :imagesdir: images
 
-== 1. 目的
+== 1. Splitter EIP について
 
-link:https://camel.apache.org/components/{{ CAMEL_VERSION }}/eips/split-eip.html[Split,window="_blank"]を使用して、Camel で Message を分割する方法について理解します。
+Apache Camelの link:https://camel.apache.org/components/{{ CAMEL_VERSION }}/eips/split-eip.html[Splitter EIP（Enterprise Integration Pattern）,window="_blank"] は、メッセージを複数の小さなメッセージに分割して、それぞれを個別に処理するためのパターンです。
+Splitterは、大きなメッセージを扱う場合や、メッセージの一部ごとに異なる処理を行いたい場合に便利です。
 
 image::split/Sequencer.gif[pic]
 
----
+**Splitterの基本的な動作**
 
-== 2. Message の分割
+* 入力メッセージ: 1つの大きなメッセージを受け取ります（例: CSVファイル、XMLドキュメント、リスト）。
+* 分割処理: メッセージを個別のエレメント（行、タグ、アイテムなど）に分割します。
+* 個別処理: 各エレメントを個別のメッセージとして下流のルートで処理します。
 
-前章の link:{{ HOSTNAME_SUFFIX }}/workshop/camel/lab/data-formats[DataFormatsパターン,window="_blank"]で 作成したインテグレーションを使用します。
-まだ前章を実施していない場合は、先にそちらを実施して下さい。
+== 2. メッセージ の分割
 
-前章で作成した、インテグレーションファイルをコピーし、`split.camel.yaml` という名前としてください。
+左のエクスプローラー上で、`labs/split-pattern.yaml` 右クリックをして、メニューから `Open with Kaoto Graphical Editor for Camel` を選択し、Kaoto のグラフィカルエディターを開きます。
 
-左のエクスプローラー上で、`split.camel.yaml` 右クリックをして、メニューから `Karavan: Open` を選択し、Karavan Designer のGUIを開きます。
+以下のような Route が設定されています。
+
+image::split/split-001.png[pic,600] 
+
+内容については次の通りです。
+
+image::split/split-002.png[pic,800] 
+
+* `timer` コンポーネント: 指定した間隔でメッセージを生成します。
+ * `uri`: `timer:split-pattern` はタイマーの名前を指定しており、ユニークであれば任意の文字列でかまいません。
+ * `period`: 1000msごとにメッセージをトリガーします。
+ * `repeatCount: このルートが実行される回数を指定します。`1`なので、一度だけ実行されます。
+* `setBody: メッセージのボディを手動で設定します。
+ * `simple`: Simple言語を使用してボディを設定します。この例では、CSV形式のテキストを設定しています。
+* `unmarshal: メッセージボディをCSVからJavaオブジェクトに変換します。
+ * `delimiter``: CSVの区切り文字をカンマ（,）として設定しています。
+ * `useMaps: trueに設定すると、CSVの各行がJavaのMapオブジェクトに変換されます。CSVのヘッダー（id、name）がキーになり、各行の値が対応する値になります。
+* `log`: `${body}`は、メッセージボディをログに出力します。
+
 
 JSON形式のデータを、分割する処理を追加します。
 Log シンボルにマウスカーソルを持っていくと、左上に小さく `→` ボタンが表示されますので、クリックします。
@@ -62,8 +82,6 @@ JSON形式のデータが分割されて、分割された処理毎に Log が�
 image::split/04-split-006.png[pic,1200]
 
 Log の確認ができたら、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
-
----
 
 == 3. Parallel Processing
 

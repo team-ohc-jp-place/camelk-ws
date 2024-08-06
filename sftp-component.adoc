@@ -3,12 +3,12 @@
 :tip-caption: :bulb:
 :imagesdir: images
 
-== 目的
+== 1.目的
 
 link:https://camel.apache.org/components/{{ CAMEL_VERSION }}/sftp-component.html[SFTP コンポーネント,window="_blank"] は、SFTPプロトコルでリモートファイルシステムにアクセスすることができます。
 SFTPコンポーネントを使用して、ファイル取得し他のシステムに連携したり、他のコンポーネントからのデータをリモートファイルシステムに格納する方法について理解します。
 
-== リモートファイルシステムへアクセスする
+== 2.リモートファイルシステムへアクセスする
 
 SFTPサーバを OpenShift に構築しています。実際にアクセスできるか確認をしてみましょう。
 OpenShift DevSpaces のターミナルで、以下のコマンドを実行します。
@@ -56,7 +56,7 @@ image::sftp/sftp-001.png[pic, 800]
 接続したSFTPサーバの公開鍵が、`known_hosts` ファイルに登録されます。
 ファイルのパスは、`/home/user/.ssh/known_hosts` です。
 
-== SFTPコンポーネントを使ってファイルをSFTPサーバへ格納する
+== 3.SFTPコンポーネントを使ってファイルをSFTPサーバへ格納する
 
 それでは、まず Camel で ファイルをSFTPサーバへ格納する処理を作成してみます。
 
@@ -180,9 +180,6 @@ image:sftp/sftp-017.png[pic, 800]
 新しいRouteの `timer` シンボルの メニューをクリックし、`Replace` を選択します。
 
 image:sftp/sftp-018.png[pic, 800]
-
-`Type: Components` の中から `sftp` を探して選択をしてください。
-左上のテキストボックスに `sftp` と入力をすると、絞り込みができます。
 
 `Type: Component` の中から `sftp` を探して選択をしてください。
 左上のテキストボックスに `sftp` と入力をすると、絞り込みができます。
