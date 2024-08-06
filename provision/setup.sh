@@ -19,6 +19,7 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
 done
 
 oc new-project devspaces
+
 oc new-project knative-serving
 oc new-project knative-eventing
 oc new-project infra
@@ -110,7 +111,7 @@ oc new-app --name=get-a-username -n infra \
 	--as-deployment-config quay.io/openshiftlabs/username-distribution:1.4 \
 	-e LAB_REDIS_HOST=redis.infra.svc.cluster.local \
 	-e LAB_REDIS_PASS=redis \
-	-e LAB_TITLE="Camel K HandsOn Workshop" \
+	-e LAB_TITLE="Red Hat build of Apache Camel HandsOn Workshop" \
 	-e LAB_DURATION_HOURS=1week \
 	-e LAB_USER_COUNT=$USER_COUNT \
 	-e LAB_USER_PASS=$OPENSHIFT_PASSWORD \
@@ -118,7 +119,7 @@ oc new-app --name=get-a-username -n infra \
 	-e LAB_USER_PREFIX=user \
 	-e LAB_USER_PAD_ZERO=false \
 	-e LAB_ADMIN_PASS=redhatadmin! \
-	-e LAB_MODULE_URLS="https://etherpad-gpte-etherpad.$HOSTNAME_SUFFIX/p/Camel_K_Workshop;Etherpad,http://guides-infra.$HOSTNAME_SUFFIX/workshop/camel-k;Workshop Guides Page" \
+	-e LAB_MODULE_URLS="https://etherpad-gpte-etherpad.$HOSTNAME_SUFFIX/p/Camel_Workshop;Etherpad,http://guides-infra.$HOSTNAME_SUFFIX/workshop/camel;Workshop Guides Page" \
 
 oc create route edge --service=get-a-username -n infra
 
@@ -194,9 +195,9 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
   oc adm policy add-role-to-user view $OPENSHIFT_USER -n $PRJ_NAME
   oc adm policy add-role-to-user edit $OPENSHIFT_USER -n $PRJ_NAME
   oc adm policy add-role-to-user view $OPENSHIFT_USER -n devspaces
-  oc create sa camelk-user -n $PRJ_NAME
-  oc adm policy add-scc-to-user anyuid -z camelk-user
-  oc adm policy add-scc-to-user anyuid -z camelk-user -n $PRJ_NAME
+  oc create sa camel-user -n $PRJ_NAME
+  oc adm policy add-scc-to-user anyuid -z camel-user
+  oc adm policy add-scc-to-user anyuid -z camel-user -n $PRJ_NAME
 
   # Waiting for deploying kafka-cluster
   echo "Waiting for deploying kafka-cluster"

@@ -10,16 +10,18 @@ modules:
     name: Kaotoを使ったCamelの開発
   file-component:
     name: File コンポーネント
+  sftp-component:
+    name: SFTP コンポーネント
   data-formats:
     name: Data Formats パターン
   postgresql-sink:
     name: PostgreSQL との連携
   db-sync:
     name: Camel/Kafka/Debezium を使ったDBの同期
-#  camel-jbang:
-#    name: Appendix 1 - Camel JBangについて
-#  deploying-to-openshift:
-#    name: Appendix 2 - OpenShiftへのデプロイ
+  camel-jbang:
+    name: Appendix 1 - Camel JBangについて
+  deploying-to-openshift:
+    name: Appendix 2 - OpenShiftへのデプロイ
 #削除  timer-component:
 #削除    name: Timer コンポーネント
 #  split-eip:

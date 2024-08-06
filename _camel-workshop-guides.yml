@@ -25,9 +25,9 @@ modules:
   - data-formats
   - postgresql-sink
   - db-sync
-#  - sftp-component
-#  - camel-jbang
-#  - deploying-to-openshift
+  - sftp-component
+  - camel-jbang
+  - deploying-to-openshift
 # - timer-component
 #  - split-eip
 #  - direct-component
