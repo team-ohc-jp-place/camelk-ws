@@ -96,6 +96,10 @@ image::sftp/sftp-005.png[pic, 600]
 
 image:sftp/sftp-006.png[pic, 800] 
 
+`Simple` 言語を選択し、`Expression`欄に以下を入力してください。
+
+* `Expression`: It's ${date-with-timezone:now:JST:HH:mm:ss} now.
+
 image:sftp/sftp-007.png[pic, 800]
 
 [TIP]
@@ -121,8 +125,8 @@ image:sftp/sftp-009.png[pic, 800]
 
 `setheader` のシンボルをクリックして、Parameterに以下の項目を設定します。
 
-* Experssion: ${date-with-timezone:now:JST:yyyyMMddHHmmss}.txt
-* Name: CamelFileName
+* `Experssion`: ${date-with-timezone:now:JST:yyyyMMddHHmmss}.txt
+* `Name`: CamelFileName
 
 image:sftp/sftp-010.png[pic, 800]
 
@@ -138,14 +142,14 @@ image:sftp/sftp-012.png[pic, 800]
 
 `sftp` シンボルをクリックすると、右側にプロパティが表示されますので、以下のParametersを設定してください。
 
-* Endpoint Properties
- * Host: sftp-service.sftp.svc
- * Port: 22
- * Directory Name: upload
-* Security Properties
- * Known Hosts File: /home/user/.ssh/known_hosts
- * Username: {{ USER_ID }}
- * Password: openshift
+* **Endpoint Properties**
+** `Host`: sftp-service.sftp.svc
+** `Port`: 22
+** `Directory Name`: upload
+* **Security Properties**
+** `Known Hosts File`: /home/user/.ssh/known_hosts
+** `Username`: {{ USER_ID }}
+** `Password`: openshift
 
 image:sftp/sftp-013.png[pic, 800]
 
