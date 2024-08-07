@@ -29,21 +29,43 @@ image::split/split-001.png[pic,600]
 image::split/split-002.png[pic,800] 
 
 * `timer` コンポーネント: 指定した間隔でメッセージを生成します。
- * `uri`: `timer:split-pattern` はタイマーの名前を指定しており、ユニークであれば任意の文字列でかまいません。
- * `period`: 1000msごとにメッセージをトリガーします。
- * `repeatCount: このルートが実行される回数を指定します。`1`なので、一度だけ実行されます。
+** `uri`: `timer:split-pattern` はタイマーの名前を指定しており、ユニークであれば任意の文字列でかまいません。
+** `period`: 1000msごとにメッセージをトリガーします。
+** `repeatCount: このルートが実行される回数を指定します。`1`なので、一度だけ実行されます。
 * `setBody: メッセージのボディを手動で設定します。
- * `simple`: Simple言語を使用してボディを設定します。この例では、CSV形式のテキストを設定しています。
+** `simple`: Simple言語を使用してボディを設定します。この例では、CSV形式のテキストを設定しています。
 * `unmarshal: メッセージボディをCSVからJavaオブジェクトに変換します。
- * `delimiter``: CSVの区切り文字をカンマ（,）として設定しています。
- * `useMaps: trueに設定すると、CSVの各行がJavaのMapオブジェクトに変換されます。CSVのヘッダー（id、name）がキーになり、各行の値が対応する値になります。
+** `delimiter``: CSVの区切り文字をカンマ（,）として設定しています。
+** `useMaps: trueに設定すると、CSVの各行がJavaのMapオブジェクトに変換されます。CSVのヘッダー（id、name）がキーになり、各行の値が対応する値になります。
 * `log`: `${body}`は、メッセージボディをログに出力します。
 
+このサンプルソースを動かしてみます。
+OpenShift DevSpaces のターミナルで、以下のコマンドを実行してください。
 
-JSON形式のデータを、分割する処理を追加します。
-Log シンボルにマウスカーソルを持っていくと、左上に小さく `→` ボタンが表示されますので、クリックします。
+[source, bash]
+----
+camel run labs/split-pattern.yaml --dev
+----
 
-image::split/04-split-001.png[pic,800]
+`setBody`で設定したcsv形式のデータが、Javaオブジェクトに変換され、ログに表示されました。
+
+image::split/split-003.png[pic,1200] 
+
+---
+
+それでは、Splitを使用して、メッセージを分割する処理を追加します。
+
+Kaoto のグラフィカルエディター上で、`unmarshal` シンボルの メニューをクリックし、`Append` を選択します。
+
+image::split/split-004.png[pic,800] 
+
+`Type: Processor` の中から `split` を探して選択をしてください。
+左上のテキストボックスに `split` と入力をすると、絞り込みができます。
+
+image::split/split-005.png[pic,800]
+
+## ここまで
+
 
 続いて、`Routing` タブから `Split` を探して選択をしてください。
 右上のテキストボックスに `Split` と入力をすると、絞り込みができます。
