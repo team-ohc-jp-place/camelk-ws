@@ -1,0 +1,128 @@
+= Direct コンポーネント
+:experimental:
+:tip-caption: :bulb:
+:imagesdir: images
+
+== 1. Direct コンポーネント について
+
+Apache Camelの link:https://camel.apache.org/components/{{ CAMEL_VERSION }}/direct-component.html[Direct,window="_blank"] コンポーネントは、
+同一Camelコンテキスト内でのメッセージの同期的なルーティングに使用されるコンポーネントです。
+このコンポーネントは、名前付きのエンドポイントを使用して、異なるルート間でメッセージを直接転送することができます。
+
+image::direct/direct.jpg[pic]
+
+**Direct コンポーネントの特徴と使用方法**
+
+* **同期処理**: 
+** Directコンポーネントを使用すると、呼び出し元が処理を終了するまで待機します。これは同期的な通信が必要なシナリオに適しています。
+* **軽量**: 
+** 同一Camelコンテキスト内でのみ動作するため、他のコンポーネントと比較してオーバーヘッドが少なく、パフォーマンスが高いです。
+* **エンドポイント名**: 
+** Directコンポーネントはエンドポイント名で識別されるため、エンドポイント名を使用してルート間でメッセージを転送します。
+
+== 2. Direct を使用して Route を分岐する
+
+左のエクスプローラー上で、`labs/direct.yaml` 右クリックをして、メニューから `Open with Kaoto Graphical Editor for Camel` を選択し、Kaoto のグラフィカルエディターを開きます。
+
+以下のような Route が設定されています。
+
+image::direct/direct-001.png[pic,600] 
+
+内容については次の通りです。
+
+image::direct/direct-002.png[pic,800] 
+
+* `timer` コンポーネント: 指定した間隔でメッセージを生成します。
+** `uri`: `timer:direct` はタイマーの名前を指定しており、ユニークであれば任意の文字列でかまいません。
+** `period`: 1000msごとにメッセージをトリガーします。
+** `repeatCount`: このルートが実行される回数を指定します。`1`なので、一度だけ実行されます。
+* `log`: `${body}` は、メッセージボディをログに出力します。
+
+それでは、`Direct` コンポーネントを使用して、別のRouteを呼び出す処理を作成してみます。
+
+`log` シンボルの メニューをクリックし、`Replace` を選択します。
+
+image::direct/direct-003.png[pic,600]
+
+コンポーネントのカタログが開きます。
+
+`Type: Components` の中から `Direct` を探して選択をしてください。
+左上のテキストボックスに `Direct` と入力をすると、絞り込みができます。
+
+image::direct/direct-004.png[pic,600]
+
+`log` が `direct` と入れ替わりました。
+
+`direct` シンボルをクリックすると、右側にプロパティが表示されますので、以下のパラメータを入力します。
+
+* **Endpoint Properties**:
+** **Name**: secondRoute
+
+image::direct/direct-005.png[pic,800]
+
+---
+
+次に、Direct によって呼び出される Route を新たに作成します。
+
+上部のメニューから、`+ New` -> `Route` を選択してください。
+
+image::direct/direct-006.png[pic,800]
+
+別の Route が追加されます。`Visible` の設定を変更して、2つの Route が見える状態にしてください。
+
+image::direct/direct-007.png[pic,800]
+
+---
+
+追加した Route の、`timer` シンボルの メニューをクリックし、`Replace` を選択します。
+
+image::direct/direct-008.png[pic,600]
+
+コンポーネントのカタログが開きます。
+
+`Type: Components` の中から `Direct` を探して選択をしてください。
+左上のテキストボックスに `Direct` と入力をすると、絞り込みができます。
+
+`timer` が `direct` と入れ替わりました。
+
+`direct` シンボルをクリックすると、右側にプロパティが表示されますので、先ほどと同様、以下のパラメータを入力します。
+
+* **Endpoint Properties**:
+** **Name**: secondRoute
+
+image::direct/direct-009.png[pic,800]
+
+---
+
+scondRoute が呼び出されかどうかを確認するための ログ を出力しておきます。
+
+追加した Route の `log` シンボルをクリックすると、右側にプロパティが表示されますので、以下のパラメータを入力してください。
+
+* **Message**: scondRoute invoked
+
+image::direct/direct-010.png[pic,800]
+
+---
+
+それでは、実際に動かしてみます。
+OpenShift DevSpaces のターミナルで、以下のコマンドを実行してください。
+
+[source, bash]
+----
+camel run labs/direct.yaml
+----
+
+特にエラーなく実行されたら、ターミナルの ログ を確認してください。
+`scoundRoute invoked` の文字列が表示されていれば、OKです。 
+
+image::direct/direct-011.png[pic,1200]
+
+ログの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
+
+== 3. 参考（SEDA）
+
+link:https://camel.apache.org/components/{{ CAMEL_VERSION }}/direct-component.html[Direct,window="_blank"] は、プロデューサーがメッセージ交換を送信するときに、任意のコンシューマーの同期的な呼び出しを提供します。
+
+非同期な呼び出しを実施する場合は、link:https://camel.apache.org/components/{{ CAMEL_VERSION }}/seda-component.html[SEDA,window="_blank"] コンポーネントを使用することができます。
+
+image::direct/seda.jpg[pic]
