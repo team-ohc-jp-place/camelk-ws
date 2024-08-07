@@ -30,7 +30,7 @@ modules:
   - deploying-to-openshift
 # - timer-component
   - split-eip
-#  - direct-component
+  - direct-component
 #  - recipientlist-eip
 #  - rest-api-service
 #  - error-handling
