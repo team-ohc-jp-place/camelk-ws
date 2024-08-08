@@ -77,7 +77,6 @@ Parameters は、以下のように設定をしてください。
 image::dataformats/dataformats-006.png[pic, 800]
 image::dataformats/dataformats-007.png[pic, 800]
 
-
 それでは、ここで実行して確認をしてみます。
 OpenShift DevSpaces のターミナルで、以下のコマンドを実行してください。
 
