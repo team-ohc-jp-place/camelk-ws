@@ -1,26 +1,68 @@
-= Appendix 1 - Camel JBang について
+= Appendix 1 - Camel JBang
 :experimental:
 :tip-caption: :bulb:
 :imagesdir: images
 
----
+== 1. Camel JBang について
 
-== JBang によるインテグレーション実施のテスト
+Camel JBangは、Apache Camelを使いやすくするためのツールです。Camel JBangを使用すると、シンプルなスクリプトファイルを使用してCamelルートを実行できます。
 
-link:https://www.jbang.dev/[JBang] は、Javaをスクリプトのように実行できるツールです。
-日本での知名度はまだまだ低いですが、Quarkusのエンジニアが開発していることもありモダンなJava開発環境との連携が充実しています。
+以下にCamel JBangの基本的なコマンドを示します。
 
-今回のワークショップでは、karavan Designer で作成した Camel K インテグレーションを、JBang を通して実行し、動作を確認していきます。
+[cols="2,7",options="header",role="custom-table"]
+|===
+| コマンド | 内容
+| init | Camel の 基本的な Route を作成する
+| run | 指定したCamelスクリプトファイルを実行
+| version | インストールされているCamel JBangのバージョンを表示
+| help | 使用可能なコマンドの一覧とその説明を表示
+| export | CamelプロジェクトをMavenプロジェクトとしてエクスポート。
+| transform route| CamelのDSLの形式変換（YAML ↔︎ XML）
+| ps | ローカルで実行している Camel を監視する
+| stop | ローカルで実行中の Camel を停止する
+| debug | Camel Route のデバッグを行う
+|===
 
-ワークスペースに、１秒間に１回、コンソールに **hello** と出力をするサンプル用のファイル（example.camel.yaml）があります。
+その他のコマンドの詳細については、link:https://camel.apache.org/manual/camel-jbang.html[Camel JBang,window="_blank"] のドキュメントを確認してください。
 
-エクスプローラ上で右クリックをして、`Open in Integrated terminal` を選択してください。
+== 2. Camel Route の作成と実行
 
-image::workshop-environment/09-devspaces-012.png[pic, 300]
+`init` コマンドを使用して、新しい基本 Route を作成できます
 
-ターミナルが表示されますので、`jbang camel@apache/camel run example.camel.yaml` と入力をして実行してみてください。
-ターミナルに以下のようなログが表示されればOKです。
+例えば、YAML形式の Route を作成するには、以下のようにします。
 
-image::workshop-environment/09-devspaces-013.png[pic, 1200]
+[source, bash]
+----
+camel init sample.yaml
+----
 
-ログを確認したら、`Ctrl+C` などで実行を終了してください。
+サンプルルートを含むファイルをsample.yaml（現在のディレクトリに）作成します。
+
+ファイルを実行するには、次のコマンドを実行します。
+
+[source, bash]
+----
+camel run sample.yaml
+----
+
+[TIP]
+====
+Camel では、YAML、XML、Javaなど、サポートされている link:https://camel.apache.org/manual/dsl.html[DSL,window="_blank"] を作成して実行できます。
+====
+
+== 3. Camel Quarkus, Camel Springboot へのエクスポート
+
+`camel export --runtime=quarkus` コマンドは、現在のCamel JBangファイルを、Mavenベースの `Quarkus` プロジェクトにエクスポートします。
+
+例えば、Maven の groupId `com.foo` と artifactId `acme` を使用してバージョン1.0-SNAPSHOTで Quarkus にエクスポートするには、次のコマンドを実行します。
+
+[source, bash]
+----
+camel export <files> --runtime=quarkus --gav=com.foo:acme:1.0-SNAPSHOT --directory=./myproject
+----
+
+== 4. 参考リンク 
+
+* link:https://www.jbang.dev/[JBang,window="_blank"]
+* link:https://camel.apache.org/manual/camel-jbang.html[Camel JBang,window="_blank"]
+

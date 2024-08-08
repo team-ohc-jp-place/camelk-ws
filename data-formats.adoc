@@ -70,7 +70,7 @@ image::data-formats/dataformats-005.png[pic, 600]
 Parameters は、以下のように設定をしてください。
 他の項目は、デフォルトのままで構いません。
 
-* **Data Format**: csv
+* **Data Format**: CSV
 * **Delimiter**: , (カンマ)
 * **Use Maps**: True
 
@@ -121,7 +121,7 @@ OpenShift DevSpaces のターミナルで、以下のコマンドを実行して
 camel run labs/dataformats.yaml
 ----
 
-CSV形式のデータが、Unmarshal で、オブジェクトに変換されました。
+marshal で、オブジェクトがJSON形式のデータに変換されました。
 
 image::dataformats/dataformats-012.png[pic, 1200]
 
