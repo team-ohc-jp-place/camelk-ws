@@ -38,6 +38,8 @@ image::direct/direct-002.png[pic,800]
 ** `repeatCount`: このルートが実行される回数を指定します。`1`なので、一度だけ実行されます。
 * `log`: `${body}` は、メッセージボディをログに出力します。
 
+---
+
 それでは、`Direct` コンポーネントを使用して、別のRouteを呼び出す処理を作成してみます。
 
 `log` シンボルの メニューをクリックし、`Replace` を選択します。
@@ -68,7 +70,7 @@ image::direct/direct-005.png[pic,800]
 
 image::direct/direct-006.png[pic,800]
 
-別の Route が追加されます。`Visible` の設定を変更して、2つの Route が見える状態にしてください。
+別の Route が追加されます。`Visibility` の設定を変更して、2つの Route が見える状態にしてください。
 
 image::direct/direct-007.png[pic,800]
 
@@ -83,7 +85,7 @@ image::direct/direct-008.png[pic,600]
 `Type: Components` の中から `Direct` を探して選択をしてください。
 左上のテキストボックスに `Direct` と入力をすると、絞り込みができます。
 
-`timer` が `direct` と入れ替わりました。
+これで、`timer` が `direct` と入れ替わります。
 
 `direct` シンボルをクリックすると、右側にプロパティが表示されますので、先ほどと同様、以下のパラメータを入力します。
 

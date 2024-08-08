@@ -28,8 +28,8 @@ modules:
     name: Split パターン
   direct-component:
     name: Direct コンポーネント
-#  recipientlist-eip:
-#    name: Recipient List パターン
+  recipientlist-eip:
+    name: Recipient List パターン
 #削除  kafka:
 #削除    name: Kafka との連携
 #  rest-api-service:

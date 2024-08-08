@@ -31,6 +31,6 @@ modules:
 # - timer-component
   - split-eip
   - direct-component
-#  - recipientlist-eip
+  - recipientlist-eip
 #  - rest-api-service
 #  - error-handling

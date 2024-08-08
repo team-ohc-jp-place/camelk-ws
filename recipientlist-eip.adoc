@@ -1,0 +1,144 @@
+= Recipient List パターン
+:experimental:
+:tip-caption: :bulb:
+:imagesdir: images
+
+== 1. Recipient List について
+
+Apache Camelの link:https://camel.apache.org/components/{{ CAMEL_VERSION }}/eips/recipientList-eip.html[Recipient List,window="_blank"] は、メッセージを複数の宛先に送信するためのパターンです。
+これは、メッセージルーティングの一部として使用され、動的に決定された宛先リストに対してメッセージを配信します。
+
+image::recipientlist/RecipientList.gif[pic]
+
+* RecipientListは、メッセージを1つまたは複数の宛先にルーティングします。
+* 宛先は、静的または動的に指定できます。
+* メッセージヘッダーやプロパティを使用して宛先を指定することができます。
+
+== 2. Recipient List を使用して Route を動的に指定する
+
+左のエクスプローラー上で、`labs/recipientlist.yaml` 右クリックをして、メニューから `Open with Kaoto Graphical Editor for Camel` を選択し、Kaoto のグラフィカルエディターを開きます。
+
+以下のような 4つのRoute が設定されています。
+
+他の Route が見えない場合は、Route の `Visibility` をオンにしてみてください。
+
+image::recipientlist/recipientlist-001.png[pic,800] 
+
+内容については次の通りです。
+
+image::recipientlist/recipientlist-002.png[pic,800]
+
+* `main`:
+** `timer` コンポーネント: 指定した間隔でメッセージを生成します。
+*** `uri`: `timer:recipientlist` はタイマーの名前を指定しており、ユニークであれば任意の文字列でかまいません。
+*** `repeatCount`: このルートが実行される回数を指定します。`1`なので、一度だけ実行されます。
+** `log`: `${body}` は、メッセージボディをログに出力します。
+* `route-a` ~ `route-c`:
+** 'direct': メッセージが転送される Route のエンドポイントです。
+** 'log': 各 Route が実行されたことを示すログを表示します。
+
+---
+
+それでは、Recipient List を使用して、Route を動的に指定する方法について確認していきましょう。
+
+今回は、メッセージの宛先を Header に持たせることにします。
+
+main Route の `log` シンボルの メニューをクリックし、`Replace` を選択します。
+
+image::recipientlist/recipientlist-003.png[pic,800]
+
+コンポーネントのカタログが開きます。
+
+`Type: Processor` の中から `setHeader` を探して選択をしてください。
+左上のテキストボックスに `setHeader` と入力をすると、絞り込みができます。
+
+image::recipientlist/recipientlist-004.png[pic,600]
+
+[TIP]
+====
+`setHeaders` を使用すると、複数のHeader項目を一度に編集することができます。
+====
+
+`log` が `setHeader` と入れ替わりました。
+
+`setHeader` シンボルをクリックすると、右側にプロパティが表示されますので、以下のパラメータを入力します。
+
+* Expression
+** `Language`: Simple
+** `Expression`: direct:route-a;direct:route-b
+* `Name`: destination
+
+image::recipientlist/recipientlist-005.png[pic,800]
+image::recipientlist/recipientlist-006.png[pic,600]
+
+---
+
+続いて、main Route の `setHeader` シンボルの メニューをクリックし、`Append` を選択します。
+
+image::recipientlist/recipientlist-007.png[pic,600]
+
+コンポーネントのカタログが開きます。
+
+`Type: Processor` の中から `recipientList` を探して選択をしてください。
+左上のテキストボックスに `recipientList` と入力をすると、絞り込みができます。
+
+image::recipientlist/recipientlist-008.png[pic,600]
+
+`recipientList` が `setHeader` の後に配置されました。
+
+`recipientList` シンボルをクリックすると、右側にプロパティが表示されますので、以下のパラメータを入力します。
+
+* Expression
+** `Language`: Header
+** `Expression`: destination
+* `delimiter`: ; (セミコロン)
+
+image::recipientlist/recipientlist-009.png[pic,800]
+image::recipientlist/recipientlist-010.png[pic,600]
+
+`delimiter` は、`recipientList` が複数のエンドポイントを返す際に使用される区切り文字です。今回は `setHeader` で `;` (セミコロン)を区切り文字としました。
+
+---
+
+それでは、実際に動かしてみます。
+OpenShift DevSpaces のターミナルで、以下のコマンドを実行してください。
+
+[source, bash]
+----
+camel run labs/recipientlist.yaml
+----
+
+特にエラーなく実行されたら、ターミナルの ログ を確認してください。
+`route-a invoked`、`route-b invoked`、 の文字列が表示されていれば、OKです。 
+
+image::recipientlist/recipientlist-011.png[pic,1200]
+
+ログの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
+
+---
+
+今度は、`setHeader` で別の Route を実行するように値を変えてみましょう。
+
+`setHeader` のパラメータを以下のように変更します。
+
+* Expression
+** `Language`: Simple
+** `Expression`: **direct:route-a;direct:route-c**
+* `Name`: destination
+
+image::recipientlist/recipientlist-012.png[pic,600]
+
+それでは、もう一度実行してみます。
+OpenShift DevSpaces のターミナルで、以下のコマンドを実行してください。
+
+[source, bash]
+----
+camel run labs/recipientlist.yaml
+----
+
+特にエラーなく実行されたら、ターミナルの ログ を確認してください。
+今度は、route-b ではなく、route-c が実行されて、`route-a invoked`、`route-c invoked`、 の文字列が表示されているはずです。
+
+image::recipientlist/recipientlist-013.png[pic,1200]
+
+ログの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱のアイコンをクリックして、終了してください。
