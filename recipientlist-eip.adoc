@@ -93,10 +93,10 @@ image::recipientlist/recipientlist-008.png[pic,600]
 ** `Expression`: destination
 * `delimiter`: ; (セミコロン)
 
+`delimiter` は、`recipientList` が複数のエンドポイントを返す際に使用される区切り文字です。
+
 image::recipientlist/recipientlist-009.png[pic,800]
 image::recipientlist/recipientlist-010.png[pic,600]
-
-`delimiter` は、`recipientList` が複数のエンドポイントを返す際に使用される区切り文字です。今回は `setHeader` で `;` (セミコロン)を区切り文字としました。
 
 ---
 
