@@ -9,21 +9,21 @@ modules:
   kaoto-tutorial:
     name: Kaotoを使ったCamelの開発
   file-component:
-    name: File コンポーネント（ファイルシステムとの連携）
+    name: File（ファイルシステムとの連携）
   sftp-component:
-    name: SFTP コンポーネント（SFTPサーバとの連携）
+    name: SFTP（SFTPサーバとの連携）
   data-formats:
-    name: Data Formats パターン（データ形式変換）
+    name: Data Formats（データ形式変換）
   split-eip:
-    name: Split パターン（メッセージの分割）
+    name: Split（メッセージの分割）
   direct-component:
-    name: Direct コンポーネント（サブRouteの同期呼び出し）
+    name: Direct（サブRouteの同期呼び出し）
   recipientlist-eip:
-    name: Recipient List パターン（メッセージの動的ルーティング）
+    name: Recipient List（メッセージの動的ルーティング）
   postgresql-sink:
     name: PostgreSQL との連携
   db-sync:
-    name: Camel/Kafka/Debezium を使ったDBの同期
+    name: Camel/Kafka/Debezium を使ったDB間の同期
   camel-jbang:
     name: Appendix 1 - Camel JBangについて
   deploying-to-openshift:

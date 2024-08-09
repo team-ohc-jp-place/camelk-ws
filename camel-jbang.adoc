@@ -61,8 +61,18 @@ Camel では、YAML、XML、Javaなど、サポートされている link:https:
 camel export <files> --runtime=quarkus --gav=com.foo:acme:1.0-SNAPSHOT --directory=./myproject
 ----
 
+---
+
+`camel export --runtime=spring-boot` コマンドは、現在のCamel JBangファイルを、Mavenベースの `Spring-boot` プロジェクトにエクスポートします。
+
+例えば、Maven の groupId `com.foo` と artifactId `acme` を使用してバージョン1.0-SNAPSHOTで Spring-boot にエクスポートするには、次のコマンドを実行します。
+
+[source, bash]
+----
+camel export <files> --runtime=spring-boot --gav=com.foo:acme:1.0-SNAPSHOT --directory=./myproject
+----
+
 == 4. 参考リンク 
 
 * link:https://www.jbang.dev/[JBang,window="_blank"]
 * link:https://camel.apache.org/manual/camel-jbang.html[Camel JBang,window="_blank"]
-

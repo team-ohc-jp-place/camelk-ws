@@ -21,7 +21,8 @@ objects:
       components:
         - name: tools
           container:
-            image: quay.io/devfile/universal-developer-image:ubi8-f5ffca8
+            image: quay.io/devfile/universal-developer-image:ubi8-latest
+            #image: quay.io/devfile/universal-developer-image:ubi8-f5ffca8
             #image: registry.redhat.io/devspaces/udi-rhel8@sha256:b0dfd9e15d878785bea5cb33a82a014abbd08c839917e72a8cd629c84bf47f1e
             memoryRequest: 2Gi
             memoryLimit: 6Gi
