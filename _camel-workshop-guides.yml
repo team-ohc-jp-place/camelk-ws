@@ -22,15 +22,15 @@ modules:
   - workshop-environment
   - kaoto-tutorial
   - file-component
-  - data-formats
-  - postgresql-sink
-  - db-sync
   - sftp-component
-  - camel-jbang
-  - deploying-to-openshift
-# - timer-component
+  - data-formats
   - split-eip
   - direct-component
   - recipientlist-eip
+  - postgresql-sink
+  - db-sync
+  - camel-jbang
+  - deploying-to-openshift
+# - timer-component
 #  - rest-api-service
 #  - error-handling
