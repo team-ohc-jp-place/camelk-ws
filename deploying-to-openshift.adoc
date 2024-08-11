@@ -17,6 +17,7 @@
 image::app2/openshift-001.png[pic,600]
 
 内容については次の通りです。
+
 image::app2/openshift-002.png[pic,800]
 
 ---
@@ -81,7 +82,9 @@ image::app2/openshift-005.png[pic,800]
 [TIP]
 ====
 quarkus.kubernetes.deployment-target は、`knative` 指定で、サーバレスアプリケーションとしてデプロイをします。
+
 * 事前にOpenShift Serveless Operator をクラスターに導入しておく必要があります。本ワークショップでは導入済みです。
+
 `openshift` 指定の場合は、通常のアプリケーションとしてデプロイします。
 ====
 
@@ -107,6 +110,7 @@ OpenShiftにアクセスをして、デプロイができているか確認を�
 * link:https://console-openshift-console.{{ ROUTE_SUBDOMAIN }}/topology/ns/{{ USER_ID }}-dev?view=graph[https://console-openshift-console.{{ ROUTE_SUBDOMAIN }}/topology/ns/{{ USER_ID }}-dev?view=graph, window="_blank"]
 
 認証情報を求められた場合は、以下の情報を入力します。
+
 * username: {{ USER_ID }}
 * password: {{ OPENSHIFT_PASSWORD }}
 
