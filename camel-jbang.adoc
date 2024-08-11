@@ -23,7 +23,7 @@ Camel JBangは、Apache Camelを使いやすくするためのツールです。
 | debug | Camel Route のデバッグを行う
 |===
 
-その他のコマンドの詳細については、link:https://camel.apache.org/manual/camel-jbang.html[Camel JBang,window="_blank"] のドキュメントを確認してください。
+その他のコマンドや詳細については、link:https://camel.apache.org/manual/camel-jbang.html[Camel JBang,window="_blank"] のドキュメントを確認してください。
 
 == 2. Camel Route の作成と実行
 
