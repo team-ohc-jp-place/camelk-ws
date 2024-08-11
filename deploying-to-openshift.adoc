@@ -14,7 +14,7 @@
 
 以下のような Route が設定されています。
 
-image::app2/openshift-001.png[pic,600] 
+image::app2/openshift-001.png[pic,600]
 
 内容については次の通りです。
 image::app2/openshift-002.png[pic,800]
@@ -26,7 +26,8 @@ OpenShift DevSpaces のターミナルで、以下のコマンドを実行して
 
 [source, bash]
 ----
-camel export labs/dice-roll.yaml --runtime=quarkus --gav=com.sample:dice-roll:1.0 --directory=./myproject
+cd labs
+camel export dice-roll.yaml --runtime=quarkus --gav=com.sample:dice-roll:1.0 --directory=../myproject
 ----
 
 ルートディレクトリに、`myproject` というフォルダが作成されます。
@@ -41,7 +42,7 @@ OpenShift DevSpaces のターミナルで、以下のコマンドを実行して
 
 [source, bash]
 ----
-cd myproject
+cd ../myproject
 ./mvnw quarkus:add-extension -Dextensions="io.quarkus:quarkus-openshift"
 ----
 
