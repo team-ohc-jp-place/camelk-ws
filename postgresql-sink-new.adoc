@@ -3,18 +3,82 @@
 :tip-caption: :bulb:
 :imagesdir: images
 
-== 目的
+== 1. SQL コンポーネントについて
 
-Kamelet の **PostgreSQL Sink** を使用して、Camel K と PostgreSQL との連携の方法について理解していただきます。
+Apache Camelのlink:https://camel.apache.org/components/{{ CAMEL_VERSION }}/sql-component.html[SQL, window="_blank"]コンポーネントは、SQLデータベースとの連携を容易にするためのコンポーネントです。
+このコンポーネントを使用することで、Camelルート内でSQLクエリを実行したり、データベースからデータを取得したり、データを挿入・更新したりすることができます。
 
-* link:https://camel.apache.org/camel-kamelets/{{ KAMELETS_VERSION }}/postgresql-sink.html[PostgreSQL Sink,window="_blank"]
+image::postgresql/postgresql-101.png[pic, 600]
 
-image::postgresql/postgresql-001.png[pic, 600]
+**SQLコンポーネントの特徴**
 
-[TIP]
-====
-Camel K の link:https://camel.apache.org/camel-k/2.3.x/kamelets/kamelets.html[Kamelets,window="_blank"] (**Kamel** route snipp**ets**) は、Apache Camelのエコシステムの一部として開発された、再利用可能なエンタープライズインテグレーションパターンのコレクションです。Kameletsを使用することで、開発者はルートを簡単に作成し、拡張可能で再利用可能な方法でコンポーネントを組み合わせることができます。
-====
+* クエリ実行: SELECT文やINSERT、UPDATE、DELETE文など、任意のSQLクエリをCamelルート内で実行できます。
+* 結果セットの処理: SELECT文の結果は、Camelメッセージのボディにリストとして格納されます。結果セットの各行はマップ形式で表現されます。
+* パラメータのバインディング: クエリ内にプレースホルダを使用し、Camelメッセージのヘッダやボディから値をバインドすることが可能です。
+
+== 2. PostgreSQLからデータを取得する
+
+PostgreSQL は、OpenShift上に用意されているものを使うことができます。
+
+以下のURLにアクセスをすると、 PostgreSQL がデプロイされている OpenShift の namespace へアクセスができます。
+
+* link:https://console-openshift-console.{{ ROUTE_SUBDOMAIN }}/topology/ns/{{ USER_ID }}-dev?view=graph[https://console-openshift-console.{{ ROUTE_SUBDOMAIN }}/topology/ns/{{ USER_ID }}-dev?view=graph, window="_blank"]
+
+認証情報を求められた場合は、以下の情報を入力します。
+
+* username: {{ USER_ID }}
+* password: {{ OPENSHIFT_PASSWORD }}
+
+image::postgresql/postgresql-003.png[pic, 600]
+
+PostgreSQL にアクセスするための情報は以下の通りです。
+
+* **Server Name**: postgresql.{{ USER_ID }}-dev.svc.cluster.local （cluster内からのみアクセス可能）
+* **Server Port**: 5432
+* **User Name**: demo
+* **Password**: demo
+* **Database Name**: sampledb
+
+また、データベースには `products` というテーブルが用意されており、以下のデータが格納されています。
+
+[cols="1,5",options="header",role="custom-table"]
+|===
+| id (integer) | name (varchar)
+| 1 | apple
+| 2 | orange
+| 3 | lemon
+|===
+
+OpenShift DevSpaces の ターミナル を開き、下記のコマンドを実行してみてください。
+
+* データベース: sampledb
+* テーブル: products
+* レコード内容確認コマンド: `oc rsh -n {{ USER_ID }}-dev dc/postgresql psql -U demo -d sampledb -c "SELECT * FROM products;"`
+
+image::postgresql/postgresql-004.png[pic, 800]
+
+---
+
+左のエクスプローラー上で、`labs/postgresql.yaml` 右クリックをして、メニューから `Open with Kaoto Graphical Editor for Camel` を選択し、Kaoto のグラフィカルエディターを開きます。
+
+以下のような Route が設定されています。
+
+image::postgresql/postgresql-102.png[pic, 600]
+
+内容については次の通りです。
+
+image::postgresql/postgresql-103.png[pic, 800]
+
+この `beans` 設定は、Apache Camel のルート定義において、データベース接続を管理するためのデータソースを定義しています。
+具体的には、`org.apache.commons.dbcp2.BasicDataSource` クラスを使用して、PostgreSQLデータベースへの接続プールを作成しています。
+
+beans は Kaoto の グラフィカルエディター上でも設定することができます。
+上部メニューの `Beans` をクリックすると、既存の設定が確認できます。
+
+image::postgresql/postgresql-104.png[pic, 1200]
+image::postgresql/postgresql-105.png[pic, 1200]
+
+
 
 === このセクションで作成する内容
 
