@@ -5,7 +5,7 @@
 
 == 1.目的
 
-link:https://camel.apache.org/components/{{ CAMEL_VERSION }}/sftp-component.html[SFTP コンポーネント,window="_blank"] は、SFTPプロトコルでリモートファイルシステムにアクセスすることができます。
+Apache Camel の link:https://camel.apache.org/components/{{ CAMEL_VERSION }}/sftp-component.html[SFTP コンポーネント,window="_blank"] は、SFTPプロトコルでリモートファイルシステムにアクセスすることができます。
 SFTPコンポーネントを使用して、ファイル取得し他のシステムに連携したり、他のコンポーネントからのデータをリモートファイルシステムに格納する方法について理解します。
 
 == 2.リモートファイルシステムへアクセスする

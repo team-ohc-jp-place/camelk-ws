@@ -81,7 +81,7 @@ image::app2/openshift-005.png[pic,800]
 
 [TIP]
 ====
-quarkus.kubernetes.deployment-target は、`knative` 指定で、サーバレスアプリケーションとしてデプロイをします。
+`quarkus.kubernetes.deployment-target` は、`knative` 指定で、サーバレスアプリケーションとしてデプロイをします。
 
 * 事前にOpenShift Serveless Operator をクラスターに導入しておく必要があります。本ワークショップでは導入済みです。
 

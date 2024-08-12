@@ -3,21 +3,18 @@
 :tip-caption: :bulb:
 :imagesdir: images
 
-== 1. SQL コンポーネントについて
+== 目的
 
-Apache Camelのlink:https://camel.apache.org/components/{{ CAMEL_VERSION }}/sql-component.html[SQL, window="_blank"]コンポーネントは、SQLデータベースとの連携を容易にするためのコンポーネントです。
-このコンポーネントを使用することで、Camelルート内でSQLクエリを実行したり、データベースからデータを取得したり、データを挿入・更新したりすることができます。
+Kamelet の **PostgreSQL Sink** を使用して、Camel K と PostgreSQL との連携の方法について理解していただきます。
 
-image::postgresql/postgresql-101.png[pic, 600]
+* link:https://camel.apache.org/camel-kamelets/{{ KAMELETS_VERSION }}/postgresql-sink.html[PostgreSQL Sink,window="_blank"]
 
+image::postgresql/postgresql-001.png[pic, 600]
 
-**SQLコンポーネントの特徴**
-
-* クエリ実行: SELECT文やINSERT、UPDATE、DELETE文など、任意のSQLクエリをCamelルート内で実行できます。
-* 結果セットの処理: SELECT文の結果は、Camelメッセージのボディにリストとして格納されます。結果セットの各行はマップ形式で表現されます。
-* パラメータのバインディング: クエリ内にプレースホルダを使用し、Camelメッセージのヘッダやボディから値をバインドすることが可能です。
-
-== ここまで
+[TIP]
+====
+Camel K の link:https://camel.apache.org/camel-k/2.3.x/kamelets/kamelets.html[Kamelets,window="_blank"] (**Kamel** route snipp**ets**) は、Apache Camelのエコシステムの一部として開発された、再利用可能なエンタープライズインテグレーションパターンのコレクションです。Kameletsを使用することで、開発者はルートを簡単に作成し、拡張可能で再利用可能な方法でコンポーネントを組み合わせることができます。
+====
 
 === このセクションで作成する内容
 
