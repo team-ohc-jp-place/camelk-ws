@@ -10,7 +10,7 @@
 このセクションでは、Camel for Quarkus にエクスポートして、OpenShiftへデプロイする方法について確認します。
 
 デプロイするサンプルは、`labs/dice-roll.yaml` を使います。
-左のエクスプローラー上で、`labs/direct.yaml` 右クリックをして、メニューから `Open with Kaoto Graphical Editor for Camel` を選択し、Kaoto のグラフィカルエディターを開きます。
+左のエクスプローラー上で、`labs/dice-roll.yaml` 右クリックをして、メニューから `Open with Kaoto Graphical Editor for Camel` を選択し、Kaoto のグラフィカルエディターを開きます。
 
 以下のような Route が設定されています。
 

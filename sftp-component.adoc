@@ -193,15 +193,15 @@ image:sftp/sftp-012.png[pic, 800]
 `sftp` シンボルをクリックすると、右側にプロパティが表示されますので、以下のParametersを設定してください。
 
 * Endpoint Properties
- * Host: sftp-service.sftp.svc
- * Port: 22
- * Directory Name: upload
+** `Host`: sftp-service.sftp.svc
+** `Port`: 22
+** `Directory Name`: upload
 * Filter Properties
- * Move: processed
+** `Move`: processed
 * Security Properties
- * Known Hosts File: /home/user/.ssh/known_hosts
- * Username: {{ USER_ID }}
- * Password: openshift
+** `Known Hosts File`: /home/user/.ssh/known_hosts
+** `Username`: {{ USER_ID }}
+** `Password`: openshift
 
 `move` プロパティは、受信したSFTPサーバ側のファイルを、指定したフォルダへ移動させます。
 
