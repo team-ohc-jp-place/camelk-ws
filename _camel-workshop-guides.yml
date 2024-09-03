@@ -32,5 +32,5 @@ modules:
   - camel-jbang
   - deploying-to-openshift
 # - timer-component
-#  - rest-api-service
+  - rest-api-service
 #  - error-handling

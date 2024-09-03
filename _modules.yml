@@ -24,6 +24,8 @@ modules:
     name: PostgreSQL との連携
   db-sync:
     name: Camel/Kafka/Debezium を使ったDB間の同期
+  rest-api-service:
+    name: REST API サービスの実装
   camel-jbang:
     name: Appendix 1 - Camel JBangについて
   deploying-to-openshift:
@@ -33,7 +35,6 @@ modules:
 
 #削除  kafka:
 #削除    name: Kafka との連携
-#  rest-api-service:
-#    name: REST API サービスの実装
+
 #  error-handling:
 #    name: エラー処理の実装
