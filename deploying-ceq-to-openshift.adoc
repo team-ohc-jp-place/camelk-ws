@@ -1,0 +1,189 @@
+= Appendix 2 - Camel for Quarkus を OpenShift へデプロイ
+:experimental:
+:tip-caption: :bulb:
+:imagesdir: images
+
+---
+
+== 1. Camel for Quarkus を OpenShift へデプロイする
+
+このセクションでは、Camel for Quarkus にエクスポートして、OpenShiftへデプロイする方法について確認します。
+
+デプロイするサンプルは、`labs/dice-roll.yaml` を使います。
+左のエクスプローラー上で、`labs/dice-roll.yaml` 右クリックをして、メニューから `Open with Kaoto Graphical Editor for Camel` を選択し、Kaoto のグラフィカルエディターを開きます。
+
+以下のような Route が設定されています。
+
+image::app2/openshift-001.png[pic,600]
+
+内容については次の通りです。
+
+image::app2/openshift-002.png[pic,800]
+
+---
+
+まずは、このサンプルのDSLをCamel for Quarkus の mavenプロジェクト にエクスポートします。
+OpenShift DevSpaces のターミナルで、以下のコマンドを実行してください。
+
+[source, bash]
+----
+cd labs
+camel export dice-roll.yaml --runtime=quarkus --gav=com.sample:dice-roll:1.0 --directory=../myproject
+----
+
+ルートディレクトリに、`myproject` というフォルダが作成されます。
+
+image::app2/openshift-003.png[pic,1200]
+
+---
+
+アプリケーションを OpenShift Container Platform クラスター内で実行されるコンテナーイメージとしてビルドし、デプロイするには、Red Hat build of Quarkus OpenShift エクステンション `quarkus-openshift` を依存関係としてプロジェクトに追加する必要があります。
+
+OpenShift DevSpaces のターミナルで、以下のコマンドを実行してください。
+
+[source, bash]
+----
+cd ../myproject
+./mvnw quarkus:add-extension -Dextensions="io.quarkus:quarkus-openshift"
+----
+
+`pom.xml` に、`quarkus-openshift` の依存関係が追加されました。
+
+image::app2/openshift-004.png[pic,800]
+
+---
+
+次に、プロジェクトの application.properties に openshift へのデプロイするための設定を追加します。
+
+左のエクスプローラー上で、`myproject/src/main/resources/application.properties` 開いてください。
+
+以下の設定をファイルに追加します。
+
+[source, bash]
+----
+# Dockerビルドを使用してアプリケーションのコンテナイメージを作成
+quarkus.openshift.build-strategy=docker
+# QuarkusアプリケーションがKubernetes APIサーバーと通信する際に、サーバー証明書の検証を無視して信頼（開発やテストでの一時的な使用目的）
+quarkus.kubernetes-client.trust-certs=true
+# アプリケーションのRouteリソースを自動的に生成し、アプリケーションを外部からアクセス可能に
+quarkus.openshift.route.expose=true
+# TLSを使用するRouteのセキュリティポリシーで、Redirectは、HTTPでアクセスされた場合にHTTPSにリダイレクトする
+quarkus.openshift.route.tls.insecure-edge-termination-policy=Redirect
+# QuarkusアプリケーションはKnativeにサーバレスアプリケーションとしてデプロイされる
+quarkus.kubernetes.deployment-target=knative
+# OpenShiftでのデプロイ先のnamespace
+quarkus.container-image.group={{ USER_ID }}-dev
+# コンテナイメージがプッシュされるコンテナレジストリのホスト名
+quarkus.container-image.registry=image-registry.openshift-image-registry.svc:5000
+----
+
+image::app2/openshift-005.png[pic,800]
+
+[TIP]
+====
+`quarkus.kubernetes.deployment-target` は、`knative` 指定で、サーバレスアプリケーションとしてデプロイをします。
+
+* 事前にOpenShift Serveless Operator をクラスターに導入しておく必要があります。本ワークショップでは導入済みです。
+
+`openshift` 指定の場合は、通常のアプリケーションとしてデプロイします。
+====
+
+---
+
+OpenShift にデプロイする準備が整いました。
+OpenShift DevSpaces のターミナルで、以下のコマンドを実行してください。
+
+[source, bash]
+----
+oc project {{ USER_ID }}-dev
+./mvnw clean package -Dquarkus.kubernetes.deploy=true
+----
+
+ビルドとデプロイに成功すると、以下のメッセージが表示されます。
+
+image::app2/openshift-006.png[pic,800]
+
+OpenShiftにアクセスをして、デプロイができているか確認をします。
+
+以下のURLにアクセスをしてみてください。
+
+* link:https://console-openshift-console.{{ ROUTE_SUBDOMAIN }}/topology/ns/{{ USER_ID }}-dev?view=graph[https://console-openshift-console.{{ ROUTE_SUBDOMAIN }}/topology/ns/{{ USER_ID }}-dev?view=graph, window="_blank"]
+
+認証情報を求められた場合は、以下の情報を入力します。
+
+* username: {{ USER_ID }}
+* password: {{ OPENSHIFT_PASSWORD }}
+
+デプロイ直後は稼働していますが、しばらくすると左のようにPodが停止します。アプリケーションにhttpリクエストを送ると、Podが右のように起動してリクエストを処理します。
+
+image::app2/openshift-007.png[pic,800]
+
+以下のURLにアクセスをしてみてください。
+
+* link:https://dice-roll-{{ USER_ID }}-dev.{{ ROUTE_SUBDOMAIN }}/dice-roll[https://dice-roll-{{ USER_ID }}-dev.{{ ROUTE_SUBDOMAIN }}/dice-roll,window="_blank"]
+
+ブラウザ上に、dice-rollのランダムな1~6の整数が表示されます。
+
+image::app2/openshift-008.png[pic,800]
+
+---
+
+以上、Camel DSL を Quarkus プロジェクトにエクスポートして、OpenShiftにデプロイする方法について確認しました。
+
+memo
+
+1. spring bootのプロジェクトに変換
+2. application.propertiesコピー
+3. pom.xmlに以下のプロファイルを入れる
+
+        <profile>
+            <id>openshift</id>
+            <properties>
+                <sbProfile>openshift</sbProfile>
+                <jkube.generator.from>registry.access.redhat.com/ubi8/openjdk-17</jkube.generator.from>
+            </properties>
+            <activation>
+                <property>
+                    <name>openshift</name>
+                </property>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-web</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-actuator</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.apache.camel.springboot</groupId>
+                    <artifactId>camel-kubernetes-starter</artifactId>
+                </dependency>
+            </dependencies>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>openshift-maven-plugin</artifactId>
+                        <groupId>org.eclipse.jkube</groupId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>resource</goal>
+                                    <goal>build</goal>
+                                    <goal>deploy</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <resources>
+                                <replicas>1</replicas>
+                                <serviceAccount>camel-user</serviceAccount>
+                            </resources>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+4. mvn clean package -Popenshift

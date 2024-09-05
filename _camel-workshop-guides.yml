@@ -30,7 +30,8 @@ modules:
   - postgresql-sink
   - db-sync
   - camel-jbang
-  - deploying-to-openshift
+  - deploying-ceq-to-openshift
+  - deploying-csb-to-openshift
 # - timer-component
   - rest-api-service
 #  - error-handling

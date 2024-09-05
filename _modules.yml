@@ -28,8 +28,10 @@ modules:
     name: REST API サービスの実装
   camel-jbang:
     name: Appendix 1 - Camel JBangについて
-  deploying-to-openshift:
-    name: Appendix 2 - OpenShiftへのデプロイ
+  deploying-ceq-to-openshift:
+    name: Appendix 2 - Camel for Quaekus を OpenShiftへデプロイ
+  deploying-csb-to-openshift:
+    name: Appendix 3 - Camel for Springboot を OpenShiftへデプロイ
 #削除  timer-component:
 #削除    name: Timer コンポーネント
 

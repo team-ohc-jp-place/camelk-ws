@@ -150,6 +150,13 @@ oc create -f ./openshift/12_sftp/01_rolebinding.yaml
 oc create configmap sftp-etc-sftp --from-file=./openshift/12_sftp/users.conf
 oc create -f ./openshift/12_sftp/02_sftp-deploy.yaml
 
+# MinIo
+oc new-project minio
+sleep 5
+oc apply -f ./openshift/08_minio/01_minio.yaml -n minio
+
+oc create sa camel-user -n minio
+oc adm policy add-scc-to-user anyuid -z camel-user -n minio
 
 
 for m in $(eval echo "{1..$USER_COUNT}"); do
@@ -260,9 +267,6 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
   sleep 10
 
   oc rollout latest dc/postgresql -n $PRJ_NAME
-
-  # MinIo
-  oc apply -f ./openshift/08_minio/01_minio.yaml -n $PRJ_NAME
 
   # Debezium
   oc process -n $PRJ_NAME -f ./openshift/04_postgresql/01_postgresql.yaml -l app=postgresql-replica \
