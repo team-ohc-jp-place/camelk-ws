@@ -3,8 +3,6 @@
 :tip-caption: :bulb:
 :imagesdir: images
 
----
-
 == 1. Camel for Quarkus を OpenShift へデプロイする
 
 このセクションでは、Camel for Quarkus にエクスポートして、OpenShiftへデプロイする方法について確認します。
@@ -28,10 +26,10 @@ OpenShift DevSpaces のターミナルで、以下のコマンドを実行して
 [source, bash]
 ----
 cd labs
-camel export dice-roll.yaml --runtime=quarkus --gav=com.sample:dice-roll:1.0 --directory=../myproject
+camel export dice-roll.yaml --runtime=quarkus --gav=com.sample:dice-roll:1.0 --directory=../myceq-project
 ----
 
-ルートディレクトリに、`myproject` というフォルダが作成されます。
+ルートディレクトリに、`myceq-project` というフォルダが作成されます。
 
 image::app2/openshift-003.png[pic,1200]
 
@@ -43,7 +41,7 @@ OpenShift DevSpaces のターミナルで、以下のコマンドを実行して
 
 [source, bash]
 ----
-cd ../myproject
+cd ../myceq-project
 ./mvnw quarkus:add-extension -Dextensions="io.quarkus:quarkus-openshift"
 ----
 
@@ -55,7 +53,7 @@ image::app2/openshift-004.png[pic,800]
 
 次に、プロジェクトの application.properties に openshift へのデプロイするための設定を追加します。
 
-左のエクスプローラー上で、`myproject/src/main/resources/application.properties` 開いてください。
+左のエクスプローラー上で、`myceq-project/src/main/resources/application.properties` 開いてください。
 
 以下の設定をファイルに追加します。
 
@@ -129,61 +127,3 @@ image::app2/openshift-008.png[pic,800]
 ---
 
 以上、Camel DSL を Quarkus プロジェクトにエクスポートして、OpenShiftにデプロイする方法について確認しました。
-
-memo
-
-1. spring bootのプロジェクトに変換
-2. application.propertiesコピー
-3. pom.xmlに以下のプロファイルを入れる
-
-        <profile>
-            <id>openshift</id>
-            <properties>
-                <sbProfile>openshift</sbProfile>
-                <jkube.generator.from>registry.access.redhat.com/ubi8/openjdk-17</jkube.generator.from>
-            </properties>
-            <activation>
-                <property>
-                    <name>openshift</name>
-                </property>
-            </activation>
-            <dependencies>
-                <dependency>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-web</artifactId>
-                </dependency>
-                <dependency>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-actuator</artifactId>
-                </dependency>
-                <dependency>
-                    <groupId>org.apache.camel.springboot</groupId>
-                    <artifactId>camel-kubernetes-starter</artifactId>
-                </dependency>
-            </dependencies>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>openshift-maven-plugin</artifactId>
-                        <groupId>org.eclipse.jkube</groupId>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>resource</goal>
-                                    <goal>build</goal>
-                                    <goal>deploy</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <resources>
-                                <replicas>1</replicas>
-                                <serviceAccount>camel-user</serviceAccount>
-                            </resources>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-4. mvn clean package -Popenshift
