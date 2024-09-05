@@ -29,7 +29,7 @@ modules:
   camel-jbang:
     name: Appendix 1 - Camel JBangについて
   deploying-ceq-to-openshift:
-    name: Appendix 2 - Camel for Quaekus を OpenShiftへデプロイ
+    name: Appendix 2 - Camel for Quarkus を OpenShiftへデプロイ
   deploying-csb-to-openshift:
     name: Appendix 3 - Camel for Springboot を OpenShiftへデプロイ
 #削除  timer-component:

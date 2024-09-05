@@ -54,12 +54,6 @@ image::app3/openshift-003.png[pic,1200]
                     <name>openshift</name>
                 </property>
             </activation>
-            <dependencies>
-                <dependency>
-                    <groupId>org.apache.camel.springboot</groupId>
-                    <artifactId>camel-kubernetes-starter</artifactId>
-                </dependency>
-            </dependencies>
             <build>
                 <plugins>
                     <plugin>
@@ -85,6 +79,41 @@ image::app3/openshift-003.png[pic,1200]
             </build>
         </profile>
 ----
+
+プロファイルの概要
+
+* プロファイルID (<id>openshift</id>)
+** プロファイルのIDは openshift です。Mavenでこのプロファイルを有効にすると、指定された設定が適用されます。
+
+プロパティ (<properties>)
+
+* `<sbProfile>`
+** sbProfile というプロパティが openshift に設定されています。これはSpring Bootのプロファイルとして使用されることを意図しています。
+* `<jkube.generator.from>`
+** このプロパティは、Red Hatのユニバーサルベースイメージ（UBI）8を基にしたOpenJDK 17イメージを指定しています。このイメージは、コンテナのベースイメージとして使用されます。
+
+プロファイルのアクティベーション (<activation>)
+
+* プロパティによるアクティベーション (<property>)
+** プロパティ名が openshift の場合、このプロファイルが自動的にアクティベートされます。例えば、Mavenコマンドで -Dopenshift オプションを指定すると、このプロファイルが有効になります。
+
+ビルド設定 (<build>)
+
+* プラグイン設定 (<plugins>)
+** OpenShift Maven Plugin (openshift-maven-plugin)
+*** このプラグインは、Eclipse JKubeの一部であり、Mavenを使用してアプリケーションをOpenShiftにデプロイするためのプラグインです。
+** エグゼキューション (<executions>)
+*** <goal>resource</goal>
+**** Kubernetes/OpenShiftリソース（Pod、Service、Deploymentなど）を生成します。
+*** <goal>build</goal>
+**** Dockerイメージをビルドします。
+*** <goal>deploy</goal>
+**** OpenShiftにアプリケーションをデプロイします。
+** 設定 (<configuration>) <resources>
+*** <replicas>
+**** デプロイされるPodのレプリカ数を指定します。この例では1に設定されています。
+*** <serviceAccount>
+**** OpenShiftで使用されるServiceAccountを指定します。この例では camel-user というServiceAccountが使用されます。
 
 ---
 
@@ -119,7 +148,7 @@ image::app3/openshift-007.png[pic,400]
 
 以下のURLにアクセスをしてみてください。
 
-* link:http://dice-roll-{{ USER_ID }}-dev.{{ ROUTE_SUBDOMAIN }}/dice-roll[https://dice-roll-{{ USER_ID }}-dev.{{ ROUTE_SUBDOMAIN }}/dice-roll,window="_blank"]
+* link:http://dice-roll-{{ USER_ID }}-dev.{{ ROUTE_SUBDOMAIN }}/dice-roll[http://dice-roll-{{ USER_ID }}-dev.{{ ROUTE_SUBDOMAIN }}/dice-roll,window="_blank"]
 
 ブラウザ上に、dice-rollのランダムな1~6の整数が表示されます。
 
