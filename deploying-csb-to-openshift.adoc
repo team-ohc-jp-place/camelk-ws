@@ -80,24 +80,24 @@ image::app3/openshift-003.png[pic,1200]
         </profile>
 ----
 
-プロファイルの概要
+**プロファイルの概要**
 
 * プロファイルID (<id>openshift</id>)
 ** プロファイルのIDは openshift です。Mavenでこのプロファイルを有効にすると、指定された設定が適用されます。
 
-プロパティ (<properties>)
+**プロパティ (<properties>)**
 
 * `<sbProfile>`
 ** sbProfile というプロパティが openshift に設定されています。これはSpring Bootのプロファイルとして使用されることを意図しています。
 * `<jkube.generator.from>`
 ** このプロパティは、Red Hatのユニバーサルベースイメージ（UBI）8を基にしたOpenJDK 17イメージを指定しています。このイメージは、コンテナのベースイメージとして使用されます。
 
-プロファイルのアクティベーション (<activation>)
+**プロファイルのアクティベーション (<activation>)**
 
 * プロパティによるアクティベーション (<property>)
 ** プロパティ名が openshift の場合、このプロファイルが自動的にアクティベートされます。例えば、Mavenコマンドで -Dopenshift オプションを指定すると、このプロファイルが有効になります。
 
-ビルド設定 (<build>)
+**ビルド設定 (<build>)**
 
 * プラグイン設定 (<plugins>)
 ** OpenShift Maven Plugin (openshift-maven-plugin)
