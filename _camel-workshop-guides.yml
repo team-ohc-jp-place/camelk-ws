@@ -29,9 +29,9 @@ modules:
   - recipientlist-eip
   - postgresql-sink
   - db-sync
+  - rest-api-service
   - camel-jbang
   - deploying-ceq-to-openshift
   - deploying-csb-to-openshift
 # - timer-component
-  - rest-api-service
 #  - error-handling
