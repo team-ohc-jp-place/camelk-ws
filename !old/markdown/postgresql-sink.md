@@ -63,7 +63,7 @@ OpenShift DevSpaces の Terminal を開き、下記のコマンドを実行し�
 続いて、Karavan Designer のGUIが開いたら、上部の `Create route` をクリックして、Route を作成しましょう。
 
 `components` タブから `Timer` を探して選択をしてください。
-右上のテキストボックスに `Timer` と入力をすると、絞り込みができます。
+左上のテキストボックスに `Timer` と入力をすると、絞り込みができます。
 
 Route の source として、Timer コンポーネントが配置されます。
 Route の Timer シンボルをクリックすると、右側にプロパティが表示されますので、確認してください。
@@ -78,7 +78,7 @@ Parameters は、以下のように設定をします。
 
 次に、PosgreSQL にアクセスするための Sink を追加します。
 Route にマウスカーソルを持っていくと、Timer シンボルの下に小さな＋ボタンが現れますので、それをクリックし、`Kamelets` のタブから `PostgreSQL Sink` を探して選択をしてください。
-右上のテキストボックスに `PostgreSQL Sink` と入力をすると、絞り込みができます。
+左上のテキストボックスに `PostgreSQL Sink` と入力をすると、絞り込みができます。
 
 ![](images/08-postgresql-004.png)
 ![karavan]({% image_path 08-postgresql-004.png %}){:width="800px"}
@@ -101,7 +101,7 @@ Parameters 項目に、以下の内容を設定してください。
 
 PostgreSQL Sink は、JSON形式のデータを Body として想定をしているため、JSON形式に変換するための Marshal が必要になります。
 PostgreSQL Sink シンボルにマウスカーソルを持っていくと、左上に小さく `→` ボタンが表示されますので、クリックして、`Transformation` タブから `Marshal` を探して選択をしてください。
-右上のテキストボックスに `Marshal` と入力をすると、絞り込みができます。
+左上のテキストボックスに `Marshal` と入力をすると、絞り込みができます。
 
 これで、`Timer` と `PostgreSQL Sink` の間に、`Marshal` が追加されます。
 
@@ -142,7 +142,7 @@ Karavan Designer で、先ほど作成をした `postgresql.camel.yaml` を開�
 まず、Set Body でテーブルに追加する内容を設定します。
 
 Marshal シンボルにマウスカーソルを持っていくと、左上に小さく `→` ボタンが表示されますので、クリックして、`Transformation` タブから `Set Body` を探して選択をしてください。
-右上のテキストボックスに `Set Body` と入力をすると、絞り込みができます。
+左上のテキストボックスに `Set Body` と入力をすると、絞り込みができます。
 
 ![](images/08-postgresql-009.png)
 ![karavan]({% image_path 08-postgresql-009.png %}){:width="800px"}
@@ -161,7 +161,7 @@ Parameters 項目に、以下の内容を設定してください。
 
 次に、Set Body で設定した内容を PostgreSQL の products テーブルに追加してみましょう。
 Marshal シンボルにマウスカーソルを持っていくと、左上に小さく `→` ボタンが表示されますので、クリックして、`Kamelets` のタブから `PostgreSQL Sink` を探して選択をしてください。
-右上のテキストボックスに `PostgreSQL Sink` と入力をすると、絞り込みができます。
+左上のテキストボックスに `PostgreSQL Sink` と入力をすると、絞り込みができます。
 
 `PostgreSQL` のシンボルが Set Body に続いて配置されます。
 

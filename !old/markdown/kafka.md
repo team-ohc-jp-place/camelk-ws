@@ -53,7 +53,7 @@ OpenShift DevSpaces 左のエクスプローラー上で、右クリックをし
 続いて、Karavan Designer のGUIが開いたら、上部の `Create route` をクリックして、Route を作成しましょう。
 
 `Kamelets` タブから `Kafka Source` を探して選択をしてください。
-右上のテキストボックスに `Kafka Source` と入力をすると、絞り込みができます。
+左上のテキストボックスに `Kafka Source` と入力をすると、絞り込みができます。
 
 ![](images/07-kafka-005.png)
 ![karavan]({% image_path 07-kafka-005.png %}){:width="800px"}
@@ -120,7 +120,7 @@ WebUI は、`outcoming-topic` という Kafka トピック に送信されたメ
 それでは、先ほど作成した `kafka.camel.yaml` に、`outcoming-topic` へメッセージを発信する処理を追加していきます。
 
 Route にマウスカーソルを持っていくと、Log シンボルの下に小さな＋ボタンが現れますので、それをクリックし、`Kamelets` タブから `Kafka Sink` を探して選択をしてください。
-右上のテキストボックスに `Kafka Sink` と入力をすると、絞り込みができます。
+左上のテキストボックスに `Kafka Sink` と入力をすると、絞り込みができます。
 
 ![](images/07-kafka-011.png)
 ![karavan]({% image_path 07-kafka-011.png %}){:width="800px"}

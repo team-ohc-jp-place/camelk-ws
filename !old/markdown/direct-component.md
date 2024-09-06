@@ -17,7 +17,7 @@ OpenShift DevSpaces 左のエクスプローラー上で、右クリックをし
 続いて、Karavan Designer のGUIが開いたら、上部の `Create route` をクリックして、Route を作成しましょう。
 
 `components` タブから `Timer` を探して選択をしてください。
-右上のテキストボックスに `Timer` と入力をすると、絞り込みができます。
+左上のテキストボックスに `Timer` と入力をすると、絞り込みができます。
 
 ![](images/05-direct-001.png)
 ![karavan]({% image_path 05-direct-001.png %}){:width="800px"}
@@ -37,7 +37,7 @@ Parameters は、以下のように設定をします。
 Route にマウスカーソルを持っていくと、`Timer` シンボルの下に小さな＋ボタンが現れますので、それをクリックします。
 
 `components` タブから `Direct` を探して選択をしてください。
-右上のテキストボックスに `Direct` と入力をすると、絞り込みができます。
+左上のテキストボックスに `Direct` と入力をすると、絞り込みができます。
 
 ![](images/05-direct-003.png)
 ![karavan]({% image_path 05-direct-003.png %}){:width="800px"}

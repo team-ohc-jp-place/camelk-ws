@@ -19,7 +19,7 @@ OpenShift DevSpaces 左のエクスプローラー上で、右クリックをし
 続いて、Karavan Designer のGUIが開いたら、上部の `Create route` をクリックして、Route を作成しましょう。
 
 `Components` タブから `REST` を探して選択をしてください。
-右上のテキストボックスに `REST` と入力をすると、絞り込みができます。
+左上のテキストボックスに `REST` と入力をすると、絞り込みができます。
 
 ![](images/12-error-001.png)
 ![karavan]({% image_path 12-error-001.png %}){:width="800px"}

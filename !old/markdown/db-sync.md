@@ -125,7 +125,7 @@ OpenShift DevSpaces 左のエクスプローラー上で、右クリックをし
 続いて、Karavan Designer のGUIが開いたら、上部の `Create route` をクリックして、Route を作成しましょう。
 
 `Kamelets` タブから `Kafka Source` を探して選択をしてください。
-右上のテキストボックスに `Kafka Source` と入力をすると、絞り込みができます。
+左上のテキストボックスに `Kafka Source` と入力をすると、絞り込みができます。
 
 ![](images/07-kafka-005.png)
 ![karavan]({% image_path 07-kafka-005.png %}){:width="800px"}
@@ -173,7 +173,7 @@ Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱の�
 Kafkaイベントの中から、`Payload` だけを抽出してBodyに格納します。
 
 Route の Log シンボルの左上に小さな`→`ボタンが現れますので、それをクリックし、`Transformation` のタブから `Set Body` を探して選択をしてください。
-右上のテキストボックスに `Set Body` と入力をすると、絞り込みができます。
+左上のテキストボックスに `Set Body` と入力をすると、絞り込みができます。
 
 ![](images/11-dbsync-014.png)
 ![karavan]({% image_path 11-dbsync-014.png %}){:width="800px"}
@@ -210,7 +210,7 @@ Logの確認後、`Ctrl+C` もしくは、ターミナル右上のゴミ箱の�
 #### 4.1 UPDATE処理を作成する
 
 Route にマウスカーソルを持っていくと、Log シンボルの下に小さな＋ボタンが現れますので、それをクリックし、`Routing` タブから `Choice` を探して選択をしてください。
-右上のテキストボックスに `Choice` と入力をすると、絞り込みができます。
+左上のテキストボックスに `Choice` と入力をすると、絞り込みができます。
 
 ![](images/11-dbsync-017.png)
 ![karavan]({% image_path 11-dbsync-017.png %}){:width="800px"}
@@ -259,7 +259,7 @@ Parameters 項目に、以下の内容を設定してください。
 
 続いて、PostgreSQL Sink に入力するデータをJSON形式に変換するための Marshal を追加します。
 PostgreSQL Sink シンボルにマウスカーソルを持っていくと、左上に小さく `→` ボタンが表示されますので、クリックして、`Transformation` タブから `Marshal` を探して選択をしてください。
-右上のテキストボックスに `Marshal` と入力をすると、絞り込みができます。
+左上のテキストボックスに `Marshal` と入力をすると、絞り込みができます。
 
 これで、`Log` と `PostgreSQL Sink` の間に、`Marshal` が追加されます。
 

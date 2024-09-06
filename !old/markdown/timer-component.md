@@ -27,7 +27,7 @@
 ![karavan]({% image_path 01-timer-003.png %}){:width="600px"}
 
 `source` を選択する画面が開きますので、その中の `components` タブから `Timer` を探して選択をしてください。
-右上のテキストボックスに `Timer` と入力をすると、絞り込みができます。
+左上のテキストボックスに `Timer` と入力をすると、絞り込みができます。
 
 ![](images/01-timer-004.png)
 ![karavan]({% image_path 01-timer-004.png %}){:width="800px"}

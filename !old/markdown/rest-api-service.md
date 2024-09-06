@@ -107,7 +107,7 @@ Camel の [AWS S3 Storage Service](https://camel.apache.org/components/{{ CAMEL_
 ![karavan]({% image_path 10-restapi-009.png %}){:width="1200px"}
 
 続いて、`Direct` シンボルの下の小さな＋ボタンをクリックし、`Components` のタブから `AWS S3 Storage Service` を探して選択をしてください。
-右上のテキストボックスに `S3` と入力をすると、絞り込みができます。
+左上のテキストボックスに `S3` と入力をすると、絞り込みができます。
 
 ![](images/10-restapi-010.png)
 ![karavan]({% image_path 10-restapi-010.png %}){:width="800px"}
@@ -128,7 +128,7 @@ MinIOへの接続の認証情報など、その他の必要な Parameters につ
 
 次に、複数のオブジェクトが含まれていた時に、分割をするための `Split` を追加します。
 `AWS S3 Storage Service` シンボルの下の小さな＋ボタンをクリックし、`Routing` のタブから `Split` を探して選択をしてください。
-右上のテキストボックスに `Split` と入力をすると、絞り込みができます。
+左上のテキストボックスに `Split` と入力をすると、絞り込みができます。
 
 `Split` のシンボルをクリックすると、右側にプロパティが表示されますので、
 Parameters 項目に、以下の内容を設定してください。
@@ -149,7 +149,7 @@ Parameters 項目に、以下の内容を設定してください。
 
 次に、分割したメッセージの中から、オブジェクト名を取り出す処理を追加します。
 `Split` シンボルのある枠の中の下部の小さな＋ボタンをクリックし、`Transformation` のタブから `Transform` を探して選択をしてください。
-右上のテキストボックスに `Transform` と入力をすると、絞り込みができます。
+左上のテキストボックスに `Transform` と入力をすると、絞り込みができます。
 
 ![](images/10-restapi-013.png)
 ![karavan]({% image_path 10-restapi-013.png %}){:width="800px"}
@@ -168,7 +168,7 @@ Parameters 項目に、以下の内容を設定してください。
 
 最後に、分割したメッセージを処理後、集約した後にJSON形式に変換する処理を追加します。
 `Split` シンボルのある枠の外側の下部の小さな＋ボタンをクリックし、`Transformation` のタブから `Marshal` を探して選択をしてください。
-右上のテキストボックスに `Marshal` と入力をすると、絞り込みができます。
+左上のテキストボックスに `Marshal` と入力をすると、絞り込みができます。
 
 `Marshal` のシンボルをクリックすると、右側にプロパティが表示されますので、
 Parameters 項目に、以下の内容を設定してください。
@@ -188,7 +188,7 @@ Parameters 項目に、以下の内容を設定してください。
 右側のプロパティを確認し、`Description` にも、`direct:get` と入力をしてください。
 
 続いて、`Direct` シンボルの下の小さな＋ボタンをクリックし、`Routing` のタブから `Set Header` を探して選択をしてください。
-右上のテキストボックスに `Header` と入力をすると、絞り込みができます。
+左上のテキストボックスに `Header` と入力をすると、絞り込みができます。
 
 ![](images/10-restapi-016.png)
 ![karavan]({% image_path 10-restapi-016.png %}){:width="800px"}
@@ -207,7 +207,7 @@ Parameters 項目に、以下の内容を設定してください。
 ![karavan]({% image_path 10-restapi-017.png %}){:width="1200px"}
 
 続いて、`Set Header` シンボルの下の小さな＋ボタンをクリックし、`Components` のタブから `AWS S3 Storage Service` を探して選択をしてください。
-右上のテキストボックスに `S3` と入力をすると、絞り込みができます。
+左上のテキストボックスに `S3` と入力をすると、絞り込みができます。
 
 これで、`Set Header` の後に、`AWS S3 Storage Service` が追加されます。
 
@@ -229,7 +229,7 @@ Parameters 項目に、以下の内容を設定してください。
 右側のプロパティを確認し、`Description` にも、`direct:create` と入力をしてください。
 
 続いて、`Direct` シンボルの下の小さな＋ボタンをクリックし、`Routing` のタブから `Set Header` を探して選択をしてください。
-右上のテキストボックスに `Header` と入力をすると、絞り込みができます。
+左上のテキストボックスに `Header` と入力をすると、絞り込みができます。
 
 `Set Header` のシンボルをクリックすると、右側にプロパティが表示されますので、
 Parameters 項目に、以下の内容を設定してください。
@@ -245,7 +245,7 @@ Parameters 項目に、以下の内容を設定してください。
 ![karavan]({% image_path 10-restapi-019.png %}){:width="1200px"}
 
 続いて、`Set Header` シンボルの下の小さな＋ボタンをクリックし、`Components` のタブから `AWS S3 Storage Service` を探して選択をしてください。
-右上のテキストボックスに `S3` と入力をすると、絞り込みができます。
+左上のテキストボックスに `S3` と入力をすると、絞り込みができます。
 
 これで、`Set Header` の後に、`AWS S3 Storage Service` が追加されます。
 
@@ -259,7 +259,7 @@ Parameters 項目に、以下の内容を設定してください。
 ![karavan]({% image_path 10-restapi-020.png %}){:width="1200px"}
 
 続いて、`AWS S3 Storage Service` シンボルの下の小さな＋ボタンをクリックし、`Transformation` のタブから `Set Body` を探して選択をしてください。
-右上のテキストボックスに `Set Body` と入力をすると、絞り込みができます。
+左上のテキストボックスに `Set Body` と入力をすると、絞り込みができます。
 
 これで、`AWS S3 Storage Service` の後に、`Set Body` が追加されます。
 
@@ -281,7 +281,7 @@ Parameters 項目に、以下の内容を設定してください。
 右側のプロパティを確認し、`Description` にも、`direct:delete` と入力をしてください。
 
 続いて、`Direct` シンボルの下の小さな＋ボタンをクリックし、`Routing` のタブから `Set Header` を探して選択をしてください。
-右上のテキストボックスに `Header` と入力をすると、絞り込みができます。
+左上のテキストボックスに `Header` と入力をすると、絞り込みができます。
 
 `Set Header` のシンボルをクリックすると、右側にプロパティが表示されますので、
 Parameters 項目に、以下の内容を設定してください。
@@ -297,7 +297,7 @@ Parameters 項目に、以下の内容を設定してください。
 ![karavan]({% image_path 10-restapi-022.png %}){:width="1200px"}
 
 続いて、`Set Header` シンボルの下の小さな＋ボタンをクリックし、`Components` のタブから `AWS S3 Storage Service` を探して選択をしてください。
-右上のテキストボックスに `S3` と入力をすると、絞り込みができます。
+左上のテキストボックスに `S3` と入力をすると、絞り込みができます。
 
 これで、`Set Header` の後に、`AWS S3 Storage Service` が追加されます。
 
@@ -312,7 +312,7 @@ Parameters 項目に、以下の内容を設定してください。
 ![karavan]({% image_path 10-restapi-023.png %}){:width="1200px"}
 
 続いて、`AWS S3 Storage Service` シンボルの下の小さな＋ボタンをクリックし、`Transformation` のタブから `Set Body` を探して選択をしてください。
-右上のテキストボックスに `Set Body` と入力をすると、絞り込みができます。
+左上のテキストボックスに `Set Body` と入力をすると、絞り込みができます。
 
 これで、`AWS S3 Storage Service` の後に、`Set Body` が追加されます。
 

@@ -17,7 +17,7 @@ OpenShift DevSpaces 左のエクスプローラー上で、右クリックをし
 上部の `Create route` をクリックして、Route を作成しましょう。
 
 `components` タブから `File` を探して選択をしてください。
-右上のテキストボックスに `File` と入力をすると、絞り込みができます。
+左上のテキストボックスに `File` と入力をすると、絞り込みができます。
 
 ![](images/02-file-002.png)
 ![karavan]({% image_path 02-file-002.png %}){:width="800px"}
@@ -109,7 +109,7 @@ Route の 出力側の File シンボルにマウスカーソルを持ってい�
 ![karavan]({% image_path 02-file-010.png %}){:width="600px"}
 
 続いて、`Transformation` タブから `Set Body` を探して選択をしてください。
-右上のテキストボックスに `Set Body` と入力をすると、絞り込みができます。
+左上のテキストボックスに `Set Body` と入力をすると、絞り込みができます。
 
 ![](images/02-file-011.png)
 ![karavan]({% image_path 02-file-011.png %}){:width="800px"}

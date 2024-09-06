@@ -26,7 +26,7 @@ Log シンボルにマウスカーソルを持っていくと、左上に小さ�
 ![karavan]({% image_path 04-split-001.png %}){:width="800px"}
 
 続いて、`Routing` タブから `Split` を探して選択をしてください。
-右上のテキストボックスに `Split` と入力をすると、絞り込みができます。
+左上のテキストボックスに `Split` と入力をすると、絞り込みができます。
 
 ![](images/04-split-002.png)
 ![karavan]({% image_path 04-split-002.png %}){:width="800px"}

@@ -5,29 +5,31 @@
 
 == 1. 目的
 
-このセクションでは、OpenAPIの定義を用いて、エンドポイントの実装と サーバーレス API としてのデプロイまでを、Camel K のインテグレーションで作成します。
+Apache Camel は、REST DSLを用いて、get、post、deleteなどのメソッドを指定するRESTサービスを作成することができます。
 
-image::restapi/10-restapi-001.png[pic, 800]
+このセクションでは、OpenAPIの定義を用いて、REST API の エンドポイントを、Camel で作成します。
+
+image::restapi/restapi-000.png[pic, 800]
 
 このシナリオでは、APIを使用して、ユーザーがファイルなどの汎用オブジェクトをバックエンドシステムに保存し、それに対するCRUD操作を許可します。
 
 バックエンドは、オープンソースソフトウェアで Amazon S3 と API互換のオブジェクトストレージである、MinIO を使用していきます。
 
+* **REST DSL**: link:https://camel.apache.org/manual/rest-dsl.html[https://camel.apache.org/manual/rest-dsl.html,window="_blank"]
 * **OpenAPI**: link:https://www.openapis.org/[https://www.openapis.org/,window="_blank"]
 * **MinIO**: link:https://min.io/[https://min.io/,window="_blank"]
+
+---
 
 === このセクションで作成する内容
 
 * OpenAPI定義をインポートして、RESTエンドポイントを生成
 * オブジェクトストレージに対するCRUD操作の実装
 
-image::restapi/10-restapi-035.png[pic, 800]
+image::restapi/restapi-001.png[pic, 800]
+image::restapi/restapi-002.png[pic, 800]
 
-image::restapi/10-restapi-036.png[pic, 600]
-
-image::restapi/10-restapi-037.png[pic, 600]
-
-== 2. OpenAPI定義をKaravanにインポートする
+== 2. OpenAPI定義を Camel にインポートする
 
 ベースになる OpenAPIの定義は、`minio/openapi.yaml` に記述されています。
 中身を見て確認をしてみてください。
@@ -39,32 +41,70 @@ image::restapi/10-restapi-037.png[pic, 600]
 * **put /v1/{name}**: 新しいオブジェクトの作成
 * **delete /v1/{name}**: オブジェクトの削除
 
-image::restapi/10-restapi-002.png[pic, 1200]
-
-
-// <!-- ここから: Karavan の バグ修正後に切り替え 
-// 
-// まずは、OpenShift DevSpaces 左のエクスプローラー上で、`minio` フォルダの中に、`openapi.yaml` というファイルがあるので、右クリックをして、`Karavan: Generate REST API` を選択してください。
-// 
-// ![](images/10-restapi-003.png)
-// ![karavan]({% image_path 10-restapi-003.png %}){:width="800px"}
-// 
-// 今回は新規にインテグレーションを作成するので、`Create new Integration` をクリックします。
-// 
-// ![](images/10-restapi-004.png)
-// ![karavan]({% image_path 10-restapi-004.png %}){:width="600px"}
-// 
-// テキストボックスに `api` と入力して、Enterを押してください。
-// 
-// ![](images/10-restapi-005.png)
-// ![karavan]({% image_path 10-restapi-005.png %}){:width="600px"}
-// 
-// 続いて表示されるポップアップに対して、`Generate REST and Route` をクリックします。
-// 
-// ![](images/10-restapi-006.png)
-// ![karavan]({% image_path 10-restapi-006.png %}){:width="600px"}
-// 
-// -->
+[source, bash]
+----
+---
+openapi: 3.0.2
+info:
+  title: Camel K Object API
+  version: 1.0.0
+  description: A CRUD API for an object store
+paths:
+  /v1:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+          description: Object list
+      operationId: list
+      summary: List the objects
+  /v1/{name}:
+    get:
+      responses:
+        "200":
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+          description: The object content
+      operationId: get
+      summary: Get the content of an object
+    put:
+      requestBody:
+        description: The object content
+        content:
+            application/octet-stream:
+              schema:
+                type: string
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: The object has been created
+      operationId: create
+      summary: Save an object
+    delete:
+      responses:
+        "204":
+          description: Object has been deleted
+      operationId: delete
+      summary: Delete an object
+    parameters:
+    - name: name
+      description: Name of the object
+      schema:
+        type: string
+      in: path
+      required: true
+----
 
 まずは、OpenAPIの定義をインポートして、REST API のエンドポイントと Camel の Route を生成します。ターミナルを開き、下記のコマンドを実行してください。
 
@@ -74,58 +114,131 @@ camel plugin add generate
 camel generate rest --input minio/openapi.yaml --routes --type=yaml --output api.yaml  
 ----
 
-コマンドの実行完了後、`api.yaml` というファイルが作成されますので、右クリックし、`Open with Kaoto Graphical Editor for Camel` から Kaoto のグラフィカルエディターを開きます。
+コマンドの実行完了後、`api.yaml` というファイルが作成されます。
+まずはソースコードエディターを開いて内容を確認してください。
 
-`REST` のタブをクリックすると、REST API のエンドポイントの情報を確認することができます。
-それぞれのプロパティを確認し、OpenAPIの定義と比較してみてください。
+image::restapi/restapi-003.png[pic, 1200]
 
-image::restapi/10-restapi-007.png[pic, 1200]
+このコードは、Camel の `REST DSL` を使用して、REST APIを定義している部分です。
+それぞれのHTTPメソッド（DELETE, GET, PUT）が具体的なエンドポイントとともに定義され、オブジェクトストレージのバケットに対する操作を行うために `direct:` Route にルーティングされています。
+以下に詳細な解説をします。
 
-`Route` のタブをクリックすると、REST APIに対応した Camel の Route が、`direct` を source にして作成されています。
-OpenAPI定義の `operationId` が、`direct` の URI と対応しています。
+`**get**` **メソッド(リスト取得)**
 
-image::restapi/10-restapi-008.png[pic, 1200]
+* エンドポイント: `/v1`
+** このエンドポイントはオブジェクトストレージのバケット内のオブジェクト一覧を取得します。
+** レスポンスの内容: `application/json` 形式でレスポンスを返します。
+** ルーティング: リクエストは `direct:list` という内部ルートに送られ、オブジェクトストレージのバケット内のオブジェクトのリストを取得して返します。
 
+`**get**` **メソッド(オブジェクト取得)**
+
+* エンドポイント: `/v1/{name}`
+** `name` というパスパラメータを受け取り、特定のオブジェクトを取得します。
+** パラメータ `name` は必須で、オブジェクト名として使用されます。
+** レスポンスの内容: 取得されたオブジェクトは `application/octet-stream` 形式で返されます（バイナリ形式）。
+** ルーティング: リクエストは `direct:get` という内部ルートに送られ、オブジェクトストレージのバケットから指定されたオブジェクトを取得します。
+
+`**delete**` **メソッド**
+
+* エンドポイント: `/v1/{name}`
+** `name` というパスパラメータを受け取り、オブジェクトストレージのバケット内のオブジェクト名として使用します。
+** パラメータ `name` は必須で、データ型は `string` です。
+** ルーティング: このエンドポイントに対するリクエストは、`direct:delete` という内部ルートに送られます。このルートは、指定されたオブジェクトをオブジェクトストレージのバケットから削除する役割を果たします。
+
+`**put**` **メソッド(オブジェクト作成)**
+
+* エンドポイント: `/v1/{name}`
+** `name` というパスパラメータで新しいオブジェクトをアップロードします。
+** パラメータ `name` は必須で、アップロードするオブジェクトの名前を指定します。
+** `body` はアップロードされるオブジェクトの内容を示します。この内容はリクエストボディに含まれ、必須です。
+** リクエストの内容: `application/octet-stream` 形式でデータを受け取ります。
+** ルーティング: リクエストは `direct:create` という内部ルートに送られ、オブジェクトストレージのバケットにオブジェクトをアップロードします。
+
+---
+
+REST DSL の確認をしたら、`api.yaml` を右クリックし、`Open with Kaoto Graphical Editor for Camel` から Kaoto のグラフィカルエディターを開きます。
+
+REST DSLで定義したエンドポイントに対応した、以下のような 4つの Route が設定されています。
+
+他の Route が見えない場合は、Route の `Visibility` をオンにしてみてください。
+
+OpenAPI定義の `operationId` が、`direct` の `Endpoint Properties` の `Name` と対応しています。
+`direct` のシンボルをクリックして、プロパティを確認してみてください。
+
+image::restapi/restapi-004.png[pic, 1200]
 
 == 3. Route の処理を実装する
 
-Camel の [AWS S3 Storage Service](https://camel.apache.org/components/{{ CAMEL_VERSION }}/aws2-s3-component.html){:target="_blank"} コンポーネントを使用して、Amazon S3 互換のオブジェクトストレージである、MinIO に対して操作をする処理を実装していきます。
+Camel の link:https://camel.apache.org/components/{{ CAMEL_VERSION }}/aws2-s3-component.html[AWS S3 Storage Service,window="_blank"] コンポーネントを使用して、Amazon S3 互換のオブジェクトストレージである、MinIO に対して操作をする処理を実装していきます。
 
 === 3.1 含まれているオブジェクトの名前の一覧表示
 
-`Route` タブ を開き、`uri` が `direct:list` となっている `Direct` のアイコンをクリックします。
+`direct` の `Endpoint Properties` の `Name` が `list` となっている `direct` のシンボルをクリックします。
 右側のプロパティを確認し、`Description` にも、`direct:list` と入力をしてください。
 
-image::restapi/10-restapi-009.png[pic, 1200]
+image::restapi/restapi-005.png[pic, 1200]
 
-続いて、`Direct` シンボルの下の小さな＋ボタンをクリックし、`Components` のタブから `AWS S3 Storage Service` を探して選択をしてください。
-右上のテキストボックスに `S3` と入力をすると、絞り込みができます。
+続いて、`direct:list` シンボルの メニューをクリックし、`Add Step` を選択します。
 
-image::restapi/10-restapi-010.png[pic, 800]
+image::restapi/restapi-006.png[pic, 600]
 
-これで、`Direct` の後に、`AWS S3 Storage Service` が追加されます。
+`Components` のタブから `AWS S3 Storage Service` を探して選択をしてください。
+左上のテキストボックスに `S3` と入力をすると、絞り込みができます。
 
-`AWS S3 Storage Service` のシンボルをクリックすると、右側にプロパティが表示されますので、
+image::restapi/restapi-007.png[pic, 800]
+
+これで、`direct:list` の後に、`aws2-s3` が追加されます。
+
+`aws2-s3` のシンボルをクリックすると、右側にプロパティが表示されますので、
 Parameters 項目に、以下の内容を設定してください。
 他の項目は、デフォルトのままで構いません。
 
 * **Bucket Name Or Arn**: {{ API_BUCKET }}
 * **Oparation**: listObjects
 
-MinIOへの接続の認証情報など、その他の必要な Parameters については、他の Route の処理でも共通で使用するため、`minio` フォルダの `minio.properties` ファイルに記述しています。
+MinIOへの接続の認証情報など、その他の必要な Parameters については、他の Route の処理でも共通で使用するため、`minio` フォルダの `minio.properties` ファイルに記述しておきます。
 
-image::restapi/10-restapi-011.png[pic, 1200]
+`minio/minio.properties` に、以下のコードを追加してください。
 
-次に、複数のオブジェクトが含まれていた時に、分割をするための `Split` を追加します。
-`AWS S3 Storage Service` シンボルの下の小さな＋ボタンをクリックし、`Routing` のタブから `Split` を探して選択をしてください。
-右上のテキストボックスに `Split` と入力をすると、絞り込みができます。
+[source, bash]
+----
+# MinIO Bucket
+api.bucket={{ USER_ID }}
 
-`Split` のシンボルをクリックすると、右側にプロパティが表示されますので、
+# Minio information
+minio.endpoint=https://minio-api-minio.{{ ROUTE_SUBDOMAIN }}
+minio.access-key=minio
+minio.secret-key=minio123
+
+# Camel AWS2 S3
+camel.component.aws2-s3.region=eu-west-1
+camel.component.aws2-s3.access-key={{minio.access-key}}
+camel.component.aws2-s3.secret-key={{minio.secret-key}}
+camel.component.aws2-s3.uri-endpoint-override = {{minio.endpoint}}
+camel.component.aws2-s3.override-endpoint = true
+camel.component.aws2-s3.autoCreateBucket = true
+camel.component.aws2-s3.forcePathStyle=true
+----
+
+image::restapi/restapi-008.png[pic, 800]
+
+次に、複数のオブジェクトが含まれていた時に、分割をするための `split` を追加します。
+`aws2-s3` シンボルの メニューをクリックし、`Append` を選択します。
+
+image::restapi/restapi-009.png[pic, 600]
+
+`Type: Processor` の中から `split` を探して選択をしてください。
+左上のテキストボックスに `split` と入力をすると、絞り込みができます。
+
+image::restapi/restapi-010.png[pic, 800]
+
+`split` のシンボルをクリックすると、右側にプロパティが表示されますので、
 Parameters 項目に、以下の内容を設定してください。
 他の項目は、デフォルトのままで構いません。
 
-* **Language**: simple
-* **Expression**: ${body}
+* **Expression**
+** **Language**: simple
+** **Expression**: ${body}
 * **AggregationStrategy**: #class:org.apache.camel.processor.aggregate.GroupedBodyAggregationStrategy
 * **Parallel Processing**: true
 * **Streaming**: true
@@ -134,177 +247,232 @@ Parameters 項目に、以下の内容を設定してください。
 `AggregationStrategy`は、分割した各メッセージを集約時にどのように1つにマージするかを指定します。
 `GroupedBodyAggregationStrategy` は、入力された メッセージの Body を、単一のメッセージの Body としてList型のオブジェクトに集約します。
 
-image::restapi/10-restapi-012.png[pic, 1200]
+image::restapi/restapi-011.png[pic, 1200]
 
 次に、分割したメッセージの中から、オブジェクト名を取り出す処理を追加します。
-`Split` シンボルのある枠の中の下部の小さな＋ボタンをクリックし、`Transformation` のタブから `Transform` を探して選択をしてください。
-右上のテキストボックスに `Transform` と入力をすると、絞り込みができます。
+`split` シンボルの メニューをクリックし、`Add step` を選択します。
 
-image::restapi/10-restapi-013.png[pic, 800]
+image::restapi/restapi-012.png[pic, 800]
 
-`Transform` のシンボルをクリックすると、右側にプロパティが表示されますので、
+`Type: Processor` の中から `transform` を探して選択をしてください。
+左上のテキストボックスに `transform` と入力をすると、絞り込みができます。
+
+image::restapi/restapi-013.png[pic, 800]
+
+`transform` のシンボルをクリックすると、右側にプロパティが表示されますので、
 Parameters 項目に、以下の内容を設定してください。
 他の項目は、デフォルトのままで構いません。
 
-* **Language**: simple
-* **Expression**: ${body.key}
+* **Expression**
+** **Language**: simple
+** **Expression**: ${body.key}
 
 これで、メッセージから key 情報だけを取り出すことができます。
 
-image::restapi/10-restapi-014.png[pic, 1200]
+image::restapi/restapi-014.png[pic, 1200]
 
 最後に、分割したメッセージを処理後、集約した後にJSON形式に変換する処理を追加します。
-`Split` シンボルのある枠の外側の下部の小さな＋ボタンをクリックし、`Transformation` のタブから `Marshal` を探して選択をしてください。
-右上のテキストボックスに `Marshal` と入力をすると、絞り込みができます。
 
-`Marshal` のシンボルをクリックすると、右側にプロパティが表示されますので、
+`split` シンボルの メニューをクリックし、`Append` を選択します。
+
+image::restapi/restapi-015.png[pic, 800]
+
+`Type: Processor` の中から `marshal` を探して選択をしてください。
+左上のテキストボックスに `marshal` と入力をすると、絞り込みができます。
+
+image::restapi/restapi-016.png[pic, 800]
+
+`marshal` のシンボルをクリックすると、右側にプロパティが表示されますので、
 Parameters 項目に、以下の内容を設定してください。
 他の項目は、デフォルトのままで構いません。
 
-* **Data Format**: json
-* **Library**: jackson
+* **Data Format**: JSon
 
-image::restapi/10-restapi-015.png[pic, 1200]
+image::restapi/restapi-017.png[pic, 1200]
 
 以上で、含まれているオブジェクトの名前の一覧表示をする処理の実装は完了です。
 
 === 3.2 オブジェクトのコンテンツを取得する
 
-`Route` タブ を開き、`uri` が `direct:get` となっている `Direct` のアイコンをクリックします。
+`direct` の `Endpoint Properties` の `Name` が `get` となっている `direct` のシンボルをクリックします。
 右側のプロパティを確認し、`Description` にも、`direct:get` と入力をしてください。
 
-続いて、`Direct` シンボルの下の小さな＋ボタンをクリックし、`Routing` のタブから `Set Header` を探して選択をしてください。
-右上のテキストボックスに `Header` と入力をすると、絞り込みができます。
+image::restapi/restapi-018.png[pic, 1200]
 
-image::restapi/10-restapi-016.png[pic, 1200]
+続いて、`direct:get` シンボルの メニューをクリックし、`Add Step` を選択します。
 
-`Set Header` のシンボルをクリックすると、右側にプロパティが表示されますので、
+image::restapi/restapi-019.png[pic, 800]
+
+`Type: Processor` の中から `setHeader` を探して選択をしてください。
+左上のテキストボックスに `setHeader` と入力をすると、絞り込みができます。
+
+image::restapi/restapi-020.png[pic, 800]
+
+`setHeader` のシンボルをクリックすると、右側にプロパティが表示されますので、
 Parameters 項目に、以下の内容を設定してください。
 他の項目は、デフォルトのままで構いません。
 
-* **Language**: simple
-* **Expression**: ${header.name}
+* **Expression**
+** **Language**: simple
+** **Expression**: ${header.name}
 * **Name**: CamelAwsS3Key
 
-これで、メッセージのヘッダーに `CamelAwsS3Key` がキーで、値が APIリクエスト時の{name} であるデータを追加します。
+これは、メッセージのヘッダーに `CamelAwsS3Key` がキーで、値が APIリクエスト時の{name} であるデータを追加します。
 
-image::restapi/10-restapi-017.png[pic, 1200]
+image::restapi/restapi-021.png[pic, 1200]
 
-続いて、`Set Header` シンボルの下の小さな＋ボタンをクリックし、`Components` のタブから `AWS S3 Storage Service` を探して選択をしてください。
-右上のテキストボックスに `S3` と入力をすると、絞り込みができます。
+続いて、`setHeader` シンボルの メニューをクリックし、`Add Step` を選択します。
 
-これで、`Set Header` の後に、`AWS S3 Storage Service` が追加されます。
+`Components` のタブから `AWS S3 Storage Service` を探して選択をしてください。
+左上のテキストボックスに `S3` と入力をすると、絞り込みができます。
 
-`AWS S3 Storage Service` のシンボルをクリックすると、右側にプロパティが表示されますので、
+image::restapi/restapi-007.png[pic, 800]
+
+これで、`setHeader` の後に、`aws2-s3` が追加されます。
+
+`aws2-s3` のシンボルをクリックすると、右側にプロパティが表示されますので、
 Parameters 項目に、以下の内容を設定してください。
 他の項目は、デフォルトのままで構いません。
 
 * **Bucket Name Or Arn**: {{ API_BUCKET }}
-* **Oparation**: getObjects
+* **Oparation**: getObject
 
-image::restapi/10-restapi-018.png[pic, 1200]
+image::restapi/restapi-022.png[pic, 1200]
 
 以上で、オブジェクトのコンテンツを取得する処理の実装は完了です。
 
-=== 3.3 新しいオブジェクトの作成をする
+=== 3.3 オブジェクトの削除をする
 
-`Route` タブ を開き、`uri` が `direct:create` となっている `Direct` のアイコンをクリックします。
-右側のプロパティを確認し、`Description` にも、`direct:create` と入力をしてください。
-
-続いて、`Direct` シンボルの下の小さな＋ボタンをクリックし、`Routing` のタブから `Set Header` を探して選択をしてください。
-右上のテキストボックスに `Header` と入力をすると、絞り込みができます。
-
-`Set Header` のシンボルをクリックすると、右側にプロパティが表示されますので、
-Parameters 項目に、以下の内容を設定してください。
-他の項目は、デフォルトのままで構いません。
-
-* **Language**: simple
-* **Expression**: ${header.name}
-* **Name**: CamelAwsS3Key
-
-これで、メッセージのヘッダーに `CamelAwsS3Key` がキーで、値が APIリクエスト時の{name} であるデータを追加します。
-
-image::restapi/10-restapi-019.png[pic, 1200]
-
-続いて、`Set Header` シンボルの下の小さな＋ボタンをクリックし、`Components` のタブから `AWS S3 Storage Service` を探して選択をしてください。
-右上のテキストボックスに `S3` と入力をすると、絞り込みができます。
-
-これで、`Set Header` の後に、`AWS S3 Storage Service` が追加されます。
-
-`AWS S3 Storage Service` のシンボルをクリックすると、右側にプロパティが表示されますので、
-Parameters 項目に、以下の内容を設定してください。
-他の項目は、デフォルトのままで構いません。
-
-* **Bucket Name Or Arn**: {{ API_BUCKET }}
-
-image::restapi/10-restapi-020.png[pic, 1200]
-
-続いて、`AWS S3 Storage Service` シンボルの下の小さな＋ボタンをクリックし、`Transformation` のタブから `Set Body` を探して選択をしてください。
-右上のテキストボックスに `Set Body` と入力をすると、絞り込みができます。
-
-これで、`AWS S3 Storage Service` の後に、`Set Body` が追加されます。
-
-`Set Body` のシンボルをクリックすると、右側にプロパティが表示されますので、
-Parameters 項目に、以下の内容を設定してください。
-他の項目は、デフォルトのままで構いません。
-
-* **Language**: constant
-* **Expression**: ブランク(空欄)
-
-image::restapi/10-restapi-021.png[pic, 1200]
-
-以上で、新しいオブジェクトの作成をする処理の実装は完了です。
-
-=== 3.４ オブジェクトの削除をする
-
-`Route` タブ を開き、`uri` が `direct:delete` となっている `Direct` のアイコンをクリックします。
+`direct` の `Endpoint Properties` の `Name` が `delete` となっている `direct` のシンボルをクリックします。
 右側のプロパティを確認し、`Description` にも、`direct:delete` と入力をしてください。
 
-続いて、`Direct` シンボルの下の小さな＋ボタンをクリックし、`Routing` のタブから `Set Header` を探して選択をしてください。
-右上のテキストボックスに `Header` と入力をすると、絞り込みができます。
+image::restapi/restapi-023.png[pic, 1200]
 
-`Set Header` のシンボルをクリックすると、右側にプロパティが表示されますので、
+続いて、`direct:get` シンボルの メニューをクリックし、`Add Step` を選択します。
+
+image::restapi/restapi-024.png[pic, 800]
+
+`Type: Processor` の中から `setHeader` を探して選択をしてください。
+左上のテキストボックスに `setHeader` と入力をすると、絞り込みができます。
+
+image::restapi/restapi-020.png[pic, 800]
+
+`setHeader` のシンボルをクリックすると、右側にプロパティが表示されますので、
 Parameters 項目に、以下の内容を設定してください。
 他の項目は、デフォルトのままで構いません。
 
-* **Language**: simple
-* **Expression**: ${header.name}
+* **Expression**
+** **Language**: simple
+** **Expression**: ${header.name}
 * **Name**: CamelAwsS3Key
 
-これで、メッセージのヘッダーに `CamelAwsS3Key` がキーで、値が APIリクエスト時の{name} であるデータを追加します。
+これは、メッセージのヘッダーに `CamelAwsS3Key` がキーで、値が APIリクエスト時の{name} であるデータを追加します。
 
-image::restapi/10-restapi-022.png[pic, 1200]
+image::restapi/restapi-025.png[pic, 1200]
 
-続いて、`Set Header` シンボルの下の小さな＋ボタンをクリックし、`Components` のタブから `AWS S3 Storage Service` を探して選択をしてください。
-右上のテキストボックスに `S3` と入力をすると、絞り込みができます。
+続いて、`setHeader` シンボルの メニューをクリックし、`Add Step` を選択します。
 
-これで、`Set Header` の後に、`AWS S3 Storage Service` が追加されます。
+`Components` のタブから `AWS S3 Storage Service` を探して選択をしてください。
+左上のテキストボックスに `S3` と入力をすると、絞り込みができます。
 
-`AWS S3 Storage Service` のシンボルをクリックすると、右側にプロパティが表示されますので、
+image::restapi/restapi-007.png[pic, 800]
+
+これで、`setHeader` の後に、`aws2-s3` が追加されます。
+
+`aws2-s3` のシンボルをクリックすると、右側にプロパティが表示されますので、
 Parameters 項目に、以下の内容を設定してください。
 他の項目は、デフォルトのままで構いません。
 
 * **Bucket Name Or Arn**: {{ API_BUCKET }}
-* **Oparation**: deleteObjects
+* **Oparation**: deleteObject
 
-image::restapi/10-restapi-023.png[pic, 1200]
+image::restapi/restapi-026.png[pic, 1200]
 
-続いて、`AWS S3 Storage Service` シンボルの下の小さな＋ボタンをクリックし、`Transformation` のタブから `Set Body` を探して選択をしてください。
-右上のテキストボックスに `Set Body` と入力をすると、絞り込みができます。
+続いて、`setHeader` シンボルの メニューをクリックし、`Add Step` を選択します。
 
-これで、`AWS S3 Storage Service` の後に、`Set Body` が追加されます。
+`Processor` のタブから `setBody` を探して選択をしてください。
+左上のテキストボックスに `setBody` と入力をすると、絞り込みができます。
 
-`Set Body` のシンボルをクリックすると、右側にプロパティが表示されますので、
+これで、`aws2-s3` の後に、`setBody` が追加されます。
+
+`setBody` のシンボルをクリックすると、右側にプロパティが表示されますので、
 Parameters 項目に、以下の内容を設定してください。
 他の項目は、デフォルトのままで構いません。
 
-* **Language**: constant
-* **Expression**: ブランク(空欄)
+* **Expression**
+** **Language**: constant
+** **Expression**: ブランク(空欄)
 
-image::restapi/10-restapi-024.png[pic, 1200]
+image::restapi/restapi-027.png[pic, 1200]
 
 以上で、オブジェクトの削除をする処理の実装は完了です。
 
+=== 3.4 新しいオブジェクトの作成をする
+
+`direct` の `Endpoint Properties` の `Name` が `create` となっている `direct` のシンボルをクリックします。
+右側のプロパティを確認し、`Description` にも、`direct:create` と入力をしてください。
+
+image::restapi/restapi-028.png[pic, 1200]
+
+続いて、`direct:get` シンボルの メニューをクリックし、`Add Step` を選択します。
+
+image::restapi/restapi-029.png[pic, 800]
+
+`Type: Processor` の中から `setHeader` を探して選択をしてください。
+左上のテキストボックスに `setHeader` と入力をすると、絞り込みができます。
+
+image::restapi/restapi-020.png[pic, 800]
+
+`setHeader` のシンボルをクリックすると、右側にプロパティが表示されますので、
+Parameters 項目に、以下の内容を設定してください。
+他の項目は、デフォルトのままで構いません。
+
+* **Expression**
+** **Language**: simple
+** **Expression**: ${header.name}
+* **Name**: CamelAwsS3Key
+
+これは、メッセージのヘッダーに `CamelAwsS3Key` がキーで、値が APIリクエスト時の{name} であるデータを追加します。
+
+image::restapi/restapi-030.png[pic, 1200]
+
+続いて、`setHeader` シンボルの メニューをクリックし、`Add Step` を選択します。
+
+`Components` のタブから `AWS S3 Storage Service` を探して選択をしてください。
+左上のテキストボックスに `S3` と入力をすると、絞り込みができます。
+
+image::restapi/restapi-007.png[pic, 800]
+
+これで、`setHeader` の後に、`aws2-s3` が追加されます。
+
+`aws2-s3` のシンボルをクリックすると、右側にプロパティが表示されますので、
+Parameters 項目に、以下の内容を設定してください。
+他の項目は、デフォルトのままで構いません。
+
+* **Bucket Name Or Arn**: {{ API_BUCKET }}
+
+image::restapi/restapi-031.png[pic, 1200]
+
+続いて、`setHeader` シンボルの メニューをクリックし、`Add Step` を選択します。
+
+`Processor` のタブから `setBody` を探して選択をしてください。
+左上のテキストボックスに `setBody` と入力をすると、絞り込みができます。
+
+これで、`aws2-s3` の後に、`setBody` が追加されます。
+
+`setBody` のシンボルをクリックすると、右側にプロパティが表示されますので、
+Parameters 項目に、以下の内容を設定してください。
+他の項目は、デフォルトのままで構いません。
+
+* **Expression**
+** **Language**: constant
+** **Expression**: ブランク(空欄)
+
+image::restapi/restapi-032.png[pic, 1200]
+
+以上で、オブジェクトの削除をする処理の実装は完了です。
+
+//
 == 4. REST API サービスを OpenShift にデプロイする
 
 作成したインテグレーションを、OpenShiftへデプロイして動かしてみましょう。

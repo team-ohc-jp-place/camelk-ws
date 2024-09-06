@@ -17,7 +17,7 @@ OpenShift DevSpaces 左のエクスプローラー上で、右クリックをし
 続いて、Karavan Designer のGUIが開いたら、上部の `Create route` をクリックして、Route を作成しましょう。
 
 `components` タブから `File` を探して選択をしてください。
-右上のテキストボックスに `File` と入力をすると、絞り込みができます。
+左上のテキストボックスに `File` と入力をすると、絞り込みができます。
 
 ![](images/06-recipientlist-001.png)
 ![karavan]({% image_path 06-recipientlist-001.png %}){:width="800px"}
@@ -54,7 +54,7 @@ Parameters は、以下のように設定をします。
 
 `+ Create route` をクリックしてください。
 source は、`components` タブから `Direct` を探して選択をしてください。
-右上のテキストボックスに `Direct` と入力をすると、絞り込みができます。
+左上のテキストボックスに `Direct` と入力をすると、絞り込みができます。
 
 ![](images/06-recipientlist-004.png)
 ![karavan]({% image_path 06-recipientlist-004.png %}){:width="800px"}

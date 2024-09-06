@@ -23,7 +23,7 @@ OpenShift DevSpaces 左のエクスプローラー上で、右クリックをし
 上部の `Create route` をクリックして、Route を作成しましょう。
 
 `components` タブから `File` を探して選択をしてください。
-右上のテキストボックスに `File` と入力をすると、絞り込みができます。
+左上のテキストボックスに `File` と入力をすると、絞り込みができます。
 
 ![](images/03-dataformat-001.png)
 ![karavan]({% image_path 03-dataformat-001.png %}){:width="800px"}
@@ -118,7 +118,7 @@ Log シンボルにマウスカーソルを持っていくと、左上に小さ�
 ![karavan]({% image_path 03-dataformat-010.png %}){:width="600px"}
 
 続いて、`Transformation` タブから `Marshal` を探して選択をしてください。
-右上のテキストボックスに `Marshal` と入力をすると、絞り込みができます。
+左上のテキストボックスに `Marshal` と入力をすると、絞り込みができます。
 
 ![](images/03-dataformat-011.png)
 ![karavan]({% image_path 03-dataformat-011.png %}){:width="800px"}
