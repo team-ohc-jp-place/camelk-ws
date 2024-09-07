@@ -193,7 +193,7 @@ image::restapi/restapi-007.png[pic, 800]
 Parameters 項目に、以下の内容を設定してください。
 他の項目は、デフォルトのままで構いません。
 
-* **Bucket Name Or Arn**: {{ API_BUCKET }}
+* **Bucket Name Or Arn**: {{api.bucket}}
 * **Oparation**: listObjects
 
 MinIOへの接続の認証情報など、その他の必要な Parameters については、他の Route の処理でも共通で使用するため、`minio` フォルダの `minio.properties` ファイルに記述しておきます。
@@ -334,7 +334,7 @@ image::restapi/restapi-007.png[pic, 800]
 Parameters 項目に、以下の内容を設定してください。
 他の項目は、デフォルトのままで構いません。
 
-* **Bucket Name Or Arn**: {{ API_BUCKET }}
+* **Bucket Name Or Arn**: {{api.bucket}}
 * **Oparation**: getObject
 
 image::restapi/restapi-022.png[pic, 1200]
@@ -383,7 +383,7 @@ image::restapi/restapi-007.png[pic, 800]
 Parameters 項目に、以下の内容を設定してください。
 他の項目は、デフォルトのままで構いません。
 
-* **Bucket Name Or Arn**: {{ API_BUCKET }}
+* **Bucket Name Or Arn**: {{api.bucket}}
 * **Oparation**: deleteObject
 
 image::restapi/restapi-026.png[pic, 1200]
@@ -449,8 +449,9 @@ image::restapi/restapi-007.png[pic, 800]
 Parameters 項目に、以下の内容を設定してください。
 他の項目は、デフォルトのままで構いません。
 
-* **Bucket Name Or Arn**: {{ API_BUCKET }}
+* **Bucket Name Or Arn**: {{api.bucket}}
 
+//要修正 API_BUCKET
 image::restapi/restapi-031.png[pic, 1200]
 
 続いて、`setHeader` シンボルの メニューをクリックし、`Add Step` を選択します。
@@ -473,111 +474,111 @@ image::restapi/restapi-032.png[pic, 1200]
 以上で、オブジェクトの削除をする処理の実装は完了です。
 
 //
-== 4. REST API サービスを OpenShift にデプロイする
+== 4. REST API サービスの動作を確認する
 
-作成したインテグレーションを、OpenShiftへデプロイして動かしてみましょう。
+作成した REST API サービスを、実行して確認してみます。
 
-ターミナルを開き、OpenShiftの `{{ USER_ID }}-dev` プロジェクトに入ります。
-以下のコマンドを実行してください。
+OpenShift DevSpaces のターミナルで、以下のコマンドを実行してください。
 
-```
-oc project {{ USER_ID }}-dev
-```
+[source, bash]
+----
+camel run api.yaml --property file:minio/minio.properties
+----
 
-次に作成したインテグレーションをプロジェクトにデプロイします。
+実行すると、以下のようなログと、右下にポップアップが表示されるので、`yes` を表示してください。
 
-`kamel run api.camel.yaml --property file:minio/minio.properties -n {{ USER_ID }}-dev` とターミナルに入力してください。
+image::restapi/restapi-033.png[pic, 800]
 
-ターミナルに以下のログが表示されて、OpenShiftに `api` のインテグレーションがデプロイされます。
+左のエクスプローラの `ENDPOINTS` に、`user-port-forward (8080)` が表示されていますので、`Copy endpoint URL to clipboard` をクリックして、URLをクリップボードにコピーします。
 
-image::restapi/10-restapi-025.png[pic, 800]
+別のターミナルを開き、以下のコマンドを実行します。
 
-OpenShift Web Console の [Topology view]({{ CONSOLE_URL }}/topology/ns/{{ USER_ID }}-dev){:target="_blank"} にアクセスして確認します。
-新しく、サーバーレスアプリケーションとして、`api` が作成されていることを確認してください。
+[source, bash]
+----
+URL=<コピーした endpoint URL>/v1
+----
 
-><pre>
-> ※ インテグレーションを初めて実行した場合、実行状態になるまでに時間がかかることがあります。
-></pre>
-
-image::restapi/10-restapi-026.png[pic, 1200]
-
-インテグレーションが実行できる状態になった後、次のコマンドでその統合に対応するルートを取得することができます：
-
-```
-URL=$(oc get routes.serving.knative.dev api -o jsonpath='{.status.url}')/v1
-```
-
-```
-echo $URL
-```
-
-image::restapi/10-restapi-027.png[pic, 800]
+image::restapi/restapi-034.png[pic, 1200]
 
 では、まず現在のオブジェクトの一覧を確認してみましょう。
 ターミナルから、以下のコマンドを実行します。
 
-```
-curl -i $URL/
-```
+[source, bash]
+----
+curl -i $URL
+----
 
 まだオブジェクトは格納されていないため、リストはブランクになっています。
 
-image::restapi/10-restapi-028.png[pic, 800]
+image::restapi/restapi-035.png[pic, 400]
 
-では、作成したインテグレーションのファイルを格納して見ます。
+では、REST APIを通してオブジェクトストレージに格納して見ます。
 以下のコマンドを実行してください。
 
-```
-curl -i -X PUT --header "Content-Type: application/octet-stream" --data-binary "@api.camel.yaml" $URL/example
-```
+[source, bash]
+----
+curl -i -X PUT --header "Content-Type: application/octet-stream" --data-binary "@api.yaml" $URL/example
+----
 
 格納されると、以下のようなログが表示されます。
 
-image::restapi/10-restapi-029.png[pic, 800]
+image::restapi/restapi-036.png[pic, 1200]
 
 もう一度オブジェクトの一覧を取得して見ましょう。
 
-```
-curl -i $URL/
-```
+[source, bash]
+----
+curl -i $URL
+----
 
 今度は、`example` という名前のオブジェクトがリストに表示されています。
 
-image::restapi/10-restapi-030.png[pic, 800]
+image::restapi/restapi-037.png[pic, 1200]
 
 このオブジェクトの中身を表示して見ましょう。
 
-```
+[source, bash]
+----
 curl -i $URL/example
-```
+----
 
-`api.camel.yaml` のソースコードが表示されていると思います。
+`api.yaml` のソースコードが表示されていると思います。
 
-image::restapi/10-restapi-031.png[pic, 800]
+image::restapi/restapi-038.png[pic, 1200]
+
+link:https://minio-ui-minio.{{ ROUTE_SUBDOMAIN }}/browser/{{ USER_ID }}[MinIO Console,window="_blank"] の方にもログインして、確認してみましょう。
+
+* **MinIO 認証情報**
+** username: minio
+** password: minio123
+
+`{{ USER_ID}}` のバケットに、格納されているのが確認できます。
+
+image::restapi/restapi-041.png[pic, 1200]
 
 それでは、オブジェクトを削除してみましょう。
 
-```
+[source, bash]
+----
 curl -i -X DELETE $URL/example
-```
+----
 
 削除に成功すると、以下のようなログが表示されます。
 
-image::restapi/10-restapi-032.png[pic, 800]
+image::restapi/restapi-039.png[pic, 1200]
 
 削除されているかどうか、もう一度オブジェクトの一覧を取得してみましょう。
 
-```
-curl -i $URL/
-```
+[source, bash]
+----
+curl -i $URL
+----
 
-image::restapi/10-restapi-033.png[pic, 800]
+オブジェクトのリストが空になっており、削除されたのが確認できました。
 
-このREST API サービスは サーバーレスアプリケーションです。
-リクエストが来るとPodが起動して処理を行います。一定時間リクエストが無い場合は、Pod数 がゼロにスケールダウンします。
+image::restapi/restapi-040.png[pic, 1200]
 
-image::restapi/10-restapi-034.gif[pic, 200]
-
+確認後、`Ctrl+C`、もしくはターミナル右上のゴミ箱のアイコンをクリックして、Camel を終了してください。
 
 == 5. 参考リンク
 
