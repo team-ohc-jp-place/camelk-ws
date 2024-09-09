@@ -212,11 +212,11 @@ minio.secret-key=minio123
 
 # Camel AWS2 S3
 camel.component.aws2-s3.region=eu-west-1
-camel.component.aws2-s3.access-key={{minio.access-key}}
-camel.component.aws2-s3.secret-key={{minio.secret-key}}
-camel.component.aws2-s3.uri-endpoint-override = {{minio.endpoint}}
-camel.component.aws2-s3.override-endpoint = true
-camel.component.aws2-s3.autoCreateBucket = true
+camel.component.aws2-s3.access-key={{ S3_ACCESS_KEY }}
+camel.component.aws2-s3.secret-key={{ S3_SECRET_KEY }}
+camel.component.aws2-s3.uri-endpoint-override={{ S3_ENDPOINT }}
+camel.component.aws2-s3.override-endpoint=true
+camel.component.aws2-s3.autoCreateBucket=true
 camel.component.aws2-s3.forcePathStyle=true
 ----
 
