@@ -180,7 +180,7 @@ image::restapi/restapi-005.png[pic, 1200]
 
 続いて、`direct:list` シンボルの メニューをクリックし、`Add Step` を選択します。
 
-image::restapi/restapi-006.png[pic, 600]
+image::restapi/restapi-006.png[pic, 400]
 
 `Components` のタブから `AWS S3 Storage Service` を探して選択をしてください。
 左上のテキストボックスに `S3` と入力をすると、絞り込みができます。
@@ -193,7 +193,7 @@ image::restapi/restapi-007.png[pic, 800]
 Parameters 項目に、以下の内容を設定してください。
 他の項目は、デフォルトのままで構いません。
 
-* **Bucket Name Or Arn**: {{api.bucket}}
+* **Bucket Name Or Arn**: {{ API_BUCKET }}
 * **Oparation**: listObjects
 
 MinIOへの接続の認証情報など、その他の必要な Parameters については、他の Route の処理でも共通で使用するため、`minio` フォルダの `minio.properties` ファイルに記述しておきます。
@@ -334,7 +334,7 @@ image::restapi/restapi-007.png[pic, 800]
 Parameters 項目に、以下の内容を設定してください。
 他の項目は、デフォルトのままで構いません。
 
-* **Bucket Name Or Arn**: {{api.bucket}}
+* **Bucket Name Or Arn**: {{ API_BUCKET }}
 * **Oparation**: getObject
 
 image::restapi/restapi-022.png[pic, 1200]
@@ -383,7 +383,7 @@ image::restapi/restapi-007.png[pic, 800]
 Parameters 項目に、以下の内容を設定してください。
 他の項目は、デフォルトのままで構いません。
 
-* **Bucket Name Or Arn**: {{api.bucket}}
+* **Bucket Name Or Arn**: {{ API_BUCKET }}
 * **Oparation**: deleteObject
 
 image::restapi/restapi-026.png[pic, 1200]
@@ -449,7 +449,7 @@ image::restapi/restapi-007.png[pic, 800]
 Parameters 項目に、以下の内容を設定してください。
 他の項目は、デフォルトのままで構いません。
 
-* **Bucket Name Or Arn**: {{api.bucket}}
+* **Bucket Name Or Arn**: {{ API_BUCKET }}
 
 //要修正 API_BUCKET
 image::restapi/restapi-031.png[pic, 1200]
