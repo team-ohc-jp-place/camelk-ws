@@ -453,7 +453,6 @@ Parameters 項目に、以下の内容を設定してください。
 
 //要修正 API_BUCKET
 image::restapi/restapi-031.png[pic, 1200]
-image::2024-09-09T01-55-36-418Z.png[] 
 
 続いて、`setHeader` シンボルの メニューをクリックし、`Add Step` を選択します。
 
