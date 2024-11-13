@@ -1,4 +1,4 @@
-## Camel K Workshop 
+## Camel Workshop 
 
 ---
 
@@ -13,7 +13,7 @@ Client Version: 4.15.0 で確認済み。
 
 ```
 cd provision
-sh ./setup.sh <user-count>
+sh ./setup.sh <user-count>　<OCP_user_password>
 ```
 
 3. 実行後、OpenShift Web Console の userX-dev プロジェクトに入り、guides の Route URL にアクセスしてください。
