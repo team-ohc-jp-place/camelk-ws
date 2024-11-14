@@ -3,17 +3,18 @@
 ---
 
 環境構築に OpenShift CLI （ocコマンド）が必要です。
-Client Version: 4.15.0 で確認済み。
+RHPDS の AWS with OpenShift Open Environment / OpenShift 4.17 で動作確認済み。
+Control Plane Count=3で立ててください。
 
 ### デプロイ方法
 
-1. OpenShift にログインする　（RHPDS の OpenShift 4.11, 4.12, 4.13 Workshop で動作確認）
+1. OpenShift にログインする
 2. 本リポジトリ内の provisionフォルダ内の setup.sh を、実行する。引数にはユーザー数を入れてください。
    （mac なら以下のコマンドを実行）
 
 ```
 cd provision
-sh ./setup.sh <user-count>　<OCP_user_password>
+sh ./setup.sh <user-count>
 ```
 
 3. 実行後、OpenShift Web Console の userX-dev プロジェクトに入り、guides の Route URL にアクセスしてください。

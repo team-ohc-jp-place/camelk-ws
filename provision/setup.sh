@@ -1,14 +1,18 @@
 #!/bin/bash
 
-if [ $# != 2 ]; then
-    echo "引数にユーザー数とOCPのパスワードを指定してください"
-    echo 例 \: $0 5 password
+if [ $# != 1 ]; then
+    echo "引数にユーザー数を指定してください"
+    echo 例 \: $0 5
     exit 1
 fi
 
 # config
 export USER_COUNT=$1 #入力
-export OPENSHIFT_PASSWORD=$2 #入力
+export OPENSHIFT_PASSWORD=openshift
+
+# ユーザーアカウントの作成
+echo "ユーザーアカウントの作成..."
+./openshift/90_user/user.sh
 
 # Create Project
 
