@@ -33,7 +33,7 @@ image::dbsync/dbsync-003.png[pic, 800]
 
 == 2. Debezium からのログを受信する
 
-前章の link:{{ HOSTNAME_SUFFIX }}/workshop/camel-k/lab/postgresql-sink[PostgresSQL との連携,window="_blank"] で 使用したデータベースは、`Debezium` にて変更ログをキャプチャし、イベントに変換して `Kafka` に送信するようになっています。
+前章の link:{{ HOSTNAME_SUFFIX }}/workshop/camel/lab/postgresql-sink[PostgresSQL との連携,window="_blank"] で 使用したデータベースは、`Debezium` にて変更ログをキャプチャし、イベントに変換して `Kafka` に送信するようになっています。
 
 link:http://kafdrop-{{ USER_ID }}-dev.{{ ROUTE_SUBDOMAIN }}[Kafdrop,window="_blank"] というツールで、Kafka トピックに送信されたメッセージの内容を確認することができます。
 

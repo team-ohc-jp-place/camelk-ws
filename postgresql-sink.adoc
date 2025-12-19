@@ -241,4 +241,4 @@ image::postgresql/postgresql-020.png[pic, 800]
 
 == 参考リンク
 
-* link:https://access.redhat.com/documentation/ja-jp/red_hat_integration/2022.q4/html/kamelets_reference/postgres-sql-sink[Red Hat Integration - Kamelets リファレンス,window="_blank"]
+* link:https://docs.redhat.com/ja/documentation/red_hat_build_of_apache_camel/4.14/html/kamelets_reference_for_red_hat_build_of_apache_camel_for_quarkus/postgres-sql-sink[Red Hat build of Apache Camel for Quarkus 用 Kamelets リファレンス - 52. PostgreSQL Sink,window="_blank"]
