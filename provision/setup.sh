@@ -33,6 +33,7 @@ oc apply -f ./openshift/01_operator/01_subs_camelk.yaml
 oc apply -f ./openshift/01_operator/02_subs_amqstreams.yaml
 oc apply -f ./openshift/01_operator/03_subs_devspaces.yaml
 oc apply -f ./openshift/01_operator/04_subs_serverless.yaml
+oc apply -f ./openshift/01_operator/05_subs_amqstreams_console.yaml
 
 
 # Waiting for getting operator subscription
@@ -132,9 +133,9 @@ oc create route edge --service=get-a-username -n infra
       -e ROUTE_SUBDOMAIN=$HOSTNAME_SUFFIX \
       -e MASTER_URL=$MASTER_URL \
       -e CONSOLE_URL=$CONSOLE_URL \
-      -e CAMEL_VERSION="4.4.x" \
-      -e CAMELK_VERSION="2.3.x" \
-      -e KAMELETS_VERSION="4.4.x" \
+      -e CAMEL_VERSION="4.10.x" \
+      -e CAMELK_VERSION="2.7.x" \
+      -e KAMELETS_VERSION="4.10.x" \
       -e DEVSPACES_URL=$DEVSPACES_URL \
       -e DEVSPACES_REPO="https://github.com/team-ohc-jp-place/camelk-ws-devspaces.git" \
       -e OPENSHIFT_PASSWORD=$OPENSHIFT_PASSWORD \
@@ -185,6 +186,7 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
     STAT=$(oc -n openshift-operators get ClusterServiceVersion $CSV -o=jsonpath='{.status.phase}')
     if [ "$STAT" = "Succeeded" ] ; then
       oc apply -f ./openshift/03_amqstreams/01_kafka_cluster.yaml -n $PRJ_NAME
+      oc apply -f ./openshift/03_amqstreams/02_kafka_nodepool.yaml -n $PRJ_NAME
       break
     fi
     echo waiting...
@@ -224,9 +226,20 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
     sleep 10
   done
 
+  ## kafka topic
+  oc apply -f ./openshift/03_amqstreams/03_kafka_topic.yaml -n $PRJ_NAME
+
+  ## kafka user
+  oc apply -f ./openshift/03_amqstreams/05_kafka_user.yaml -n $PRJ_NAME
+
   ## kafdrop
-  oc process -n $PRJ_NAME -f ./openshift/03_amqstreams/02_kafdrop.yaml --param=PJ_NAME=$PRJ_NAME | oc apply -f -
-  oc set env dc/kafdrop KAFKA_BROKERCONNECT=kafka-cluster-kafka-bootstrap.$PRJ_NAME.svc:9092 -n $PRJ_NAME
+  oc process -n $PRJ_NAME -f ./openshift/03_amqstreams/04_kafdrop.yaml --param=PJ_NAME=$PRJ_NAME | oc apply -f -
+  oc set env deployment/kafdrop KAFKA_BROKERCONNECT=kafka-cluster-kafka-bootstrap.$PRJ_NAME.svc:9092 -n $PRJ_NAME
+
+  ## Kafka Console
+  oc process -n $PRJ_NAME -f ./openshift/20_kafkaconsole/01_kafka-console.yaml \
+    -p PRJ_NAME=$PRJ_NAME \
+    -p SUB_DOMAIN=$HOSTNAME_SUFFIX | oc apply -f -
 
   # Camel K (各user)
   oc apply -f ./openshift/06_camelk/01_role.yaml -n $PRJ_NAME
@@ -292,15 +305,21 @@ for m in $(eval echo "{1..$USER_COUNT}"); do
   oc process -n $PRJ_NAME -f ./openshift/09_debezium/02_postgresql-connector.yaml --param=PJ_NAME=$PRJ_NAME | oc apply -f -
 
   # DevSpaces Create WorkSpace
-  oc process -n $DEVSPACES_NAME -f ./openshift/02_devspaces/02_create_workspace.yaml \
+
+  oc process -n $DEVSPACES_NAME -f ./openshift/02_devspaces/02_create_devworkspace_template.yaml \
       -p DEVSPACES_URL=$DEVSPACES_URL \
+      -p CLUSTER_CONSOLE_URL=$CONSOLE_URL \
+      -p NAMESPACE_PARAM=$DEVSPACES_NAME \
+      | oc create -f -
+
+  oc process -n $DEVSPACES_NAME -f ./openshift/02_devspaces/03_create_workspace.yaml \
       -p NAMESPACE_PARAM=$DEVSPACES_NAME \
       | oc create -f -
 
   # Label
   oc label dc/postgresql app.openshift.io/runtime=postgresql --overwrite -n $PRJ_NAME
   oc label dc/postgresql-replica app.openshift.io/runtime=postgresql --overwrite -n $PRJ_NAME
-  oc label dc/kafdrop app.openshift.io/runtime=amq --overwrite -n $PRJ_NAME
+  oc label deployment/kafdrop app.openshift.io/runtime=amq --overwrite -n $PRJ_NAME
 
   oc delete Integration example -n $PRJ_NAME
 

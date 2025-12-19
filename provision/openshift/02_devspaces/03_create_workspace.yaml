@@ -1,0 +1,64 @@
+kind: Template
+apiVersion: template.openshift.io/v1
+objects: 
+- kind: DevWorkspace
+  apiVersion: workspace.devfile.io/v1alpha2
+  metadata:
+    name: camelk-ws
+    namespace: ${NAMESPACE_PARAM}
+  spec:
+    contributions:
+      - kubernetes:
+          name: che-code-camelk-ws
+        name: editor
+    routingClass: che
+    started: true
+    template:
+      attributes:
+        controller.devfile.io/devworkspace-config:
+          name: devworkspace-config
+          namespace: devspaces
+        controller.devfile.io/scc: container-build
+        controller.devfile.io/storage-type: per-user
+        dw.metadata.annotations:
+          che.eclipse.org/devfile-source: |
+            scm:
+              repo: https://github.com/team-ohc-jp-place/camelk-ws-devspaces.git
+              fileName: devfile.yaml
+            factory:
+              params: url=https://github.com/team-ohc-jp-place/camelk-ws-devspaces
+      commands:
+        - exec:
+            commandLine: source ~/.bashrc && sdk default java 17.0.3-tem
+            component: tools
+          id: set-java-17
+        - exec:
+            commandLine: 'source ~/.bashrc && jbang trust add https://github.com/apache/camel/ && jbang app install camel@apache/camel'
+            component: tools
+          id: set-camel-cli
+      components:
+        - container:
+            cpuLimit: 2000m
+            cpuRequest: 1000m
+            image: 'quay.io/devfile/universal-developer-image:ubi8-latest'
+            memoryLimit: 6Gi
+            memoryRequest: 2Gi
+            sourceMapping: /projects
+          name: tools
+      events:
+        postStart:
+          - set-camel-cli
+      projects:
+        - git:
+            remotes:
+              origin: 'https://github.com/team-ohc-jp-place/camelk-ws-devspaces.git'
+          name: camelk-ws-devspaces
+parameters: 
+#- name: DEVSPACES_URL
+#  displayName: OpenShift DevSpaces URL
+#  description: DEVSPACES_URL
+#  required: true
+- name: NAMESPACE_PARAM
+  displayName: OpenShift DevSpaces Namespace
+  description: OpenShift DevSpaces Namespace
+  required: true

@@ -13,14 +13,15 @@ image::postgresql/postgresql-001.png[pic, 600]
 
 [TIP]
 ====
-Camel K の link:https://camel.apache.org/camel-k/2.3.x/kamelets/kamelets.html[Kamelets,window="_blank"] (**Kamel** route snipp**ets**) は、Apache Camelのエコシステムの一部として開発された、再利用可能なエンタープライズインテグレーションパターンのコレクションです。Kameletsを使用することで、開発者はルートを簡単に作成し、拡張可能で再利用可能な方法でコンポーネントを組み合わせることができます。
+Apache Camel の link:https://camel.apache.org/camel-kamelets/4.14.x/[Kamelets,window="_blank"] (**Kamel** route snipp**ets**) は、Apache Camelのエコシステムの一部として開発された、再利用可能なエンタープライズインテグレーションパターンのコレクションです。
+Kameletsを使用することで、開発者はルートを簡単に作成し、拡張可能で再利用可能な方法でコンポーネントを組み合わせることができます。
 ====
 
 === このセクションで作成する内容
 
 * 以下のコンポーネントは既に用意されています
 ** PostgreSQL（データベース）
-* 実装する Camelルート
+* このセクションで実装する Camelルート
 ** PostgreSQL のテーブルへデータを追加
 ** PostgreSQL のテーブルからデータを取得
 //**

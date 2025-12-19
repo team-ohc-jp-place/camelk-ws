@@ -1,0 +1,152 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: Kafka
+metadata:
+  creationTimestamp: '2025-06-01T13:34:39Z'
+  generation: 1
+  managedFields:
+    - apiVersion: kafka.strimzi.io/v1beta2
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:spec':
+          .: {}
+          'f:entityOperator':
+            .: {}
+            'f:topicOperator': {}
+            'f:userOperator': {}
+          'f:kafka':
+            .: {}
+            'f:config':
+              .: {}
+              'f:default.replication.factor': {}
+              'f:inter.broker.protocol.version': {}
+              'f:min.insync.replicas': {}
+              'f:offsets.topic.replication.factor': {}
+              'f:transaction.state.log.min.isr': {}
+              'f:transaction.state.log.replication.factor': {}
+            'f:listeners': {}
+            'f:replicas': {}
+            'f:storage':
+              .: {}
+              'f:type': {}
+            'f:version': {}
+          'f:zookeeper':
+            .: {}
+            'f:replicas': {}
+            'f:storage':
+              .: {}
+              'f:type': {}
+      manager: Mozilla
+      operation: Update
+      time: '2025-06-01T13:34:39Z'
+    - apiVersion: kafka.strimzi.io/v1beta2
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:status':
+          'f:registeredNodeIds': {}
+          'f:clusterId': {}
+          'f:kafkaVersion': {}
+          'f:listeners': {}
+          'f:conditions': {}
+          .: {}
+          'f:kafkaMetadataState': {}
+          'f:operatorLastSuccessfulVersion': {}
+          'f:observedGeneration': {}
+      manager: strimzi-cluster-operator
+      operation: Update
+      subresource: status
+      time: '2025-06-01T13:35:58Z'
+  name: my-cluster
+  namespace: kafka-dev
+  resourceVersion: '1759831'
+  uid: f2d023cf-64f7-45af-a85e-60dc1df9a0bc
+spec:
+  entityOperator:
+    topicOperator: {}
+    userOperator: {}
+  kafka:
+    config:
+      default.replication.factor: 3
+      inter.broker.protocol.version: '3.9'
+      min.insync.replicas: 2
+      offsets.topic.replication.factor: 3
+      transaction.state.log.min.isr: 2
+      transaction.state.log.replication.factor: 3
+    listeners:
+      - name: plain
+        port: 9092
+        tls: false
+        type: internal
+      - name: tls
+        port: 9093
+        tls: true
+        type: internal
+    replicas: 3
+    storage:
+      type: ephemeral
+    version: 3.9.0
+  zookeeper:
+    replicas: 3
+    storage:
+      type: ephemeral
+status:
+  clusterId: dY5jKZwFSJGQXstbgtaKEQ
+  conditions:
+    - lastTransitionTime: '2025-06-01T13:34:39.167939018Z'
+      message: Support for ZooKeeper-based Apache Kafka clusters will be removed in the next Strimzi release (0.46.0). Please migrate to KRaft.
+      reason: ZooKeeperRemoval
+      status: 'True'
+      type: Warning
+    - lastTransitionTime: '2025-06-01T13:35:58.285670502Z'
+      status: 'True'
+      type: Ready
+  kafkaMetadataState: ZooKeeper
+  kafkaVersion: 3.9.0
+  listeners:
+    - addresses:
+        - host: my-cluster-kafka-bootstrap.kafka-dev.svc
+          port: 9092
+      bootstrapServers: 'my-cluster-kafka-bootstrap.kafka-dev.svc:9092'
+      name: plain
+    - addresses:
+        - host: my-cluster-kafka-bootstrap.kafka-dev.svc
+          port: 9093
+      bootstrapServers: 'my-cluster-kafka-bootstrap.kafka-dev.svc:9093'
+      certificates:
+        - |
+          -----BEGIN CERTIFICATE-----
+          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
+          -----END CERTIFICATE-----
+      name: tls
+  observedGeneration: 1
+  operatorLastSuccessfulVersion: 0.45.0.redhat-00003
+  registeredNodeIds:
+    - 0
+    - 1
+    - 2

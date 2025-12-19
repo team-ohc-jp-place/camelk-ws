@@ -135,7 +135,7 @@ image::file-component/02-file-002.png[pic, 600]
 コンポーネントのカタログが開きます。
 
 `Type: Kamelets` の中から `Kafka Source` を探して選択をしてください。
-左上のテキストボックスに `Kafka Sourc` と入力をすると、絞り込みができます。
+左上のテキストボックスに `Kafka Source` と入力をすると、絞り込みができます。
 
 image::dbsync/dbsync-005.png[pic, 600] 
 

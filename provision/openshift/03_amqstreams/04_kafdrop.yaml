@@ -1,0 +1,83 @@
+kind: Template
+apiVersion: template.openshift.io/v1
+metadata:
+  name: kafdrop-template
+objects:
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: kafdrop
+      namespace: ${PJ_NAME}
+      labels:
+        app: kafdrop
+      annotations:
+        app.openshift.io/vcs-uri: 'https://github.com/obsidiandynamics/kafdrop'
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: kafdrop
+      template:
+        metadata:
+          labels:
+            app: kafdrop
+        spec:
+          containers:
+            - name: kafdrop
+              image: obsidiandynamics/kafdrop
+              imagePullPolicy: IfNotPresent
+              env:
+                - name: KAFKA_BROKERCONNECT
+                  value: "kafka-cluster-kafka-bootstrap.${PJ_NAME}.svc:9092"
+              ports:
+                - containerPort: 9000
+                  protocol: TCP
+              livenessProbe:
+                httpGet:
+                  path: /actuator/health
+                  port: 9000
+                initialDelaySeconds: 30
+                periodSeconds: 10
+              readinessProbe:
+                httpGet:
+                  path: /actuator/health
+                  port: 9000
+                initialDelaySeconds: 30
+                periodSeconds: 10
+
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      name: kafdrop
+      labels:
+        app: kafdrop
+    spec:
+      ports:
+        - name: 9000-tcp
+          port: 9000
+          targetPort: 9000
+      selector:
+        app: kafdrop
+
+  - apiVersion: route.openshift.io/v1
+    kind: Route
+    metadata:
+      name: kafdrop
+      labels:
+        app: kafdrop
+    spec:
+      port:
+        targetPort: 9000-tcp
+      tls:
+        termination: edge
+      to:
+        kind: Service
+        name: kafdrop
+        weight: 100
+
+parameters:
+  - name: PJ_NAME
+    displayName: project name
+    description: project name
+    value: "user1-dev"
+    required: true

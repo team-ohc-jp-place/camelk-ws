@@ -23,7 +23,7 @@ spec:
       fileData:
         name: camel-users # secret名
     mappingMethod: claim # アイデンティティーとユーザーオブジェクト間にマッピングが確立される方法
-    name: camel-users # 任意のプロバイダー名
+    name: camel-workshop # 任意のプロバイダー名
     type: HTPasswd
 EOF
 

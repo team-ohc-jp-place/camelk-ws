@@ -11,17 +11,24 @@ objects:
       annotations:
         strimzi.io/use-connector-resources: "true"
     spec:
-      version: 3.8.0
+      version: 4.0.0
       build:
         output:
           type: imagestream
           image: debezium-streams-connect:latest
         plugins:
-          - name: debezium-connector-postgres
-            artifacts:
+          - artifacts:
               - type: zip
-                url: https://maven.repository.redhat.com/ga/io/debezium/debezium-connector-postgres/2.5.4.Final-redhat-00001/debezium-connector-postgres-2.5.4.Final-redhat-00001-plugin.zip
-                #url: https://maven.repository.redhat.com/ga/io/debezium/debezium-connector-postgres/1.9.7.Final-redhat-00003/debezium-connector-postgres-1.9.7.Final-redhat-00003-plugin.zip
+                url: 'https://maven.repository.redhat.com/ga/io/debezium/debezium-connector-postgres/3.0.8.Final-redhat-00004/debezium-connector-postgres-3.0.8.Final-redhat-00004-plugin.zip'
+            name: debezium-connector-postgres
+          - artifacts:
+              - type: zip
+                url: 'https://maven.repository.redhat.com/ga/io/debezium/debezium-connector-mysql/3.0.8.Final-redhat-00004/debezium-connector-mysql-3.0.8.Final-redhat-00004-plugin.zip'
+            name: debezium-connector-mysql
+          - artifacts:
+              - type: zip
+                url: 'https://maven.repository.redhat.com/ga/io/debezium/debezium-connector-jdbc/3.0.8.Final-redhat-00004/debezium-connector-jdbc-3.0.8.Final-redhat-00004-plugin.zip'
+            name: debezium-connector-jdbc
       bootstrapServers: "kafka-cluster-kafka-bootstrap.${PJ_NAME}.svc:9092"
   - apiVersion: image.openshift.io/v1
     kind: ImageStream

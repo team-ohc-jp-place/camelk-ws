@@ -4,24 +4,22 @@ metadata:
   annotations:
     include.release.openshift.io/ibm-cloud-managed: "true"
     include.release.openshift.io/self-managed-high-availability: "true"
-    kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"config.openshift.io/v1","kind":"OAuth","metadata":{"annotations":{"include.release.openshift.io/ibm-cloud-managed":"true","include.release.openshift.io/self-managed-high-availability":"true","release.openshift.io/create-only":"true"},"creationTimestamp":"2024-11-14T07:40:20Z","generation":1,"name":"cluster","ownerReferences":[{"apiVersion":"config.openshift.io/v1","kind":"ClusterVersion","name":"version","uid":"ccc94ab7-f8eb-4131-a239-76e9447cad03"}],"resourceVersion":"1586","uid":"535cebcc-dcd2-4371-8a09-3c7f5dc2e212"},"spec":{"identityProviders":[{"htpasswd":{"fileData":{"name":"camel-users"}},"mappingMethod":"claim","name":"camel-users","type":"HTPasswd"}]}}
     release.openshift.io/create-only: "true"
-  creationTimestamp: "2024-11-14T07:40:20Z"
-  generation: 2
+  creationTimestamp: "2025-12-15T00:01:05Z"
+  generation: 1
   name: cluster
   ownerReferences:
   - apiVersion: config.openshift.io/v1
     kind: ClusterVersion
     name: version
-    uid: ccc94ab7-f8eb-4131-a239-76e9447cad03
-  resourceVersion: "59100"
-  uid: 535cebcc-dcd2-4371-8a09-3c7f5dc2e212
+    uid: c29bf20d-f8fa-4028-91bf-fd80fa34a397
+  resourceVersion: "1679"
+  uid: 4ed65d18-4d51-4a13-b7b3-2a90f7365cc0
 spec:
   identityProviders:
   - htpasswd:
       fileData:
-        name: camel-users
-    mappingMethod: claim
-    name: camel-users
+        name: camel-users # secret名
+    mappingMethod: claim # アイデンティティーとユーザーオブジェクト間にマッピングが確立される方法
+    name: camel-workshop # 任意のプロバイダー名
     type: HTPasswd

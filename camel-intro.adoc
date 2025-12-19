@@ -32,6 +32,6 @@ image::camel-intro/intro-005.png[pic, 800]
 
 === 参考リンク
 
-* link:https://docs.redhat.com/ja/documentation/red_hat_build_of_apache_camel/4.4[Product Documentation for Red Hat build of Apache Camel,window="_blank"]
+* link:https://docs.redhat.com/ja/documentation/red_hat_build_of_apache_camel/4.14[Product Documentation for Red Hat build of Apache Camel,window="_blank"]
 * link:https://rheb.hatenablog.com/entry/2022/05/27/191550[Apache Camel 超入門：赤帽エンジニアブログ,window="_blank"]
 

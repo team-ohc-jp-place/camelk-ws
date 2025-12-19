@@ -1,0 +1,33 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: kafka-console-user
+  labels:
+    strimzi.io/cluster: kafka-cluster
+spec:
+  authentication:
+    type: scram-sha-512
+  authorization:
+    type: simple
+    acls:
+      # クラスタ全体の操作
+      - resource:
+          type: cluster
+        operations:
+          - All
+
+      # すべてのトピックに対する操作
+      - resource:
+          type: topic
+          name: "*"
+          patternType: literal
+        operations:
+          - All
+
+      # すべてのコンシューマグループに対する操作
+      - resource:
+          type: group
+          name: "*"
+          patternType: literal
+        operations:
+          - All

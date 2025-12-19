@@ -5,7 +5,7 @@
 
 == 1. Camel JBang について
 
-Camel JBangは、Apache Camelを使いやすくするためのツールです。Camel JBangを使用すると、シンプルなスクリプトファイルを使用してCamelルートを実行できます。
+Camel JBangは、Apache Camelを効率よく開発するためのツールです。Camel JBangを使用すると、シンプルなスクリプトファイルを使用してCamelルートを実行できます。
 
 以下にCamel JBangの基本的なコマンドを示します。
 
@@ -17,7 +17,7 @@ Camel JBangは、Apache Camelを使いやすくするためのツールです。
 | version | インストールされているCamel JBangのバージョンを表示
 | help | 使用可能なコマンドの一覧とその説明を表示
 | export | CamelプロジェクトをMavenプロジェクトとしてエクスポート。
-| transform route| CamelのDSLの形式変換（YAML ↔︎ XML）
+| transform route | CamelのDSLの形式変換（YAML ↔︎ XML）
 | ps | ローカルで実行している Camel を監視する
 | stop | ローカルで実行中の Camel を停止する
 | debug | Camel Route のデバッグを行う

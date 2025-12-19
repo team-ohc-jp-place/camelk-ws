@@ -1,0 +1,28 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: kafka-console-template
+parameters:
+  - name: PRJ_NAME
+    description: "Namespace where Kafka and Console will run"
+    required: true
+
+  - name: SUB_DOMAIN
+    description: "Base domain used for Route hostnames (e.g. apps.cluster-xxxxx.openshift.com)"
+    required: true
+
+objects:
+  - apiVersion: console.streamshub.github.com/v1alpha1
+    kind: Console
+    metadata:
+      name: kafka-console
+      namespace: ${PRJ_NAME}
+    spec:
+      kafkaClusters:
+        - name: kafka-cluster
+          namespace: ${PRJ_NAME}
+          listener: external
+          credentials:
+            kafkaUser:
+              name: kafka-console-user
+      hostname: kafka-console.${PRJ_NAME}.${SUB_DOMAIN}
